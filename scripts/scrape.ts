@@ -102,7 +102,7 @@ async function collectArticleLinks(
   const seen = new Set<string>()
 
   await page.goto(startUrl, { waitUntil: "domcontentloaded", timeout: 30000 })
-  await sleep(3000)
+  await sleep(1500)
 
   let pageNum = 1
   while (pageNum <= maxPages) {
@@ -170,7 +170,7 @@ async function collectArticleLinks(
       }
     }
 
-    await sleep(3000)
+    await sleep(1500)
     pageNum++
   }
 
@@ -182,7 +182,7 @@ async function collectArticleLinks(
 async function getArticleContent(page: Page, url: string): Promise<{ text: string; date: string }> {
   try {
     await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30000 })
-    await sleep(3500)
+    await sleep(2000)
 
     const text = await page.evaluate(() => document.body.innerText.slice(0, 8000))
     const date = await page.evaluate(() => {
@@ -277,8 +277,8 @@ async function extractLeads(
 async function main() {
   const args = process.argv.slice(2)
   const sourceArg = args[args.indexOf("--source") + 1] || "all"
-  const maxPagesArg = args[args.indexOf("--max-pages") + 1]
-  const maxNewsPages = maxPagesArg ? parseInt(maxPagesArg) : 534
+  const maxPagesIdx = args.indexOf("--max-pages")
+  const maxNewsPages = maxPagesIdx !== -1 ? parseInt(args[maxPagesIdx + 1]) : 50
 
   if (!process.env.ANTHROPIC_API_KEY) {
     console.error("Error: ANTHROPIC_API_KEY not set")
@@ -300,13 +300,12 @@ async function main() {
   }
   let nextId = allLeads.length > 0 ? Math.max(...allLeads.map(l => l.id)) + 1 : 1
 
-  const browser: Browser = await chromium.launch({
-    headless: true,
-    args: ["--no-sandbox", "--disable-blink-features=AutomationControlled",
-      "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"]
-  })
+  const WORKERS = 5
+  const browserArgs = ["--no-sandbox", "--disable-blink-features=AutomationControlled",
+    "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"]
+
+  const browser: Browser = await chromium.launch({ headless: true, args: browserArgs })
   const listPage: Page = await browser.newPage()
-  const articlePage: Page = await browser.newPage()
 
   try {
     // ── Collect article URLs ─────────────────────────────────────────────────
@@ -327,38 +326,58 @@ async function main() {
       console.log(`News: ${news.length} articles queued`)
     }
 
+    await listPage.close()
+
     // Dedup
     const deduped = [...new Map(articleQueue.map(a => [a.url, a])).values()]
       .filter(a => !existingUrls.has(a.url))
-    console.log(`\n${deduped.length} new articles to scrape (${articleQueue.length - deduped.length} skipped as duplicates)`)
+    console.log(`\n${deduped.length} new articles to scrape with ${WORKERS} parallel workers`)
 
-    // ── Scrape each article ──────────────────────────────────────────────────
+    // ── Parallel article scraping ────────────────────────────────────────────
 
+    let cursor = 0
     let processed = 0
-    for (const { title, url } of deduped) {
-      console.log(`\n[${processed + 1}/${deduped.length}] ${title.slice(0, 70)}`)
+    const mutex = { saving: false }
 
-      const { text, date } = await getArticleContent(articlePage, url)
-      if (!text || text.length < 200) {
-        console.log("  ✗ empty content")
-        continue
-      }
+    async function worker(workerId: number) {
+      const page = await browser.newPage()
+      while (true) {
+        const idx = cursor++
+        if (idx >= deduped.length) break
+        const { title, url } = deduped[idx]
 
-      const extracted = await extractLeads(client, text, title, url, date)
-      if (extracted.length === 0) {
-        console.log("  → 0 leads")
-      } else {
-        for (const lead of extracted) {
-          allLeads.push({ id: nextId++, date: lead.date || date, articleTitle: title, sourceUrl: url, company: lead.company, person: lead.person, role: lead.role, intent: lead.intent, property: lead.property, sector: lead.sector, valueNum: lead.valueNum, value: lead.value, phone: lead.phone, email: lead.email, website: lead.website, address: lead.address, notes: lead.notes })
+        process.stdout.write(`[W${workerId}][${idx + 1}/${deduped.length}] ${title.slice(0, 55)}\n`)
+
+        const { text, date } = await getArticleContent(page, url)
+        if (!text || text.length < 200) {
+          process.stdout.write(`  W${workerId} ✗ empty\n`)
+          continue
         }
-        existingUrls.add(url)
-        console.log(`  → ${extracted.length} leads (total: ${allLeads.length})`)
-      }
 
-      processed++
-      if (processed % 10 === 0) saveProgress(allLeads, dataDir)
-      await sleep(600)
+        const extracted = await extractLeads(client, text, title, url, date)
+        processed++
+
+        if (extracted.length > 0) {
+          for (const lead of extracted) {
+            allLeads.push({ id: nextId++, date: lead.date || date, articleTitle: title, sourceUrl: url,
+              company: lead.company, person: lead.person, role: lead.role, intent: lead.intent,
+              property: lead.property, sector: lead.sector, valueNum: lead.valueNum, value: lead.value,
+              phone: lead.phone, email: lead.email, website: lead.website, address: lead.address, notes: lead.notes })
+          }
+          existingUrls.add(url)
+          process.stdout.write(`  W${workerId} → ${extracted.length} leads (total: ${allLeads.length})\n`)
+        }
+
+        if (processed % 10 === 0 && !mutex.saving) {
+          mutex.saving = true
+          saveProgress(allLeads, dataDir)
+          mutex.saving = false
+        }
+      }
+      await page.close()
     }
+
+    await Promise.all(Array.from({ length: WORKERS }, (_, i) => worker(i + 1)))
 
   } finally {
     await browser.close()
