@@ -380,10 +380,10 @@ async function main() {
     await Promise.all(Array.from({ length: WORKERS }, (_, i) => worker(i + 1)))
 
   } finally {
-    await browser.close()
+    saveProgress(allLeads, dataDir)
+    await browser.close().catch(() => {})
   }
 
-  saveProgress(allLeads, dataDir)
   console.log(`\n✓ Complete! ${allLeads.length} total leads in data/leads.json`)
 }
 
