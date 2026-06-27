@@ -205,7 +205,7 @@ async function getArticleContent(page: Page, url: string): Promise<{ text: strin
     await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30000 })
     await sleep(2000)
 
-    const text = await page.evaluate(() => document.body.innerText.slice(0, 10000))
+    const text = await page.evaluate(() => document.body.innerText.slice(0, 3000))
 
     // Parse date
     const rawDate = await page.evaluate(() => {
@@ -271,6 +271,19 @@ Return ONLY a JSON array — no markdown, no explanation.
 Schema per lead:
 {"company","person","role","intent","property","sector","valueNum","value","phone","email","website","address","notes"}`
 
+// Extra title-level filter applied before calling Claude (saves API cost)
+const SKIP_TITLE_PATTERNS = [
+  "bto","hdb flat","resale flat","million-dollar flat","executive condo ec",
+  "private home sales","developer sales flash","ura flash","price index",
+  "mortgage","cpf","home loan","rental tips","buying guide","how to",
+  "first-time buyer","property agent tips","top agent","awards","rankings",
+  "market outlook","property outlook","market review","property review",
+]
+function worthCallingClaude(title: string): boolean {
+  const t = title.toLowerCase()
+  return !SKIP_TITLE_PATTERNS.some(k => t.includes(k))
+}
+
 async function extractLeads(
   client: Anthropic,
   text: string,
@@ -279,12 +292,13 @@ async function extractLeads(
   date: string
 ): Promise<Omit<Lead, "id" | "articleTitle" | "sourceUrl" | "date">[]> {
   if (!text || text.length < 200) return []
+  if (!worthCallingClaude(title)) return []
   try {
     const msg = await client.messages.create({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 2048,
-      system: SYSTEM_PROMPT,
-      messages: [{ role: "user", content: `Title: ${title}\nDate: ${date}\nURL: ${url}\n\n---\n${text}` }],
+      max_tokens: 1024,
+      system: [{ type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral" } }] as Parameters<typeof client.messages.create>[0]["system"],
+      messages: [{ role: "user", content: `Title: ${title}\nDate: ${date}\n\n${text}` }],
     })
     const raw = ((msg.content[0] as { type: string; text: string }).text || "").trim()
     const start = raw.indexOf("["), end = raw.lastIndexOf("]")
