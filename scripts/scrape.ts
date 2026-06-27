@@ -302,7 +302,11 @@ async function main() {
   const args = process.argv.slice(2)
   const sourceArg = (args[args.indexOf("--source") + 1] || "all").toLowerCase()
   const maxPagesIdx = args.indexOf("--max-pages")
-  const maxNewsPages = maxPagesIdx !== -1 ? parseInt(args[maxPagesIdx + 1]) : 534
+  // --max-pages limits ALL sections (for daily runs use 5; for full scrape omit)
+  const maxAllPages = maxPagesIdx !== -1 ? parseInt(args[maxPagesIdx + 1]) : null
+  const maxInDepthPages = maxAllPages ?? 85
+  const maxShowcasePages = maxAllPages ?? 27
+  const maxNewsPages = maxAllPages ?? 534
 
   if (!process.env.ANTHROPIC_API_KEY) { console.error("ANTHROPIC_API_KEY not set"); process.exit(1) }
 
@@ -336,14 +340,14 @@ async function main() {
 
     if (sourceArg === "in-depth" || sourceArg === "all") {
       console.log("\n── In-Depth (capital markets) ───────────────────────────")
-      const links = await collectLinks(listPage, `${BASE_URL}/property-news/in-depth`, 85, () => true, "in-depth")
+      const links = await collectLinks(listPage, `${BASE_URL}/property-news/in-depth`, maxInDepthPages, () => true, "in-depth")
       queue.push(...links)
       console.log(`In-Depth: ${links.length} articles`)
     }
 
     if (sourceArg === "showcase" || sourceArg === "all") {
       console.log("\n── Showcase (commercial listings) ───────────────────────")
-      const links = await collectLinks(listPage, `${BASE_URL}/property-news/showcase`, 27, () => true, "showcase")
+      const links = await collectLinks(listPage, `${BASE_URL}/property-news/showcase`, maxShowcasePages, () => true, "showcase")
       queue.push(...links)
       console.log(`Showcase: ${links.length} articles`)
     }
