@@ -8,9 +8,9 @@
  *
  * Env vars required (set in .env.local):
  *   ANTHROPIC_API_KEY      — for Claude lead extraction
- *   GMAIL_USER             — your Gmail address (jimmychee11@gmail.com)
+ *   GMAIL_USER             — your Gmail address
  *   GMAIL_APP_PASSWORD     — 16-char app password from Google Account → Security → App passwords
- *   WHATSAPP_PHONE         — recipient phone with country code, no + (e.g. 6591234567)
+ *   WHATSAPP_PHONE         — recipient phone with country code, no + (e.g. 6500000000)
  *   WHATSAPP_APIKEY        — from callmebot.com (free)
  *   DIGEST_TO              — recipient email (defaults to GMAIL_USER)
  */
@@ -33,12 +33,20 @@ type Lead = {
 
 // ── Load env from .env.local ──────────────────────────────────────────────────
 
+const ALLOWED_ENV_VARS = new Set([
+  "ANTHROPIC_API_KEY", "GMAIL_USER", "GMAIL_APP_PASSWORD",
+  "WHATSAPP_PHONE", "WHATSAPP_APIKEY", "WHATSAPP_TO",
+  "DIGEST_TO", "GREEN_API_INSTANCE", "GREEN_API_TOKEN",
+])
+
 function loadEnv() {
   const envFile = path.join(__dirname, "../.env.local")
   if (fs.existsSync(envFile)) {
     fs.readFileSync(envFile, "utf-8").split("\n").forEach(line => {
       const m = line.match(/^([A-Z_]+)=(.+)$/)
-      if (m && !process.env[m[1]]) process.env[m[1]] = m[2].trim().replace(/^['"]|['"]$/g, "")
+      if (m && ALLOWED_ENV_VARS.has(m[1]) && !process.env[m[1]]) {
+        process.env[m[1]] = m[2].trim().replace(/^['"]|['"]$/g, "")
+      }
     })
   }
 }
@@ -92,8 +100,12 @@ const INTENT_COLOR: Record<string, string> = {
   REDEVELOP: "#ea580c", LEASE: "#0891b2", LAUNCH: "#db2777",
 }
 
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
+}
+
 function badge(text: string, color: string) {
-  return `<span style="display:inline-block;padding:2px 8px;border-radius:9999px;font-size:11px;font-weight:600;background:${color}22;color:${color}">${text}</span>`
+  return `<span style="display:inline-block;padding:2px 8px;border-radius:9999px;font-size:11px;font-weight:600;background:${color}22;color:${color}">${escapeHtml(text)}</span>`
 }
 
 function buildEmailHtml(leads: Lead[], totalLeads: number): string {
@@ -104,15 +116,15 @@ function buildEmailHtml(leads: Lead[], totalLeads: number): string {
 
   const rows = leads.slice(0, 50).map(l => `
     <tr style="border-bottom:1px solid #f3f4f6">
-      <td style="padding:10px 12px;font-size:12px;color:#6b7280">${l.date}</td>
-      <td style="padding:10px 12px;font-weight:600;color:#111827;max-width:160px">${l.company || "—"}</td>
-      <td style="padding:10px 12px;color:#374151;font-size:13px">${l.person || "—"}<br><span style="color:#9ca3af;font-size:11px">${l.role}</span></td>
+      <td style="padding:10px 12px;font-size:12px;color:#6b7280">${escapeHtml(l.date)}</td>
+      <td style="padding:10px 12px;font-weight:600;color:#111827;max-width:160px">${escapeHtml(l.company || "—")}</td>
+      <td style="padding:10px 12px;color:#374151;font-size:13px">${escapeHtml(l.person || "—")}<br><span style="color:#9ca3af;font-size:11px">${escapeHtml(l.role)}</span></td>
       <td style="padding:10px 12px">${badge(l.intent, INTENT_COLOR[l.intent] || "#6b7280")}</td>
-      <td style="padding:10px 12px;color:#374151;max-width:180px;font-size:13px">${l.property}</td>
+      <td style="padding:10px 12px;color:#374151;max-width:180px;font-size:13px">${escapeHtml(l.property)}</td>
       <td style="padding:10px 12px">${badge(l.sector, SECTOR_COLOR[l.sector] || "#6b7280")}</td>
-      <td style="padding:10px 12px;font-weight:600;color:#111827;white-space:nowrap;font-size:13px">${l.value || "—"}</td>
-      <td style="padding:10px 12px;font-size:12px;color:#374151">${l.phone || "—"}</td>
-      <td style="padding:10px 12px;font-size:12px">${l.sourceUrl ? `<a href="${l.sourceUrl}" style="color:#2563eb">↗ Article</a>` : "—"}</td>
+      <td style="padding:10px 12px;font-weight:600;color:#111827;white-space:nowrap;font-size:13px">${escapeHtml(l.value || "—")}</td>
+      <td style="padding:10px 12px;font-size:12px;color:#374151">${escapeHtml(l.phone || "—")}</td>
+      <td style="padding:10px 12px;font-size:12px">${l.sourceUrl ? `<a href="${escapeHtml(l.sourceUrl)}" style="color:#2563eb">↗ Article</a>` : "—"}</td>
     </tr>`).join("")
 
   const sectorPills = Object.entries(sectorBreakdown)
@@ -208,7 +220,7 @@ async function sendEmail(newLeads: Lead[], totalLeads: number) {
 
 // ── Send WhatsApp via Green API (no sandbox, no expiry) ──────────────────────
 // Free tier: 1,000 msgs/month. Set up at green-api.com — scan QR once, done.
-// Env vars: GREEN_API_INSTANCE, GREEN_API_TOKEN, WHATSAPP_TO (e.g. +6586882883)
+// Env vars: GREEN_API_INSTANCE, GREEN_API_TOKEN, WHATSAPP_TO (e.g. +6500000000)
 
 async function sendWhatsApp(newLeads: Lead[]) {
   const instance = process.env.GREEN_API_INSTANCE
@@ -267,7 +279,8 @@ async function main() {
 
   const skipScrape = process.argv.includes("--no-scrape")
   const maxPagesIdx = process.argv.indexOf("--max-pages")
-  const maxPages = maxPagesIdx !== -1 ? parseInt(process.argv[maxPagesIdx + 1]) : 5
+  const parsedPages = maxPagesIdx !== -1 ? parseInt(process.argv[maxPagesIdx + 1], 10) : 5
+  const maxPages = Number.isFinite(parsedPages) && parsedPages > 0 ? Math.min(parsedPages, 1000) : 5
   if (!skipScrape) runScraper(maxPages)
 
   const newLeads = getNewLeads()

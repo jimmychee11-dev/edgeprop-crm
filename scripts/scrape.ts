@@ -303,7 +303,27 @@ async function extractLeads(
     const raw = ((msg.content[0] as { type: string; text: string }).text || "").trim()
     const start = raw.indexOf("["), end = raw.lastIndexOf("]")
     if (start === -1 || end === -1) return []
-    return JSON.parse(raw.slice(start, end + 1))
+    const parsed: unknown[] = JSON.parse(raw.slice(start, end + 1))
+    if (!Array.isArray(parsed)) return []
+    return parsed.filter((item): item is Record<string, unknown> => {
+      if (typeof item !== "object" || item === null) return false
+      const r = item as Record<string, unknown>
+      return typeof r.company === "string" || typeof r.person === "string" || typeof r.property === "string"
+    }).map(r => ({
+      company: String(r.company ?? ""),
+      person: String(r.person ?? ""),
+      role: String(r.role ?? ""),
+      intent: String(r.intent ?? ""),
+      property: String(r.property ?? ""),
+      sector: String(r.sector ?? ""),
+      valueNum: typeof r.valueNum === "number" ? r.valueNum : 0,
+      value: String(r.value ?? ""),
+      phone: String(r.phone ?? ""),
+      email: String(r.email ?? ""),
+      website: String(r.website ?? ""),
+      address: String(r.address ?? ""),
+      notes: String(r.notes ?? ""),
+    }))
   } catch (e) {
     process.stdout.write(`  ✗ ${e}\n`)
     return []
@@ -317,7 +337,8 @@ async function main() {
   const sourceArg = (args[args.indexOf("--source") + 1] || "all").toLowerCase()
   const maxPagesIdx = args.indexOf("--max-pages")
   // --max-pages limits ALL sections (for daily runs use 5; for full scrape omit)
-  const maxAllPages = maxPagesIdx !== -1 ? parseInt(args[maxPagesIdx + 1]) : null
+  const rawMaxPages = maxPagesIdx !== -1 ? parseInt(args[maxPagesIdx + 1], 10) : NaN
+  const maxAllPages = Number.isFinite(rawMaxPages) && rawMaxPages > 0 ? Math.min(rawMaxPages, 10000) : null
   const maxInDepthPages = maxAllPages ?? 85
   const maxShowcasePages = maxAllPages ?? 27
   const maxNewsPages = maxAllPages ?? 534
