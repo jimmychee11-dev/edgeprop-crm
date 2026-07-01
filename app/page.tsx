@@ -3,21 +3,19 @@
 import { useState, useMemo } from "react"
 import { leads, Lead } from "@/data/leads"
 
-const ALL_SECTORS = ["Industrial","Hotel","Office","Shophouse","Commercial","Retail","Mixed","International","Residential"] as const
-const ALL_INTENTS = ["BUY","SELL","BROKER","JV","BID","ADVISORY","REDEVELOP","LEASE","LAUNCH"] as const
+const ALL_SECTORS = ["Industrial","Hotel","Office","Shophouse","Commercial","Retail","Mixed","International"] as const
+const ALL_INTENTS = ["BUY","SELL","BID","JV","BROKER","ADVISORY","REDEVELOP","LEASE","LAUNCH"] as const
 
-const COMMERCIAL_SECTORS = new Set(["Industrial","Hotel","Office","Shophouse","Commercial","Retail","Mixed","International"])
-
-const INTENT_STYLE: Record<string, string> = {
-  BUY:      "bg-green-100 text-green-800",
-  SELL:     "bg-red-100 text-red-800",
-  BROKER:   "bg-blue-100 text-blue-800",
-  JV:       "bg-purple-100 text-purple-800",
-  BID:      "bg-yellow-100 text-yellow-800",
-  ADVISORY: "bg-gray-100 text-gray-700",
-  REDEVELOP:"bg-orange-100 text-orange-800",
-  LEASE:    "bg-teal-100 text-teal-800",
-  LAUNCH:   "bg-pink-100 text-pink-800",
+const INTENT_STYLE: Record<string, { badge: string; row: string }> = {
+  BUY:      { badge: "bg-emerald-100 text-emerald-800 ring-1 ring-emerald-300", row: "border-l-[3px] border-l-emerald-400" },
+  SELL:     { badge: "bg-red-100 text-red-800 ring-1 ring-red-300",           row: "border-l-[3px] border-l-red-400" },
+  BID:      { badge: "bg-amber-100 text-amber-800 ring-1 ring-amber-300",     row: "border-l-[3px] border-l-amber-400" },
+  JV:       { badge: "bg-purple-100 text-purple-800 ring-1 ring-purple-300",  row: "border-l-[3px] border-l-purple-400" },
+  BROKER:   { badge: "bg-blue-100 text-blue-800 ring-1 ring-blue-300",        row: "border-l-[3px] border-l-blue-400" },
+  ADVISORY: { badge: "bg-gray-100 text-gray-600",                             row: "border-l-[3px] border-l-gray-300" },
+  REDEVELOP:{ badge: "bg-orange-100 text-orange-800 ring-1 ring-orange-300",  row: "border-l-[3px] border-l-orange-400" },
+  LEASE:    { badge: "bg-teal-100 text-teal-800 ring-1 ring-teal-300",        row: "border-l-[3px] border-l-teal-400" },
+  LAUNCH:   { badge: "bg-pink-100 text-pink-800 ring-1 ring-pink-300",        row: "border-l-[3px] border-l-pink-400" },
 }
 
 const SECTOR_STYLE: Record<string, string> = {
@@ -29,67 +27,30 @@ const SECTOR_STYLE: Record<string, string> = {
   Retail:       "bg-lime-100 text-lime-800",
   Mixed:        "bg-violet-100 text-violet-800",
   International:"bg-blue-100 text-blue-800",
-  Residential:  "bg-cyan-100 text-cyan-800",
 }
 
-type SortKey = keyof Lead
+// Leads from the last 7 days are "new"
+const WEEK_AGO = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().slice(0,10)
 
-function MultiSelect<T extends string>({
-  options, selected, onChange, placeholder,
-}: { options: readonly T[]; selected: Set<T>; onChange: (s: Set<T>) => void; placeholder: string }) {
-  const [open, setOpen] = useState(false)
-  const label = selected.size === 0 ? placeholder : selected.size === 1 ? [...selected][0] : `${selected.size} selected`
-  return (
-    <div className="relative">
-      <button
-        className="border border-gray-300 rounded-md px-3 py-2 text-sm bg-white min-w-36 text-left flex items-center justify-between gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        onClick={() => setOpen(o => !o)}
-      >
-        <span className={selected.size === 0 ? "text-gray-400" : "text-gray-800"}>{label}</span>
-        <span className="text-gray-400 text-xs">▾</span>
-      </button>
-      {open && (
-        <div className="absolute z-50 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg min-w-40 py-1">
-          <button
-            className="w-full text-left px-3 py-1.5 text-xs text-gray-500 hover:bg-gray-50"
-            onClick={() => { onChange(new Set()); setOpen(false) }}
-          >Clear all</button>
-          {options.map(opt => (
-            <label key={opt} className="flex items-center gap-2 px-3 py-1.5 text-sm cursor-pointer hover:bg-blue-50">
-              <input
-                type="checkbox"
-                checked={selected.has(opt)}
-                onChange={() => {
-                  const next = new Set(selected)
-                  next.has(opt) ? next.delete(opt) : next.add(opt)
-                  onChange(next)
-                }}
-                className="rounded"
-              />
-              {opt}
-            </label>
-          ))}
-        </div>
-      )}
-    </div>
-  )
-}
+type SortKey = "date" | "company" | "sector" | "intent" | "valueNum" | "property"
 
 export default function Home() {
   const [q, setQ] = useState("")
-  const [sectors, setSectors] = useState<Set<typeof ALL_SECTORS[number]>>(new Set(COMMERCIAL_SECTORS as Set<typeof ALL_SECTORS[number]>))
-  const [intents, setIntents] = useState<Set<typeof ALL_INTENTS[number]>>(new Set())
+  const [sectors, setSectors] = useState<Set<string>>(new Set(ALL_SECTORS))
+  const [intents, setIntents] = useState<Set<string>>(new Set())
   const [sortKey, setSortKey] = useState<SortKey>("date")
   const [sortDir, setSortDir] = useState<"asc"|"desc">("desc")
-  const [open, setOpen] = useState<{ sector: boolean; intent: boolean }>({ sector: false, intent: false })
+  const [expandedId, setExpandedId] = useState<number|null>(null)
+  const [showNewOnly, setShowNewOnly] = useState(false)
 
   const filtered = useMemo(() => {
     const rows = leads.filter(l => {
       const text = `${l.company} ${l.person} ${l.property} ${l.notes} ${l.articleTitle}`.toLowerCase()
       return (
         (!q || text.includes(q.toLowerCase())) &&
-        (sectors.size === 0 || sectors.has(l.sector as typeof ALL_SECTORS[number])) &&
-        (intents.size === 0 || intents.has(l.intent as typeof ALL_INTENTS[number]))
+        (sectors.size === 0 || sectors.has(l.sector)) &&
+        (intents.size === 0 || intents.has(l.intent)) &&
+        (!showNewOnly || l.date >= WEEK_AGO)
       )
     })
     return [...rows].sort((a, b) => {
@@ -100,139 +61,303 @@ export default function Home() {
         ? String(av).localeCompare(String(bv))
         : String(bv).localeCompare(String(av))
     })
-  }, [q, sectors, intents, sortKey, sortDir])
+  }, [q, sectors, intents, sortKey, sortDir, showNewOnly])
 
   function toggleSort(key: SortKey) {
     if (sortKey === key) setSortDir(d => d === "asc" ? "desc" : "asc")
-    else { setSortKey(key); setSortDir("asc") }
+    else { setSortKey(key); setSortDir("desc") }
   }
 
-  // Close dropdowns on outside click
-  const handleOverlayClick = () => setOpen({ sector: false, intent: false })
+  function toggleSector(s: string) {
+    const n = new Set(sectors)
+    n.has(s) ? n.delete(s) : n.add(s)
+    setSectors(n)
+  }
 
-  const arrow = (key: SortKey) => sortKey === key ? (sortDir === "asc" ? " ↑" : " ↓") : " ↕"
+  function toggleIntent(i: string) {
+    const n = new Set(intents)
+    n.has(i) ? n.delete(i) : n.add(i)
+    setIntents(n)
+  }
+
   const totalValue = filtered.reduce((s, l) => s + (l.valueNum || 0), 0)
-  const buyers = filtered.filter(l => l.intent === "BUY" || l.intent === "JV" || l.intent === "BID").length
-  const sectorCounts = filtered.reduce<Record<string,number>>((acc, l) => { acc[l.sector] = (acc[l.sector]||0)+1; return acc }, {})
+  const buyers = filtered.filter(l => ["BUY","BID","JV"].includes(l.intent)).length
+  const newCount = filtered.filter(l => l.date >= WEEK_AGO).length
+  const arrow = (key: SortKey) => sortKey === key ? (sortDir === "asc" ? " ↑" : " ↓") : ""
 
   return (
-    <main className="min-h-screen bg-gray-50 p-4 md:p-6">
-      {open.sector || open.intent ? <div className="fixed inset-0 z-40" onClick={handleOverlayClick}/> : null}
-      <div className="max-w-screen-2xl mx-auto">
-        <div className="mb-5 flex items-start justify-between flex-wrap gap-2">
+    <main className="min-h-screen bg-[#f5f6fa]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
+      {/* Top bar */}
+      <div className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30">
+        <div className="max-w-screen-2xl mx-auto flex items-center justify-between gap-4 flex-wrap">
           <div>
-            <h1 className="text-2xl font-semibold text-gray-900">EdgeProp Capital Markets CRM</h1>
-            <p className="text-sm text-gray-500 mt-0.5">Singapore commercial RE intelligence — {leads.length.toLocaleString()} leads extracted from EdgeProp</p>
+            <h1 className="text-lg font-semibold text-gray-900 leading-tight">EdgeProp Capital Markets</h1>
+            <p className="text-xs text-gray-400">{leads.length.toLocaleString()} leads · Singapore commercial RE</p>
           </div>
+          <input
+            className="border border-gray-300 rounded-lg px-3 py-2 text-sm w-72 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
+            placeholder="🔍  Search company, property, notes…"
+            value={q} onChange={e => setQ(e.target.value)}
+          />
         </div>
+      </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+      <div className="max-w-screen-2xl mx-auto px-4 py-4 md:px-6">
+
+        {/* Stats row */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
           {[
-            { label: "Showing", val: filtered.length.toLocaleString() },
-            { label: "Deal value", val: `$${totalValue >= 1000 ? (totalValue/1000).toFixed(1)+"B" : totalValue.toFixed(0)+"M"}+` },
-            { label: "Buyers / Bidders", val: buyers },
-            { label: "Top sector", val: Object.entries(sectorCounts).sort((a,b)=>b[1]-a[1])[0]?.[0] || "—" },
+            { label: "Showing leads",    val: filtered.length.toLocaleString(), sub: `of ${leads.length.toLocaleString()} total` },
+            { label: "Est. deal value",  val: `$${totalValue >= 1000 ? (totalValue/1000).toFixed(1)+"B" : totalValue.toFixed(0)+"M"}+`, sub: "aggregate" },
+            { label: "Active buyers",    val: buyers.toLocaleString(), sub: "BUY · BID · JV" },
+            { label: "New this week",    val: newCount.toLocaleString(), sub: "last 7 days", highlight: newCount > 0 },
           ].map(s => (
-            <div key={s.label} className="bg-white rounded-lg border border-gray-200 p-4">
-              <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">{s.label}</p>
-              <p className="text-2xl font-medium text-gray-900">{s.val}</p>
+            <div key={s.label} className={`bg-white rounded-xl border px-4 py-3 ${s.highlight ? "border-emerald-300 bg-emerald-50/50" : "border-gray-200"}`}>
+              <p className="text-[11px] text-gray-400 uppercase tracking-wide font-medium">{s.label}</p>
+              <p className={`text-2xl font-semibold mt-0.5 ${s.highlight ? "text-emerald-700" : "text-gray-900"}`}>{s.val}</p>
+              <p className="text-[11px] text-gray-400 mt-0.5">{s.sub}</p>
             </div>
           ))}
         </div>
 
         {/* Filters */}
-        <div className="flex flex-wrap gap-2 mb-4 items-center">
-          <input
-            className="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-52 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Search company, person, property, notes…"
-            value={q} onChange={e => setQ(e.target.value)}
-          />
-          <div className="relative z-50">
-            <MultiSelect options={ALL_SECTORS} selected={sectors} onChange={setSectors} placeholder="All sectors" />
+        <div className="bg-white rounded-xl border border-gray-200 px-4 py-3 mb-4 space-y-3">
+          {/* Sector toggles */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wide w-14 shrink-0">Sector</span>
+            {ALL_SECTORS.map(s => (
+              <button
+                key={s}
+                onClick={() => toggleSector(s)}
+                className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
+                  sectors.has(s)
+                    ? (SECTOR_STYLE[s] || "bg-gray-200 text-gray-700") + " ring-1 ring-offset-1 ring-current"
+                    : "bg-gray-100 text-gray-400 hover:bg-gray-200"
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+            <button
+              onClick={() => setSectors(sectors.size === ALL_SECTORS.length ? new Set() : new Set(ALL_SECTORS))}
+              className="ml-1 text-[11px] text-gray-400 hover:text-gray-700 underline"
+            >
+              {sectors.size === ALL_SECTORS.length ? "none" : "all"}
+            </button>
           </div>
-          <div className="relative z-50">
-            <MultiSelect options={ALL_INTENTS} selected={intents} onChange={setIntents} placeholder="All intents" />
+
+          {/* Intent toggles */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wide w-14 shrink-0">Intent</span>
+            {ALL_INTENTS.map(i => (
+              <button
+                key={i}
+                onClick={() => toggleIntent(i)}
+                className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
+                  intents.has(i)
+                    ? (INTENT_STYLE[i]?.badge || "bg-gray-200 text-gray-700") + " ring-1 ring-offset-1 ring-current"
+                    : "bg-gray-100 text-gray-400 hover:bg-gray-200"
+                }`}
+              >
+                {i}
+              </button>
+            ))}
+            {intents.size > 0 && (
+              <button onClick={() => setIntents(new Set())} className="ml-1 text-[11px] text-gray-400 hover:text-gray-700 underline">clear</button>
+            )}
           </div>
-          <button
-            className="text-xs text-gray-500 hover:text-gray-800 px-2 py-2 border border-gray-200 rounded-md"
-            onClick={() => { setSectors(new Set(COMMERCIAL_SECTORS as Set<typeof ALL_SECTORS[number]>)); setIntents(new Set()); setQ("") }}
-          >Reset</button>
-          {/* Sector pills showing active selections */}
-          {sectors.size > 0 && [...sectors].map(s => (
-            <span key={s} className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${SECTOR_STYLE[s] || "bg-gray-100 text-gray-700"}`}>
-              {s}
-              <button className="ml-1 opacity-60 hover:opacity-100" onClick={() => { const n=new Set(sectors); n.delete(s); setSectors(n) }}>×</button>
-            </span>
-          ))}
+
+          {/* Quick filters */}
+          <div className="flex items-center gap-3 pt-0.5">
+            <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wide w-14 shrink-0">Quick</span>
+            <button
+              onClick={() => setShowNewOnly(v => !v)}
+              className={`px-3 py-1 rounded-full text-xs font-medium border transition-all ${showNewOnly ? "bg-emerald-100 text-emerald-800 border-emerald-300" : "bg-gray-100 text-gray-500 border-gray-200 hover:bg-gray-200"}`}
+            >
+              🆕 New this week
+            </button>
+            <button
+              onClick={() => { setIntents(new Set(["BUY","BID","JV"])) }}
+              className="px-3 py-1 rounded-full text-xs font-medium border bg-gray-100 text-gray-500 border-gray-200 hover:bg-emerald-50 hover:text-emerald-800 hover:border-emerald-200 transition-all"
+            >
+              💰 Active buyers
+            </button>
+            <button
+              onClick={() => { setIntents(new Set(["SELL"])) }}
+              className="px-3 py-1 rounded-full text-xs font-medium border bg-gray-100 text-gray-500 border-gray-200 hover:bg-red-50 hover:text-red-800 hover:border-red-200 transition-all"
+            >
+              🏷️ Sellers only
+            </button>
+            <button
+              onClick={() => { setSectors(new Set(ALL_SECTORS)); setIntents(new Set()); setQ(""); setShowNewOnly(false) }}
+              className="ml-auto text-xs text-gray-400 hover:text-gray-700 border border-gray-200 rounded-lg px-3 py-1"
+            >
+              Reset all
+            </button>
+          </div>
         </div>
 
         {/* Table */}
-        <div className="bg-white rounded-lg border border-gray-200 overflow-x-auto">
+        <div className="bg-white rounded-xl border border-gray-200 overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 bg-gray-50">
+              <tr className="border-b-2 border-gray-100 bg-gray-50/80">
                 {([
-                  ["id","#"],["date","Date"],["company","Company"],["person","Contact"],
-                  ["intent","Intent"],["property","Property"],["sector","Sector"],
-                  ["valueNum","Value"],["phone","Phone"],["email","Email"],
-                  ["sourceUrl","Article"],["notes","Notes"],
-                ] as [SortKey,string][]).map(([key,label]) => (
+                  ["date","Date","w-24"],
+                  ["sector","Sector","w-28"],
+                  ["intent","Intent","w-24"],
+                  ["company","Company","w-40"],
+                  ["property","Property",""],
+                  ["valueNum","Value","w-24"],
+                  ["notes","Intelligence / Notes",""],
+                  ["sourceUrl","Article","w-16"],
+                ] as [SortKey|"sourceUrl"|"notes", string, string][]).map(([key, label, w]) => (
                   <th
                     key={key}
-                    className="text-left text-xs font-medium text-gray-500 px-3 py-3 cursor-pointer select-none hover:text-gray-800 whitespace-nowrap"
-                    onClick={() => toggleSort(key)}
+                    className={`text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wide px-4 py-3 ${w} ${["date","sector","intent","company","property","valueNum"].includes(key as string) ? "cursor-pointer select-none hover:text-gray-700" : ""}`}
+                    onClick={() => ["date","sector","intent","company","property","valueNum"].includes(key as string) && toggleSort(key as SortKey)}
                   >
-                    {label}{arrow(key)}
+                    {label}{["date","sector","intent","company","property","valueNum"].includes(key as string) ? arrow(key as SortKey) : ""}
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {filtered.length === 0 && (
-                <tr><td colSpan={12} className="text-center py-12 text-gray-400">No leads match your filters.</td></tr>
+                <tr><td colSpan={8} className="text-center py-16 text-gray-400">No leads match your filters.</td></tr>
               )}
-              {filtered.map((l, i) => (
-                <tr key={l.id} className={`border-b border-gray-100 hover:bg-blue-50/30 ${i % 2 ? "bg-gray-50/30" : ""}`}>
-                  <td className="px-3 py-2.5 text-gray-400 text-xs">{l.id}</td>
-                  <td className="px-3 py-2.5 text-gray-600 whitespace-nowrap text-xs">{l.date}</td>
-                  <td className="px-3 py-2.5 font-medium text-gray-900 max-w-[180px]">
-                    <span title={l.company}>{l.company || "—"}</span>
-                  </td>
-                  <td className="px-3 py-2.5 text-gray-600 whitespace-nowrap">
-                    {l.person || "—"}
-                    {l.role && <div className="text-xs text-gray-400">{l.role}</div>}
-                  </td>
-                  <td className="px-3 py-2.5">
-                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${INTENT_STYLE[l.intent] || "bg-gray-100 text-gray-700"}`}>{l.intent}</span>
-                  </td>
-                  <td className="px-3 py-2.5 text-gray-700 max-w-[220px]">
-                    <span title={l.property}>{l.property}</span>
-                  </td>
-                  <td className="px-3 py-2.5">
-                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${SECTOR_STYLE[l.sector] || "bg-gray-100 text-gray-700"}`}>{l.sector}</span>
-                  </td>
-                  <td className="px-3 py-2.5 font-medium text-gray-900 whitespace-nowrap text-xs">{l.value || "—"}</td>
-                  <td className="px-3 py-2.5 text-gray-600 whitespace-nowrap text-xs">{l.phone || "—"}</td>
-                  <td className="px-3 py-2.5 whitespace-nowrap text-xs">
-                    {l.email ? <a href={`mailto:${l.email}`} className="text-blue-600 hover:underline">{l.email}</a> : "—"}
-                  </td>
-                  <td className="px-3 py-2.5 text-xs">
-                    {l.sourceUrl
-                      ? <a href={l.sourceUrl} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline whitespace-nowrap font-medium">↗</a>
-                      : "—"}
-                  </td>
-                  <td className="px-3 py-2.5 text-gray-500 text-xs max-w-[250px]">
-                    <span title={l.notes}>{l.notes}</span>
-                  </td>
-                </tr>
-              ))}
+              {filtered.map((l) => {
+                const isExpanded = expandedId === l.id
+                const isNew = l.date >= WEEK_AGO
+                const intentStyle = INTENT_STYLE[l.intent] || { badge: "bg-gray-100 text-gray-600", row: "border-l-[3px] border-l-gray-200" }
+
+                return (
+                  <>
+                    <tr
+                      key={l.id}
+                      className={`border-b border-gray-100 cursor-pointer transition-colors ${intentStyle.row} ${isExpanded ? "bg-blue-50/60" : "hover:bg-gray-50/80"}`}
+                      onClick={() => setExpandedId(isExpanded ? null : l.id)}
+                    >
+                      {/* Date */}
+                      <td className="px-4 py-3 text-xs text-gray-500 whitespace-nowrap">
+                        {isNew && <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 mb-0.5" title="New this week"/>}
+                        {l.date}
+                      </td>
+
+                      {/* Sector */}
+                      <td className="px-4 py-3">
+                        <span className={`inline-block px-2 py-0.5 rounded-full text-[11px] font-semibold ${SECTOR_STYLE[l.sector] || "bg-gray-100 text-gray-700"}`}>
+                          {l.sector}
+                        </span>
+                      </td>
+
+                      {/* Intent */}
+                      <td className="px-4 py-3">
+                        <span className={`inline-block px-2 py-0.5 rounded-full text-[11px] font-semibold ${intentStyle.badge}`}>
+                          {l.intent}
+                        </span>
+                      </td>
+
+                      {/* Company */}
+                      <td className="px-4 py-3 font-semibold text-gray-900 max-w-[160px]">
+                        <span className="truncate block" title={l.company}>{l.company || "—"}</span>
+                      </td>
+
+                      {/* Property */}
+                      <td className="px-4 py-3 text-gray-700 max-w-[260px]">
+                        <span className="truncate block" title={l.property}>{l.property || "—"}</span>
+                      </td>
+
+                      {/* Value */}
+                      <td className="px-4 py-3 font-semibold text-gray-900 whitespace-nowrap text-xs">
+                        {l.value || "—"}
+                      </td>
+
+                      {/* Notes — the intelligence */}
+                      <td className="px-4 py-3 text-gray-600 max-w-[320px]">
+                        <span className="block text-xs leading-relaxed" title={l.notes}>
+                          {l.notes
+                            ? (isExpanded ? l.notes : l.notes.length > 120 ? l.notes.slice(0, 120) + "…" : l.notes)
+                            : <span className="text-gray-300">—</span>}
+                        </span>
+                      </td>
+
+                      {/* Article link */}
+                      <td className="px-4 py-3 text-center">
+                        {l.sourceUrl
+                          ? <a
+                              href={l.sourceUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              onClick={e => e.stopPropagation()}
+                              className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-blue-50 text-blue-600 hover:bg-blue-100 font-bold text-sm transition-colors"
+                              title="Open article"
+                            >↗</a>
+                          : "—"}
+                      </td>
+                    </tr>
+
+                    {/* Expanded contact panel */}
+                    {isExpanded && (
+                      <tr key={`${l.id}-expand`} className="border-b border-gray-100 bg-blue-50/40">
+                        <td colSpan={8} className="px-6 py-4">
+                          <div className="flex flex-wrap gap-6 text-sm">
+                            {/* Contact */}
+                            <div className="min-w-[180px]">
+                              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Contact</p>
+                              <p className="font-semibold text-gray-900">{l.person || "—"}</p>
+                              {l.role && <p className="text-xs text-gray-500 mt-0.5">{l.role}</p>}
+                            </div>
+                            {/* Phone */}
+                            {l.phone && (
+                              <div className="min-w-[140px]">
+                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Phone</p>
+                                <a href={`tel:${l.phone}`} className="text-blue-600 hover:underline font-medium">{l.phone}</a>
+                              </div>
+                            )}
+                            {/* Email */}
+                            {l.email && (
+                              <div className="min-w-[200px]">
+                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Email</p>
+                                <a href={`mailto:${l.email}`} className="text-blue-600 hover:underline font-medium">{l.email}</a>
+                              </div>
+                            )}
+                            {/* Article */}
+                            {l.sourceUrl && (
+                              <div className="min-w-[200px]">
+                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Source Article</p>
+                                <a
+                                  href={l.sourceUrl}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="text-blue-600 hover:underline text-xs"
+                                >{l.articleTitle || "Open article ↗"}</a>
+                              </div>
+                            )}
+                            {/* Full notes if long */}
+                            {l.notes && l.notes.length > 120 && (
+                              <div className="w-full">
+                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Full Intelligence</p>
+                                <p className="text-xs text-gray-700 leading-relaxed max-w-3xl">{l.notes}</p>
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </>
+                )
+              })}
             </tbody>
           </table>
+
+          {filtered.length > 0 && (
+            <div className="px-4 py-3 border-t border-gray-100 text-xs text-gray-400 flex items-center justify-between">
+              <span>Showing {filtered.length.toLocaleString()} leads · Click any row to reveal contact details</span>
+              <a href="https://www.edgeprop.sg" target="_blank" rel="noreferrer" className="hover:underline">Source: EdgeProp Singapore</a>
+            </div>
+          )}
         </div>
-        <p className="text-xs text-gray-400 mt-3 text-center">
-          Source: <a href="https://www.edgeprop.sg" target="_blank" rel="noreferrer" className="underline">EdgeProp Singapore</a> · Updated daily
-        </p>
       </div>
     </main>
   )
