@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import { leads, Lead } from "@/data/leads"
+import { leads } from "@/data/leads"
+import { formatDealValue } from "@/lib/format"
 
 const ALL_SECTORS = ["Industrial","Hotel","Office","Shophouse","Commercial","Retail","Mixed","International"] as const
 const ALL_INTENTS = ["BUY","SELL","BID","JV","BROKER","ADVISORY","REDEVELOP","LEASE","LAUNCH"] as const
@@ -108,7 +109,7 @@ export default function Home() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
           {[
             { label: "Showing leads",    val: filtered.length.toLocaleString(), sub: `of ${leads.length.toLocaleString()} total` },
-            { label: "Est. deal value",  val: `$${totalValue >= 1000 ? (totalValue/1000).toFixed(1)+"B" : totalValue.toFixed(0)+"M"}+`, sub: "aggregate" },
+            { label: "Est. deal value",  val: `${formatDealValue(totalValue)}+`, sub: "aggregate" },
             { label: "Active buyers",    val: buyers.toLocaleString(), sub: "BUY · BID · JV" },
             { label: "New this week",    val: newCount.toLocaleString(), sub: "last 7 days", highlight: newCount > 0 },
           ].map(s => (

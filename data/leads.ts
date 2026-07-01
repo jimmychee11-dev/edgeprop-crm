@@ -1,12 +1,8 @@
 // Auto-generated — do not edit manually
 // Updated: 2026-07-01T03:58:47.104Z | Leads: 4327
 
-export type Lead = {
-  id: number; date: string; articleTitle: string; company: string
-  person: string; role: string; intent: string; property: string
-  sector: string; valueNum: number; value: string; phone: string
-  email: string; website: string; address: string; sourceUrl: string; notes: string
-}
+import type { Lead } from "@/lib/types"
+export type { Lead }
 
 export const leads: Lead[] = [
   {
