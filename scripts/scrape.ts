@@ -226,7 +226,8 @@ async function getArticleContent(page: Page, url: string): Promise<{ text: strin
     }
 
     return { text, date }
-  } catch {
+  } catch (e) {
+    process.stderr.write(`  ✗ Failed to load ${url}: ${e instanceof Error ? e.message : e}\n`)
     return { text: "", date: new Date().toISOString().split("T")[0] }
   }
 }
@@ -303,7 +304,12 @@ async function extractLeads(
     const raw = ((msg.content[0] as { type: string; text: string }).text || "").trim()
     const start = raw.indexOf("["), end = raw.lastIndexOf("]")
     if (start === -1 || end === -1) return []
-    return JSON.parse(raw.slice(start, end + 1))
+    try {
+      return JSON.parse(raw.slice(start, end + 1))
+    } catch (parseErr) {
+      process.stderr.write(`  ✗ JSON parse error for "${title.slice(0, 50)}": ${parseErr instanceof Error ? parseErr.message : parseErr}\n`)
+      return []
+    }
   } catch (e) {
     process.stdout.write(`  ✗ ${e}\n`)
     return []
@@ -333,11 +339,15 @@ async function main() {
   const allLeads: Lead[] = []
 
   if (fs.existsSync(existingFile)) {
-    const existing: Lead[] = JSON.parse(fs.readFileSync(existingFile, "utf-8"))
-    // Keep only non-residential commercial leads
-    const commercial = existing.filter(l => l.sector !== "Residential")
-    commercial.forEach(l => { allLeads.push(l); existingUrls.add(l.sourceUrl) })
-    console.log(`Loaded ${commercial.length} existing commercial leads (dropped ${existing.length - commercial.length} residential)`)
+    try {
+      const existing: Lead[] = JSON.parse(fs.readFileSync(existingFile, "utf-8"))
+      // Keep only non-residential commercial leads
+      const commercial = existing.filter(l => l.sector !== "Residential")
+      commercial.forEach(l => { allLeads.push(l); existingUrls.add(l.sourceUrl) })
+      console.log(`Loaded ${commercial.length} existing commercial leads (dropped ${existing.length - commercial.length} residential)`)
+    } catch (e) {
+      console.error(`Failed to parse existing leads file (${existingFile}), starting fresh: ${e instanceof Error ? e.message : e}`)
+    }
   }
 
   let nextId = allLeads.length > 0 ? Math.max(...allLeads.map(l => l.id)) + 1 : 1
@@ -430,4 +440,7 @@ async function main() {
   console.log(`\n✓ Done! ${allLeads.length} commercial leads`)
 }
 
-main().catch(console.error)
+main().catch(e => {
+  console.error(e)
+  process.exitCode = 1
+})

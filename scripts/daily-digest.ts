@@ -45,7 +45,7 @@ function loadEnv() {
 
 // ── Run scraper ───────────────────────────────────────────────────────────────
 
-function runScraper(maxPages: number) {
+function runScraper(maxPages: number): boolean {
   console.log(`Running scraper (last ${maxPages} pages per source)...`)
   try {
     execSync(`npx tsx ${path.join(__dirname, "scrape.ts")} --source all --max-pages ${maxPages}`, {
@@ -54,8 +54,10 @@ function runScraper(maxPages: number) {
       stdio: "inherit",
       timeout: 30 * 60 * 1000, // 30 min max for daily run
     })
+    return true
   } catch (e) {
-    console.error("Scraper error:", e)
+    console.error("Scraper failed — digest will use stale data:", e instanceof Error ? e.message : e)
+    return false
   }
 }
 
@@ -63,11 +65,22 @@ function runScraper(maxPages: number) {
 
 function getNewLeads(): Lead[] {
   if (!fs.existsSync(LEADS_FILE)) return []
-  const all: Lead[] = JSON.parse(fs.readFileSync(LEADS_FILE, "utf-8"))
+
+  let all: Lead[]
+  try {
+    all = JSON.parse(fs.readFileSync(LEADS_FILE, "utf-8"))
+  } catch (e) {
+    console.error(`Failed to parse ${LEADS_FILE}: ${e instanceof Error ? e.message : e}`)
+    return []
+  }
 
   let lastId = 0
   if (fs.existsSync(CHECKPOINT_FILE)) {
-    lastId = JSON.parse(fs.readFileSync(CHECKPOINT_FILE, "utf-8")).lastId || 0
+    try {
+      lastId = JSON.parse(fs.readFileSync(CHECKPOINT_FILE, "utf-8")).lastId || 0
+    } catch (e) {
+      console.error(`Failed to parse ${CHECKPOINT_FILE}, treating as fresh run: ${e instanceof Error ? e.message : e}`)
+    }
   }
 
   const newLeads = all.filter(l => l.id > lastId)
@@ -196,14 +209,18 @@ async function sendEmail(newLeads: Lead[], totalLeads: number) {
     ? `🏢 ${newLeads.length} new commercial leads — EdgeProp ${new Date().toLocaleDateString("en-SG")}`
     : `EdgeProp digest — no new leads today`
 
-  await transporter.sendMail({
-    from: `"EdgeProp CRM" <${user}>`,
-    to,
-    subject,
-    html: buildEmailHtml(newLeads, totalLeads),
-  })
-
-  console.log(`✅ Email sent to ${to} — ${newLeads.length} new leads`)
+  try {
+    await transporter.sendMail({
+      from: `"EdgeProp CRM" <${user}>`,
+      to,
+      subject,
+      html: buildEmailHtml(newLeads, totalLeads),
+    })
+    console.log(`✅ Email sent to ${to} — ${newLeads.length} new leads`)
+  } catch (e) {
+    console.error(`Failed to send email to ${to}: ${e instanceof Error ? e.message : e}`)
+    throw e
+  }
 }
 
 // ── Send WhatsApp via Green API (no sandbox, no expiry) ──────────────────────
@@ -251,11 +268,16 @@ async function sendWhatsApp(newLeads: Lead[]) {
     body: JSON.stringify({ chatId, message: msg }),
   })
 
+  if (!res.ok) {
+    const body = await res.text().catch(() => "")
+    throw new Error(`WhatsApp API returned HTTP ${res.status}: ${body}`)
+  }
+
   const json = await res.json() as { idMessage?: string; message?: string }
   if (json.idMessage) {
     console.log(`✅ WhatsApp sent to ${to} via Green API (id: ${json.idMessage})`)
   } else {
-    console.error(`WhatsApp error: ${JSON.stringify(json)}`)
+    console.error(`WhatsApp API response missing idMessage: ${JSON.stringify(json)}`)
   }
 }
 
@@ -268,25 +290,40 @@ async function main() {
   const skipScrape = process.argv.includes("--no-scrape")
   const maxPagesIdx = process.argv.indexOf("--max-pages")
   const maxPages = maxPagesIdx !== -1 ? parseInt(process.argv[maxPagesIdx + 1]) : 5
-  if (!skipScrape) runScraper(maxPages)
+  const scraperOk = skipScrape || runScraper(maxPages)
 
   const newLeads = getNewLeads()
-  const allLeads: Lead[] = fs.existsSync(LEADS_FILE)
-    ? JSON.parse(fs.readFileSync(LEADS_FILE, "utf-8"))
-    : []
 
-  console.log(`\n${newLeads.length} new leads since last run`)
+  let allLeads: Lead[] = []
+  if (fs.existsSync(LEADS_FILE)) {
+    try {
+      allLeads = JSON.parse(fs.readFileSync(LEADS_FILE, "utf-8"))
+    } catch (e) {
+      console.error(`Failed to parse ${LEADS_FILE} for total count: ${e instanceof Error ? e.message : e}`)
+    }
+  }
+
+  console.log(`\n${newLeads.length} new leads since last run${scraperOk ? "" : " (scraper failed — data may be stale)"}`)
   if (newLeads.length > 0) {
     const sectors = newLeads.reduce<Record<string, number>>((a, l) => { a[l.sector] = (a[l.sector] || 0) + 1; return a }, {})
     console.log("Breakdown:", JSON.stringify(sectors))
   }
 
-  await Promise.all([
+  const results = await Promise.allSettled([
     sendEmail(newLeads, allLeads.length),
     sendWhatsApp(newLeads),
   ])
 
+  const failures = results.filter((r): r is PromiseRejectedResult => r.status === "rejected")
+  if (failures.length > 0) {
+    for (const f of failures) console.error("Delivery failed:", f.reason)
+    throw new Error(`${failures.length} delivery channel(s) failed`)
+  }
+
   console.log("\n✓ Digest complete")
 }
 
-main().catch(console.error)
+main().catch(e => {
+  console.error(e)
+  process.exitCode = 1
+})
