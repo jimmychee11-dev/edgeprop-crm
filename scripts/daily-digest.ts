@@ -206,17 +206,22 @@ async function sendEmail(newLeads: Lead[], totalLeads: number) {
   console.log(`✅ Email sent to ${to} — ${newLeads.length} new leads`)
 }
 
-// ── Send WhatsApp via Twilio ──────────────────────────────────────────────────
+// ── Send WhatsApp via Green API (no sandbox, no expiry) ──────────────────────
+// Free tier: 1,000 msgs/month. Set up at green-api.com — scan QR once, done.
+// Env vars: GREEN_API_INSTANCE, GREEN_API_TOKEN, WHATSAPP_TO (e.g. +6586882883)
 
 async function sendWhatsApp(newLeads: Lead[]) {
-  const sid = process.env.TWILIO_ACCOUNT_SID
-  const token = process.env.TWILIO_AUTH_TOKEN
+  const instance = process.env.GREEN_API_INSTANCE
+  const apiToken = process.env.GREEN_API_TOKEN
   const to = process.env.WHATSAPP_TO
 
-  if (!sid || !token || !to) {
-    console.log("⚠️  WhatsApp skipped — TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN or WHATSAPP_TO not set")
+  if (!instance || !apiToken || !to) {
+    console.log("⚠️  WhatsApp skipped — GREEN_API_INSTANCE, GREEN_API_TOKEN or WHATSAPP_TO not set")
     return
   }
+
+  // Green API uses chatId format: countrycode+number@c.us (no + prefix)
+  const chatId = to.replace(/^\+/, "") + "@c.us"
 
   const totalValue = newLeads.reduce((s, l) => s + (l.valueNum || 0), 0)
   const sectorSummary = [...new Set(newLeads.map(l => l.sector))].slice(0, 4).join(", ")
@@ -239,25 +244,16 @@ async function sendWhatsApp(newLeads: Lead[]) {
       `🔗 https://edgeprop-crm.vercel.app`
   }
 
-  const url = `https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`
-  const body = new URLSearchParams({
-    From: "whatsapp:+14155238886",
-    To: `whatsapp:${to}`,
-    Body: msg,
-  })
-
+  const url = `https://api.green-api.com/waInstance${instance}/sendMessage/${apiToken}`
   const res = await fetch(url, {
     method: "POST",
-    headers: {
-      Authorization: `Basic ${Buffer.from(`${sid}:${token}`).toString("base64")}`,
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chatId, message: msg }),
   })
 
-  const json = await res.json() as { sid?: string; message?: string }
-  if (json.sid) {
-    console.log(`✅ WhatsApp sent to ${to} (msg sid: ${json.sid})`)
+  const json = await res.json() as { idMessage?: string; message?: string }
+  if (json.idMessage) {
+    console.log(`✅ WhatsApp sent to ${to} via Green API (id: ${json.idMessage})`)
   } else {
     console.error(`WhatsApp error: ${JSON.stringify(json)}`)
   }
