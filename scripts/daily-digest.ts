@@ -33,7 +33,7 @@ type Lead = {
 
 // ── Load env from .env.local ──────────────────────────────────────────────────
 
-function loadEnv() {
+export function loadEnv() {
   const envFile = path.join(__dirname, "../.env.local")
   if (fs.existsSync(envFile)) {
     fs.readFileSync(envFile, "utf-8").split("\n").forEach(line => {
@@ -61,7 +61,7 @@ function runScraper(maxPages: number) {
 
 // ── Diff against checkpoint ───────────────────────────────────────────────────
 
-function getNewLeads(): Lead[] {
+export function getNewLeads(): Lead[] {
   if (!fs.existsSync(LEADS_FILE)) return []
   const all: Lead[] = JSON.parse(fs.readFileSync(LEADS_FILE, "utf-8"))
 
@@ -81,22 +81,22 @@ function getNewLeads(): Lead[] {
 
 // ── Format email HTML ─────────────────────────────────────────────────────────
 
-const SECTOR_COLOR: Record<string, string> = {
+export const SECTOR_COLOR: Record<string, string> = {
   Industrial: "#f59e0b", Hotel: "#ec4899", Office: "#14b8a6",
   Shophouse: "#f97316", Commercial: "#6366f1", Retail: "#84cc16",
   Mixed: "#8b5cf6", International: "#3b82f6",
 }
-const INTENT_COLOR: Record<string, string> = {
+export const INTENT_COLOR: Record<string, string> = {
   BUY: "#16a34a", SELL: "#dc2626", BROKER: "#2563eb",
   JV: "#7c3aed", BID: "#ca8a04", ADVISORY: "#6b7280",
   REDEVELOP: "#ea580c", LEASE: "#0891b2", LAUNCH: "#db2777",
 }
 
-function badge(text: string, color: string) {
+export function badge(text: string, color: string) {
   return `<span style="display:inline-block;padding:2px 8px;border-radius:9999px;font-size:11px;font-weight:600;background:${color}22;color:${color}">${text}</span>`
 }
 
-function buildEmailHtml(leads: Lead[], totalLeads: number): string {
+export function buildEmailHtml(leads: Lead[], totalLeads: number): string {
   const today = new Date().toLocaleDateString("en-SG", { weekday: "long", year: "numeric", month: "long", day: "numeric" })
 
   const sectorBreakdown = leads.reduce<Record<string, number>>((a, l) => { a[l.sector] = (a[l.sector] || 0) + 1; return a }, {})
