@@ -19,17 +19,13 @@ import { execSync } from "child_process"
 import * as fs from "fs"
 import * as path from "path"
 import nodemailer from "nodemailer"
+import type { Lead } from "../lib/types"
+import { formatDealValue, countBySector } from "../lib/format"
+import { loadLeadsJson } from "../lib/leads-io"
 
 const DATA_DIR = path.join(__dirname, "../data")
 const LEADS_FILE = path.join(DATA_DIR, "leads.json")
 const CHECKPOINT_FILE = path.join(DATA_DIR, "checkpoint.json")
-
-type Lead = {
-  id: number; date: string; articleTitle: string; company: string
-  person: string; role: string; intent: string; property: string
-  sector: string; valueNum: number; value: string; phone: string
-  email: string; sourceUrl: string; notes: string
-}
 
 // ── Load env from .env.local ──────────────────────────────────────────────────
 
@@ -62,8 +58,7 @@ function runScraper(maxPages: number) {
 // ── Diff against checkpoint ───────────────────────────────────────────────────
 
 function getNewLeads(): Lead[] {
-  if (!fs.existsSync(LEADS_FILE)) return []
-  const all: Lead[] = JSON.parse(fs.readFileSync(LEADS_FILE, "utf-8"))
+  const all = loadLeadsJson(LEADS_FILE)
 
   let lastId = 0
   if (fs.existsSync(CHECKPOINT_FILE)) {
@@ -99,7 +94,7 @@ function badge(text: string, color: string) {
 function buildEmailHtml(leads: Lead[], totalLeads: number): string {
   const today = new Date().toLocaleDateString("en-SG", { weekday: "long", year: "numeric", month: "long", day: "numeric" })
 
-  const sectorBreakdown = leads.reduce<Record<string, number>>((a, l) => { a[l.sector] = (a[l.sector] || 0) + 1; return a }, {})
+  const sectorBreakdown = countBySector(leads)
   const totalValue = leads.reduce((s, l) => s + (l.valueNum || 0), 0)
 
   const rows = leads.slice(0, 50).map(l => `
@@ -135,7 +130,7 @@ function buildEmailHtml(leads: Lead[], totalLeads: number): string {
       <div style="font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">New Leads Today</div>
     </div>
     <div style="text-align:center;flex:1">
-      <div style="font-size:28px;font-weight:700;color:#111827">$${totalValue >= 1000 ? (totalValue / 1000).toFixed(1) + "B" : totalValue.toFixed(0) + "M"}+</div>
+      <div style="font-size:28px;font-weight:700;color:#111827">${formatDealValue(totalValue)}+</div>
       <div style="font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Deal Value</div>
     </div>
     <div style="text-align:center;flex:1">
@@ -238,7 +233,7 @@ async function sendWhatsApp(newLeads: Lead[]) {
       .join("\n")
 
     msg = `🏢 *EdgeProp Daily Digest*\n${new Date().toLocaleDateString("en-SG")}\n\n` +
-      `📊 *${newLeads.length} new leads* | $${totalValue >= 1000 ? (totalValue/1000).toFixed(1)+"B" : totalValue.toFixed(0)+"M"}+ deal value\n` +
+      `📊 *${newLeads.length} new leads* | ${formatDealValue(totalValue)}+ deal value\n` +
       `Sectors: ${sectorSummary}\n\n` +
       (topLeads ? `*Top deals:*\n${topLeads}\n\n` : "") +
       `🔗 https://edgeprop-crm.vercel.app`
@@ -271,13 +266,11 @@ async function main() {
   if (!skipScrape) runScraper(maxPages)
 
   const newLeads = getNewLeads()
-  const allLeads: Lead[] = fs.existsSync(LEADS_FILE)
-    ? JSON.parse(fs.readFileSync(LEADS_FILE, "utf-8"))
-    : []
+  const allLeads = loadLeadsJson(LEADS_FILE)
 
   console.log(`\n${newLeads.length} new leads since last run`)
   if (newLeads.length > 0) {
-    const sectors = newLeads.reduce<Record<string, number>>((a, l) => { a[l.sector] = (a[l.sector] || 0) + 1; return a }, {})
+    const sectors = countBySector(newLeads)
     console.log("Breakdown:", JSON.stringify(sectors))
   }
 
