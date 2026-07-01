@@ -112,7 +112,7 @@ export default function Home() {
             { label: "Active buyers",    val: buyers.toLocaleString(), sub: "BUY · BID · JV" },
             { label: "New this week",    val: newCount.toLocaleString(), sub: "last 7 days", highlight: newCount > 0 },
           ].map(s => (
-            <div key={s.label} className={`bg-white rounded-xl border px-4 py-3 ${s.highlight ? "border-emerald-300 bg-emerald-50/50" : "border-gray-200"}`}>
+            <div key={s.label} className={`bg-white rounded-xl border px-3 py-2.5 ${s.highlight ? "border-emerald-300 bg-emerald-50/50" : "border-gray-200"}`}>
               <p className="text-[11px] text-gray-400 uppercase tracking-wide font-medium">{s.label}</p>
               <p className={`text-2xl font-semibold mt-0.5 ${s.highlight ? "text-emerald-700" : "text-gray-900"}`}>{s.val}</p>
               <p className="text-[11px] text-gray-400 mt-0.5">{s.sub}</p>
@@ -121,7 +121,7 @@ export default function Home() {
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-xl border border-gray-200 px-4 py-3 mb-4 space-y-3">
+        <div className="bg-white rounded-xl border border-gray-200 px-3 py-2.5 mb-4 space-y-3">
           {/* Sector toggles */}
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wide w-14 shrink-0">Sector</span>
@@ -197,24 +197,34 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Table */}
-        <div className="bg-white rounded-xl border border-gray-200 overflow-x-auto">
-          <table className="w-full text-sm">
+        {/* Table — fixed layout, no horizontal scroll */}
+        <div className="bg-white rounded-xl border border-gray-200">
+          <table className="w-full text-sm table-fixed">
+            <colgroup>
+              <col style={{ width: "8%" }}  />  {/* Date */}
+              <col style={{ width: "8%" }}  />  {/* Sector */}
+              <col style={{ width: "7%" }}  />  {/* Intent */}
+              <col style={{ width: "13%" }} />  {/* Company */}
+              <col style={{ width: "15%" }} />  {/* Property */}
+              <col style={{ width: "7%" }}  />  {/* Value */}
+              <col style={{ width: "36%" }} />  {/* Notes — widest, the gold */}
+              <col style={{ width: "6%" }}  />  {/* Article */}
+            </colgroup>
             <thead>
               <tr className="border-b-2 border-gray-100 bg-gray-50/80">
                 {([
-                  ["date","Date","w-24"],
-                  ["sector","Sector","w-28"],
-                  ["intent","Intent","w-24"],
-                  ["company","Company","w-40"],
-                  ["property","Property",""],
-                  ["valueNum","Value","w-24"],
-                  ["notes","Intelligence / Notes",""],
-                  ["sourceUrl","Article","w-16"],
-                ] as [SortKey|"sourceUrl"|"notes", string, string][]).map(([key, label, w]) => (
+                  ["date","Date"],
+                  ["sector","Sector"],
+                  ["intent","Intent"],
+                  ["company","Company"],
+                  ["property","Property"],
+                  ["valueNum","Value"],
+                  ["notes","Intelligence / Notes"],
+                  ["sourceUrl","↗ Link"],
+                ] as [SortKey|"sourceUrl"|"notes", string][]).map(([key, label]) => (
                   <th
                     key={key}
-                    className={`text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wide px-4 py-3 ${w} ${["date","sector","intent","company","property","valueNum"].includes(key as string) ? "cursor-pointer select-none hover:text-gray-700" : ""}`}
+                    className={`text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wide px-3 py-3 ${["date","sector","intent","company","property","valueNum"].includes(key as string) ? "cursor-pointer select-none hover:text-gray-700" : ""}`}
                     onClick={() => ["date","sector","intent","company","property","valueNum"].includes(key as string) && toggleSort(key as SortKey)}
                   >
                     {label}{["date","sector","intent","company","property","valueNum"].includes(key as string) ? arrow(key as SortKey) : ""}
@@ -239,51 +249,49 @@ export default function Home() {
                       onClick={() => setExpandedId(isExpanded ? null : l.id)}
                     >
                       {/* Date */}
-                      <td className="px-4 py-3 text-xs text-gray-500 whitespace-nowrap">
+                      <td className="px-3 py-2.5 text-xs text-gray-500 whitespace-nowrap">
                         {isNew && <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 mb-0.5" title="New this week"/>}
                         {l.date}
                       </td>
 
                       {/* Sector */}
-                      <td className="px-4 py-3">
+                      <td className="px-3 py-2.5">
                         <span className={`inline-block px-2 py-0.5 rounded-full text-[11px] font-semibold ${SECTOR_STYLE[l.sector] || "bg-gray-100 text-gray-700"}`}>
                           {l.sector}
                         </span>
                       </td>
 
                       {/* Intent */}
-                      <td className="px-4 py-3">
+                      <td className="px-3 py-2.5">
                         <span className={`inline-block px-2 py-0.5 rounded-full text-[11px] font-semibold ${intentStyle.badge}`}>
                           {l.intent}
                         </span>
                       </td>
 
                       {/* Company */}
-                      <td className="px-4 py-3 font-semibold text-gray-900 max-w-[160px]">
+                      <td className="px-3 py-2.5 font-semibold text-gray-900">
                         <span className="truncate block" title={l.company}>{l.company || "—"}</span>
                       </td>
 
                       {/* Property */}
-                      <td className="px-4 py-3 text-gray-700 max-w-[260px]">
+                      <td className="px-3 py-2.5 text-gray-700">
                         <span className="truncate block" title={l.property}>{l.property || "—"}</span>
                       </td>
 
                       {/* Value */}
-                      <td className="px-4 py-3 font-semibold text-gray-900 whitespace-nowrap text-xs">
+                      <td className="px-3 py-2.5 font-semibold text-gray-900 text-xs">
                         {l.value || "—"}
                       </td>
 
                       {/* Notes — the intelligence */}
-                      <td className="px-4 py-3 text-gray-600 max-w-[320px]">
-                        <span className="block text-xs leading-relaxed" title={l.notes}>
-                          {l.notes
-                            ? (isExpanded ? l.notes : l.notes.length > 120 ? l.notes.slice(0, 120) + "…" : l.notes)
-                            : <span className="text-gray-300">—</span>}
+                      <td className="px-3 py-2.5 text-gray-600">
+                        <span className="block text-xs leading-relaxed line-clamp-3" title={l.notes}>
+                          {l.notes || <span className="text-gray-300">—</span>}
                         </span>
                       </td>
 
                       {/* Article link */}
-                      <td className="px-4 py-3 text-center">
+                      <td className="px-3 py-2.5 text-center">
                         {l.sourceUrl
                           ? <a
                               href={l.sourceUrl}
@@ -352,7 +360,7 @@ export default function Home() {
           </table>
 
           {filtered.length > 0 && (
-            <div className="px-4 py-3 border-t border-gray-100 text-xs text-gray-400 flex items-center justify-between">
+            <div className="px-3 py-2.5 border-t border-gray-100 text-xs text-gray-400 flex items-center justify-between">
               <span>Showing {filtered.length.toLocaleString()} leads · Click any row to reveal contact details</span>
               <a href="https://www.edgeprop.sg" target="_blank" rel="noreferrer" className="hover:underline">Source: EdgeProp Singapore</a>
             </div>
