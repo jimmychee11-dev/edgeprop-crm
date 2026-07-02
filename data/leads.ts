@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-07-02T01:47:15.283Z | Leads: 4345
+// Updated: 2026-07-02T03:39:10.419Z | Leads: 4345
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
