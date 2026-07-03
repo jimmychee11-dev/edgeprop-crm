@@ -14,8 +14,10 @@
 
 import { chromium, Browser, Page } from "playwright"
 import Anthropic from "@anthropic-ai/sdk"
-import * as fs from "fs"
 import * as path from "path"
+import type { Lead } from "../lib/types"
+import { todayISO } from "../lib/format"
+import { loadLeadsJson, saveLeads } from "../lib/leads-io"
 
 // ── Config ────────────────────────────────────────────────────────────────────
 
@@ -69,28 +71,6 @@ const SKIP_PATTERNS = [
   "maisonette","executive apartment","terrace house","semi-detached",
 ]
 
-// ── Types ─────────────────────────────────────────────────────────────────────
-
-export type Lead = {
-  id: number
-  date: string
-  articleTitle: string
-  company: string
-  person: string
-  role: string
-  intent: string
-  property: string
-  sector: string
-  valueNum: number
-  value: string
-  phone: string
-  email: string
-  website: string
-  address: string
-  sourceUrl: string
-  notes: string
-}
-
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function isCommercialNews(title: string): boolean {
@@ -105,25 +85,6 @@ function isCommercialNews(title: string): boolean {
 
 function sleep(ms: number) {
   return new Promise(r => setTimeout(r, ms))
-}
-
-function saveProgress(leads: Lead[], dataDir: string) {
-  if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true })
-  fs.writeFileSync(path.join(dataDir, "leads.json"), JSON.stringify(leads, null, 2), "utf-8")
-  const ts = `// Auto-generated — do not edit manually
-// Updated: ${new Date().toISOString()} | Leads: ${leads.length}
-
-export type Lead = {
-  id: number; date: string; articleTitle: string; company: string
-  person: string; role: string; intent: string; property: string
-  sector: string; valueNum: number; value: string; phone: string
-  email: string; website: string; address: string; sourceUrl: string; notes: string
-}
-
-export const leads: Lead[] = ${JSON.stringify(leads, null, 2)}
-`
-  fs.writeFileSync(path.join(dataDir, "leads.ts"), ts, "utf-8")
-  process.stdout.write(`  💾 Saved ${leads.length} leads\n`)
 }
 
 // ── Link collection via click-pagination ─────────────────────────────────────
@@ -214,7 +175,7 @@ async function getArticleContent(page: Page, url: string): Promise<{ text: strin
       return document.querySelector("[class*='date'],[class*='time'],[class*='posted']")?.textContent?.trim() || ""
     })
 
-    let date = new Date().toISOString().split("T")[0]
+    let date = todayISO()
     if (rawDate) {
       const d = new Date(rawDate)
       if (!isNaN(d.getTime())) {
@@ -227,7 +188,7 @@ async function getArticleContent(page: Page, url: string): Promise<{ text: strin
 
     return { text, date }
   } catch {
-    return { text: "", date: new Date().toISOString().split("T")[0] }
+    return { text: "", date: todayISO() }
   }
 }
 
@@ -330,14 +291,12 @@ async function main() {
   // Load existing leads (skip already-scraped URLs)
   const existingFile = path.join(dataDir, "leads.json")
   const existingUrls = new Set<string>()
-  const allLeads: Lead[] = []
-
-  if (fs.existsSync(existingFile)) {
-    const existing: Lead[] = JSON.parse(fs.readFileSync(existingFile, "utf-8"))
-    // Keep only non-residential commercial leads
-    const commercial = existing.filter(l => l.sector !== "Residential")
-    commercial.forEach(l => { allLeads.push(l); existingUrls.add(l.sourceUrl) })
-    console.log(`Loaded ${commercial.length} existing commercial leads (dropped ${existing.length - commercial.length} residential)`)
+  const existing = loadLeadsJson(existingFile)
+  // Keep only non-residential commercial leads
+  const allLeads: Lead[] = existing.filter(l => l.sector !== "Residential")
+  allLeads.forEach(l => existingUrls.add(l.sourceUrl))
+  if (existing.length > 0) {
+    console.log(`Loaded ${allLeads.length} existing commercial leads (dropped ${existing.length - allLeads.length} residential)`)
   }
 
   let nextId = allLeads.length > 0 ? Math.max(...allLeads.map(l => l.id)) + 1 : 1
@@ -415,7 +374,7 @@ async function main() {
           process.stdout.write(`  W${id} → ${commercial.length} commercial leads (total: ${allLeads.length})\n`)
         }
 
-        if (allLeads.length % 20 === 0) saveProgress(allLeads, dataDir)
+        if (allLeads.length % 20 === 0) saveLeads(allLeads, dataDir)
       }
       await page.close()
     }
@@ -423,7 +382,7 @@ async function main() {
     await Promise.all(Array.from({ length: WORKERS }, (_, i) => worker(i + 1)))
 
   } finally {
-    saveProgress(allLeads, dataDir)
+    saveLeads(allLeads, dataDir)
     await browser.close().catch(() => {})
   }
 
