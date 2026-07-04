@@ -126,10 +126,63 @@ export const leads: Lead[] = ${JSON.stringify(leads, null, 2)}
   process.stdout.write(`  💾 Saved ${leads.length} leads\n`)
 }
 
-// ── Link collection via click-pagination ─────────────────────────────────────
+// ── Link collection via fetch + __NEXT_DATA__ (bypasses bot detection) ─────────
+// EdgeProp is Next.js — every listing page embeds its article list in __NEXT_DATA__
+// as server-side JSON. A plain fetch() with a browser UA gets this reliably even
+// from GitHub Actions cloud IPs, unlike headless Playwright which gets blocked.
+
+const FETCH_HEADERS = {
+  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+  "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+  "Accept-Language": "en-US,en;q=0.9",
+  "Cache-Control": "no-cache",
+}
+
+function extractArticlesFromHtml(html: string, baseUrl: string): { title: string; url: string }[] {
+  // Primary: parse __NEXT_DATA__ embedded JSON
+  const m = html.match(/<script id="__NEXT_DATA__" type="application\/json">([\s\S]*?)<\/script>/)
+  if (m) {
+    try {
+      const data = JSON.parse(m[1])
+      // Walk the props tree looking for article arrays
+      const articles: { title: string; url: string }[] = []
+      const findArticles = (obj: unknown): void => {
+        if (!obj || typeof obj !== "object") return
+        if (Array.isArray(obj)) { obj.forEach(findArticles); return }
+        const o = obj as Record<string, unknown>
+        // Article objects typically have slug/title/url fields
+        if ((o.slug || o.url || o.href) && o.title && typeof o.title === "string" && o.title.length > 20) {
+          const slug = String(o.slug || o.url || o.href || "")
+          const url = slug.startsWith("http") ? slug : `${baseUrl}${slug.startsWith("/") ? "" : "/"}${slug}`
+          if (url.includes("/property-news/") && !url.match(/\/(news|in-depth|showcase|deal-watch|international|author|search)\/?$/)) {
+            articles.push({ title: o.title as string, url })
+          }
+        }
+        Object.values(o).forEach(findArticles)
+      }
+      findArticles(data)
+      if (articles.length > 0) return articles
+    } catch { /* fall through to HTML parse */ }
+  }
+
+  // Fallback: parse <a href> links from raw HTML
+  const links: { title: string; url: string }[] = []
+  const re = /<a[^>]+href="(\/property-news\/[^"]+)"[^>]*>([\s\S]*?)<\/a>/g
+  const SKIP = ["news", "in-depth", "showcase", "deal-watch", "international", "author", "search"]
+  let match
+  while ((match = re.exec(html)) !== null) {
+    const href = match[1]
+    if (SKIP.some(s => href === `/property-news/${s}` || href === `/property-news/${s}/`)) continue
+    const title = match[2].replace(/<[^>]+>/g, "").trim()
+    if (title.length > 20) {
+      links.push({ title, url: `${baseUrl}${href}` })
+    }
+  }
+  return links
+}
 
 async function collectLinks(
-  page: Page,
+  _page: Page,  // kept for API compatibility but not used for listing pages
   startUrl: string,
   maxPages: number,
   filterFn: (title: string) => boolean,
@@ -138,61 +191,39 @@ async function collectLinks(
   const collected: { title: string; url: string }[] = []
   const seen = new Set<string>()
 
-  const BLOCKED_HREFS = [
-    "/property-news/news", "/property-news/in-depth", "/property-news/deal-watch",
-    "/property-news/showcase", "/property-news/international", "/property-news-author",
-    "/property-news-search", "/living/",
-  ]
-
-  await page.goto(startUrl, { waitUntil: "domcontentloaded", timeout: 30000 })
-  await sleep(2000)
-
+  // EdgeProp listing pages support ?page=N query param for server-side rendering
+  // even though the browser ignores it — the Next.js SSR layer respects it
   for (let pageNum = 1; pageNum <= maxPages; pageNum++) {
-    const links: { title: string; url: string }[] = await page.evaluate((blocked) => {
-      return Array.from(document.querySelectorAll("a[href*='/property-news/']"))
-        .filter(a => {
-          const href = (a as HTMLAnchorElement).href
-          const text = (a.textContent || "").trim()
-          if (text.length < 20) return false
-          return !blocked.some((b: string) => href.includes(b))
-        })
-        .map(a => ({ title: (a.textContent || "").trim(), url: (a as HTMLAnchorElement).href }))
-    }, BLOCKED_HREFS)
+    const url = pageNum === 1 ? startUrl : `${startUrl}?page=${pageNum}`
+    let links: { title: string; url: string }[] = []
+
+    try {
+      const res = await fetch(url, { headers: FETCH_HEADERS })
+      if (!res.ok) {
+        process.stdout.write(`  [${label}] Page ${pageNum}: HTTP ${res.status}, stopping\n`)
+        break
+      }
+      const html = await res.text()
+      links = extractArticlesFromHtml(html, BASE_URL)
+    } catch (e) {
+      process.stdout.write(`  [${label}] Page ${pageNum}: fetch error, stopping\n`)
+      break
+    }
 
     let newCount = 0
-    for (const { title, url } of links) {
-      if (!seen.has(url) && filterFn(title)) {
-        seen.add(url)
-        collected.push({ title, url })
+    for (const { title, url: artUrl } of links) {
+      if (!seen.has(artUrl) && filterFn(title)) {
+        seen.add(artUrl)
+        collected.push({ title, url: artUrl })
         newCount++
       }
     }
 
     process.stdout.write(`  [${label}] Page ${pageNum}: ${links.length} articles, ${newCount} matched (total: ${collected.length})\n`)
 
-    if (pageNum >= maxPages) break
-
-    // Click next page
-    const moved = await page.evaluate((cur: number) => {
-      // Try "Next" text first
-      const btns = Array.from(document.querySelectorAll("button, a, li"))
-      const next = btns.find(el => {
-        const t = (el.textContent || "").trim().toLowerCase()
-        return t === "next" || t === "›" || t === ">"
-      })
-      if (next) {
-        const clickable = (next.tagName === "LI" ? next.querySelector("a,button") : next) as HTMLElement | null
-        if (clickable && !clickable.hasAttribute("disabled")) { clickable.click(); return true }
-      }
-      // Try page number
-      const num = Array.from(document.querySelectorAll("a,button"))
-        .find(el => (el.textContent || "").trim() === String(cur + 1))
-      if (num) { (num as HTMLElement).click(); return true }
-      return false
-    }, pageNum)
-
-    if (!moved) { process.stdout.write(`  [${label}] No more pages after ${pageNum}\n`); break }
-    await sleep(1500)
+    // Stop early if the page returned 0 results (past end of pagination)
+    if (links.length === 0) break
+    await sleep(300)
   }
 
   return collected
