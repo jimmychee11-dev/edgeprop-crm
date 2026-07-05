@@ -1,41 +1,41 @@
-# EdgeProp Daily Digest — Windows Task Scheduler entry point
-# This runs on your PC (residential IP), bypassing EdgeProp's cloud IP block.
-# Task Scheduler runs this at 8am daily with no apps open.
-
-$ErrorActionPreference = "Stop"
+# EdgeProp Daily Digest — runs at logon, skips if already done today
 $dir = "C:\Users\czp82\Downloads\vin-obsidian-workflows\edgeprop-crm"
 $log = "$dir\scripts\scrape.log"
+$flagFile = "$dir\scripts\.last-run-date"
+$today = (Get-Date).ToString("yyyy-MM-dd")
+
+# Skip if already ran today
+if ((Test-Path $flagFile) -and (Get-Content $flagFile) -eq $today) {
+    exit 0
+}
+
+Set-Location $dir
+
+# Load env vars from .env.local
+Get-Content .env.local | Where-Object { $_ -match "^[A-Z_]+=.+" } | ForEach-Object {
+    $parts = $_ -split "=", 2
+    [Environment]::SetEnvironmentVariable($parts[0].Trim(), $parts[1].Trim(), "Process")
+}
+
+Add-Content $log "`n=== $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ==="
 
 try {
-    Set-Location $dir
-
-    # Load env vars from .env.local
-    Get-Content .env.local | Where-Object { $_ -match "^[A-Z_]+=.+" } | ForEach-Object {
-        $k, $v = $_ -split "=", 2
-        [Environment]::SetEnvironmentVariable($k, $v.Trim(), "Process")
-    }
-
-    # Run the digest (scrape last 5 pages + email + WhatsApp)
-    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    Add-Content $log "`n=== $timestamp ==="
     npx tsx scripts/daily-digest.ts --max-pages 5 2>&1 | Tee-Object -Append $log
 
-    # Commit and push updated leads to GitHub (triggers Vercel deploy)
+    # Commit and push new leads to GitHub → Vercel auto-deploys
     git config user.name "EdgeProp Bot"
     git config user.email "bot@edgeprop-crm"
+    git pull --rebase 2>&1 | Out-Null
     git add data/leads.json data/leads.ts data/checkpoint.json
-    $status = git diff --staged --quiet; if (-not $?) {
-        $date = Get-Date -Format "yyyy-MM-dd"
-        git commit -m "Daily digest $date`: auto-update leads"
-        git push
+    $diff = git diff --staged --quiet; if (-not $?) {
+        git commit -m "Daily digest $today`: auto-update leads" 2>&1 | Out-Null
+        git push 2>&1 | Out-Null
         Add-Content $log "Pushed to GitHub"
-    } else {
-        Add-Content $log "No changes to push"
     }
 
+    # Mark today as done
+    Set-Content $flagFile $today
+
 } catch {
-    $msg = "ERROR: $_"
-    Write-Error $msg
-    Add-Content $log $msg
-    exit 1
+    Add-Content $log "ERROR: $_"
 }
