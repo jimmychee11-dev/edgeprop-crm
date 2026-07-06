@@ -70,7 +70,11 @@ function getNewLeads(): Lead[] {
     lastId = JSON.parse(fs.readFileSync(CHECKPOINT_FILE, "utf-8")).lastId || 0
   }
 
-  const newLeads = all.filter(l => l.id > lastId)
+  // Require BOTH: newer than checkpoint AND published within last 7 days.
+  // This blocks stale articles (re-discovered with a new ID) from appearing
+  // as "today's news". 7-day window covers weekends and public holidays.
+  const cutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)
+  const newLeads = all.filter(l => l.id > lastId && l.date >= cutoff)
 
   // Save new checkpoint
   const maxId = all.length > 0 ? Math.max(...all.map(l => l.id)) : 0
