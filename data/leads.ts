@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-07-05T08:08:39.622Z | Leads: 4354
+// Updated: 2026-07-06T00:33:52.460Z | Leads: 4358
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -82734,5 +82734,81 @@ export const leads: Lead[] = [
     "website": "",
     "address": "Edmondson Park, southwest Sydney, Australia",
     "notes": "Developer divesting established asset as part of capital recycling strategy; developed property in 2021"
+  },
+  {
+    "id": 6082,
+    "date": "2026-06-24",
+    "articleTitle": "M&G bets on senior living as AI drives new divides in property markets",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/mg-bets-senior-living-ai-drives-new-divides-property-markets",
+    "company": "M&G Real Estate",
+    "person": "",
+    "role": "investor",
+    "intent": "JV",
+    "property": "Halcyon Jardin, Melbourne",
+    "sector": "International",
+    "valueNum": 0,
+    "value": "",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Melbourne, Australia",
+    "notes": "Joint venture partnership with Stockland for senior living land lease community; secured early home sales"
+  },
+  {
+    "id": 6083,
+    "date": "2026-06-24",
+    "articleTitle": "M&G bets on senior living as AI drives new divides in property markets",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/mg-bets-senior-living-ai-drives-new-divides-property-markets",
+    "company": "Stockland",
+    "person": "",
+    "role": "developer",
+    "intent": "JV",
+    "property": "Halcyon Jardin and Halcyon Evergreen, Melbourne",
+    "sector": "International",
+    "valueNum": 0,
+    "value": "",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Melbourne, Australia",
+    "notes": "Partner with M&G Real Estate (49.9% stake) for two senior living land lease communities; secured early home sales"
+  },
+  {
+    "id": 6084,
+    "date": "2026-06-24",
+    "articleTitle": "M&G bets on senior living as AI drives new divides in property markets",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/mg-bets-senior-living-ai-drives-new-divides-property-markets",
+    "company": "M&G Real Estate",
+    "person": "",
+    "role": "investor",
+    "intent": "BUY",
+    "property": "Park Avenue PBSA",
+    "sector": "International",
+    "valueNum": 0,
+    "value": "",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Melbourne, Australia",
+    "notes": "Student housing asset near University of Melbourne; strong historical occupancy"
+  },
+  {
+    "id": 6085,
+    "date": "2026-06-24",
+    "articleTitle": "M&G bets on senior living as AI drives new divides in property markets",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/mg-bets-senior-living-ai-drives-new-divides-property-markets",
+    "company": "M&G Real Estate",
+    "person": "",
+    "role": "investor",
+    "intent": "BUY",
+    "property": "Senior living opportunities in Sydney and Brisbane",
+    "sector": "International",
+    "valueNum": 0,
+    "value": "",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Sydney and Brisbane, Australia",
+    "notes": "Scouting similar senior-living investment opportunities"
   }
 ]
