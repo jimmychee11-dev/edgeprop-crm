@@ -66,14 +66,19 @@ function getNewLeads(): Lead[] {
   const all: Lead[] = JSON.parse(fs.readFileSync(LEADS_FILE, "utf-8"))
 
   let lastId = 0
+  let lastRun = 0 // epoch ms of last successful digest
   if (fs.existsSync(CHECKPOINT_FILE)) {
-    lastId = JSON.parse(fs.readFileSync(CHECKPOINT_FILE, "utf-8")).lastId || 0
+    const cp = JSON.parse(fs.readFileSync(CHECKPOINT_FILE, "utf-8"))
+    lastId = cp.lastId || 0
+    lastRun = cp.updatedAt ? Date.parse(cp.updatedAt) : 0
   }
 
-  // Require BOTH: newer than checkpoint AND published within last 7 days.
-  // This blocks stale articles (re-discovered with a new ID) from appearing
-  // as "today's news". 7-day window covers weekends and public holidays.
-  const cutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)
+  // A lead is "new" if it wasn't in the DB at last run (id > lastId) AND its
+  // article date is on/after the last run (minus 2-day buffer for late-indexed
+  // articles). If the machine was off for a month, the cutoff is a month ago —
+  // nothing published in the gap is lost. Falls back to 7 days on first run.
+  const anchor = lastRun > 0 ? lastRun : Date.now() - 7 * 24 * 60 * 60 * 1000
+  const cutoff = new Date(anchor - 2 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)
   const newLeads = all.filter(l => l.id > lastId && l.date >= cutoff)
 
   // Save new checkpoint
