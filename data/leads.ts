@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-07-06T00:33:52.460Z | Leads: 4358
+// Updated: 2026-07-07T03:19:20.134Z | Leads: 4361
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -82810,5 +82810,62 @@ export const leads: Lead[] = [
     "website": "",
     "address": "Sydney and Brisbane, Australia",
     "notes": "Scouting similar senior-living investment opportunities"
+  },
+  {
+    "id": 6086,
+    "date": "2026-07-07",
+    "articleTitle": "Generations @ Tannery: A 'Grade-A B1' building rises from Singapore's Tannery Lane",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/generations-tannery-grade-b1-building-rises-singapores-tannery-lane",
+    "company": "Providence Estates",
+    "person": "Daniel Long",
+    "role": "Managing Partner",
+    "intent": "LAUNCH",
+    "property": "Generations @ Tannery, 71 Tannery Lane",
+    "sector": "Industrial",
+    "valueNum": 0,
+    "value": "",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "71 Tannery Lane, Singapore",
+    "notes": "12-storey freehold light industrial (B1) project, redevelopment of City Industrial Building. Official launch July 17, 2026. Sales gallery opened July 1, 2026."
+  },
+  {
+    "id": 6087,
+    "date": "2026-07-07",
+    "articleTitle": "Generations @ Tannery: A 'Grade-A B1' building rises from Singapore's Tannery Lane",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/generations-tannery-grade-b1-building-rises-singapores-tannery-lane",
+    "company": "Providence Estates",
+    "person": "Terrance Tan",
+    "role": "Managing Partner",
+    "intent": "LAUNCH",
+    "property": "Generations @ Tannery, 71 Tannery Lane",
+    "sector": "Industrial",
+    "valueNum": 0,
+    "value": "",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "71 Tannery Lane, Singapore",
+    "notes": "12-storey freehold light industrial (B1) project, redevelopment of City Industrial Building. Official launch July 17, 2026."
+  },
+  {
+    "id": 6088,
+    "date": "2026-07-07",
+    "articleTitle": "Generations @ Tannery: A 'Grade-A B1' building rises from Singapore's Tannery Lane",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/generations-tannery-grade-b1-building-rises-singapores-tannery-lane",
+    "company": "City Developments Ltd",
+    "person": "",
+    "role": "Seller",
+    "intent": "SELL",
+    "property": "City Industrial Building (now Generations @ Tannery), 71 Tannery Lane",
+    "sector": "Industrial",
+    "valueNum": 0,
+    "value": "",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "71 Tannery Lane, Singapore",
+    "notes": "Listed property giant, former owner of 11-storey City Industrial Building built in 1976, redeveloped by Providence Estates."
   }
 ]
