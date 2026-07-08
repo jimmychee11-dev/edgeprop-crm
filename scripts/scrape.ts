@@ -24,7 +24,7 @@ const WORKERS = 5
 
 // Keywords that indicate a COMMERCIAL deal in a news headline
 // Used only to pre-filter the general /news listing (in-depth + showcase are scraped wholesale)
-const COMMERCIAL_KEYWORDS = [
+export const COMMERCIAL_KEYWORDS = [
   // asset classes
   "industrial","warehouse","factory","logistics","logistic","b1","b2",
   "data centre","data center","cold storage","self storage",
@@ -55,7 +55,7 @@ const COMMERCIAL_KEYWORDS = [
 ]
 
 // Headlines that are definitely NOT commercial deals — skip them
-const SKIP_PATTERNS = [
+export const SKIP_PATTERNS = [
   "hdb bto","bto launch","bto exercise","bto flat",
   "private home sales","new home sales","developer sales",
   "condo price","property price index","ura flash",
@@ -93,7 +93,7 @@ export type Lead = {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-function isCommercialNews(title: string): boolean {
+export function isCommercialNews(title: string): boolean {
   const t = title.toLowerCase()
   if (SKIP_PATTERNS.some(k => t.includes(k))) return false
   return COMMERCIAL_KEYWORDS.some(k => {
@@ -303,14 +303,14 @@ Schema per lead:
 {"company","person","role","intent","property","sector","valueNum","value","phone","email","website","address","notes"}`
 
 // Extra title-level filter applied before calling Claude (saves API cost)
-const SKIP_TITLE_PATTERNS = [
+export const SKIP_TITLE_PATTERNS = [
   "bto","hdb flat","resale flat","million-dollar flat","executive condo ec",
   "private home sales","developer sales flash","ura flash","price index",
   "mortgage","cpf","home loan","rental tips","buying guide","how to",
   "first-time buyer","property agent tips","top agent","awards","rankings",
   "market outlook","property outlook","market review","property review",
 ]
-function worthCallingClaude(title: string): boolean {
+export function worthCallingClaude(title: string): boolean {
   const t = title.toLowerCase()
   return !SKIP_TITLE_PATTERNS.some(k => t.includes(k))
 }
