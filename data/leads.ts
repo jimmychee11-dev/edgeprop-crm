@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-07-07T03:19:20.134Z | Leads: 4361
+// Updated: 2026-07-08T02:39:17.714Z | Leads: 4365
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -82867,5 +82867,81 @@ export const leads: Lead[] = [
     "website": "",
     "address": "71 Tannery Lane, Singapore",
     "notes": "Listed property giant, former owner of 11-storey City Industrial Building built in 1976, redeveloped by Providence Estates."
+  },
+  {
+    "id": 6089,
+    "date": "2026-07-08",
+    "articleTitle": "ESR-Reit to acquire five Melbourne logistics assets from Frasers Property for A$276.8 mil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/esr-reit-acquire-five-melbourne-logistics-assets-frasers-property-a2768-mil",
+    "company": "ESR-Reit",
+    "person": "",
+    "role": "BUYER",
+    "intent": "BUY",
+    "property": "Five Melbourne logistics assets",
+    "sector": "Industrial",
+    "valueNum": 276.8,
+    "value": "A$276.8 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Melbourne, Australia",
+    "notes": "Acquiring five logistics assets from Frasers Property"
+  },
+  {
+    "id": 6090,
+    "date": "2026-07-08",
+    "articleTitle": "ESR-Reit to acquire five Melbourne logistics assets from Frasers Property for A$276.8 mil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/esr-reit-acquire-five-melbourne-logistics-assets-frasers-property-a2768-mil",
+    "company": "Frasers Property",
+    "person": "",
+    "role": "SELLER",
+    "intent": "SELL",
+    "property": "Five Melbourne logistics assets",
+    "sector": "Industrial",
+    "valueNum": 276.8,
+    "value": "A$276.8 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Melbourne, Australia",
+    "notes": "Divesting five logistics assets to ESR-Reit"
+  },
+  {
+    "id": 6091,
+    "date": "2026-07-08",
+    "articleTitle": "ESR and Mitsubishi unit to develop Indonesia logistics, industrial hubs valued over US$80 mil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/esr-and-mitsubishi-unit-develop-indonesia-logistics-industrial-hubs-valued-over-us80-mil",
+    "company": "ESR",
+    "person": "",
+    "role": "Developer",
+    "intent": "JV",
+    "property": "Indonesia logistics and industrial hubs",
+    "sector": "Industrial",
+    "valueNum": 80,
+    "value": "US$80 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Indonesia",
+    "notes": "Joint venture with Mitsubishi unit to develop logistics and industrial hubs"
+  },
+  {
+    "id": 6092,
+    "date": "2026-07-08",
+    "articleTitle": "ESR and Mitsubishi unit to develop Indonesia logistics, industrial hubs valued over US$80 mil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/esr-and-mitsubishi-unit-develop-indonesia-logistics-industrial-hubs-valued-over-us80-mil",
+    "company": "Mitsubishi",
+    "person": "",
+    "role": "Developer",
+    "intent": "JV",
+    "property": "Indonesia logistics and industrial hubs",
+    "sector": "Industrial",
+    "valueNum": 80,
+    "value": "US$80 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Indonesia",
+    "notes": "Joint venture partner with ESR to develop logistics and industrial hubs"
   }
 ]
