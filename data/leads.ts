@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-07-08T02:39:17.714Z | Leads: 4365
+// Updated: 2026-07-08T16:04:59.760Z | Leads: 4366
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -82943,5 +82943,24 @@ export const leads: Lead[] = [
     "website": "",
     "address": "Indonesia",
     "notes": "Joint venture partner with ESR to develop logistics and industrial hubs"
+  },
+  {
+    "id": 6093,
+    "date": "2026-07-08",
+    "articleTitle": "Portfolio of 14 strata offices at High Street Centre for sale at $17.8 mil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/portfolio-14-strata-offices-high-street-centre-sale-178-mil",
+    "company": "EdgeProp",
+    "person": "",
+    "role": "BROKER",
+    "intent": "SELL",
+    "property": "High Street Centre - 14 strata offices",
+    "sector": "Office",
+    "valueNum": 17.8,
+    "value": "$17.8 million",
+    "phone": "",
+    "email": "",
+    "website": "www.edgeprop.sg",
+    "address": "High Street Centre",
+    "notes": "Portfolio of 14 strata offices for sale"
   }
 ]
