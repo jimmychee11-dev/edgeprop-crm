@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-07-12T00:47:09.928Z | Leads: 4372
+// Updated: 2026-07-13T03:22:01.488Z | Leads: 4373
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -83076,5 +83076,24 @@ export const leads: Lead[] = [
     "website": "",
     "address": "Shinjuku, Tokyo, Japan",
     "notes": "206-room hotel, former Citadines property, acquired by Singapore-based SC Capital Partners Group"
+  },
+  {
+    "id": 6100,
+    "date": "2026-07-13",
+    "articleTitle": "Rowell Road shophouse for sale at $6.8 mil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/rowell-road-shophouse-sale-68-mil",
+    "company": "PropNex",
+    "person": "Kezia Lim",
+    "role": "director",
+    "intent": "BROKER",
+    "property": "35 Rowell Road",
+    "sector": "Shophouse",
+    "valueNum": 6.8,
+    "value": "$6.8 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "35 Rowell Road, District 8, Singapore",
+    "notes": "Freehold two-storey conservation shophouse, 2,200 sq ft total area, 1,062 sq ft land. Ground floor retail, upper level office. Fully leased. EOI closing Aug 30, 2026."
   }
 ]
