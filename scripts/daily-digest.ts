@@ -28,7 +28,7 @@ type Lead = {
   id: number; date: string; articleTitle: string; company: string
   person: string; role: string; intent: string; property: string
   sector: string; valueNum: number; value: string; phone: string
-  email: string; sourceUrl: string; notes: string
+  email: string; sourceUrl: string; source?: string; notes: string
 }
 
 // ── Load env from .env.local ──────────────────────────────────────────────────
@@ -111,7 +111,11 @@ function buildEmailHtml(leads: Lead[], totalLeads: number): string {
   const sectorBreakdown = leads.reduce<Record<string, number>>((a, l) => { a[l.sector] = (a[l.sector] || 0) + 1; return a }, {})
   const totalValue = leads.reduce((s, l) => s + (l.valueNum || 0), 0)
 
-  const rows = leads.slice(0, 50).map(l => `
+  // Lump similar news together: group by sector, then biggest deals first
+  const sorted = [...leads].sort((a, b) =>
+    a.sector !== b.sector ? a.sector.localeCompare(b.sector) : (b.valueNum || 0) - (a.valueNum || 0))
+
+  const rows = sorted.slice(0, 50).map(l => `
     <tr style="border-bottom:1px solid #f3f4f6">
       <td style="padding:10px 12px;font-size:12px;color:#6b7280">${l.date}</td>
       <td style="padding:10px 12px;font-weight:600;color:#111827;max-width:160px">${l.company || "—"}</td>
@@ -121,7 +125,7 @@ function buildEmailHtml(leads: Lead[], totalLeads: number): string {
       <td style="padding:10px 12px">${badge(l.sector, SECTOR_COLOR[l.sector] || "#6b7280")}</td>
       <td style="padding:10px 12px;font-weight:600;color:#111827;white-space:nowrap;font-size:13px">${l.value || "—"}</td>
       <td style="padding:10px 12px;font-size:12px;color:#374151">${l.phone || "—"}</td>
-      <td style="padding:10px 12px;font-size:12px">${l.sourceUrl ? `<a href="${l.sourceUrl}" style="color:#2563eb">↗ Article</a>` : "—"}</td>
+      <td style="padding:10px 12px;font-size:12px">${l.sourceUrl ? `<a href="${l.sourceUrl}" style="color:#2563eb">↗ ${l.source || "EdgeProp"}</a>` : "—"}</td>
     </tr>`).join("")
 
   const sectorPills = Object.entries(sectorBreakdown)
@@ -168,7 +172,7 @@ function buildEmailHtml(leads: Lead[], totalLeads: number): string {
           <th style="padding:10px 12px;text-align:left;font-size:11px;color:#6b7280;font-weight:600">SECTOR</th>
           <th style="padding:10px 12px;text-align:left;font-size:11px;color:#6b7280;font-weight:600">VALUE</th>
           <th style="padding:10px 12px;text-align:left;font-size:11px;color:#6b7280;font-weight:600">PHONE</th>
-          <th style="padding:10px 12px;text-align:left;font-size:11px;color:#6b7280;font-weight:600">ARTICLE</th>
+          <th style="padding:10px 12px;text-align:left;font-size:11px;color:#6b7280;font-weight:600">SOURCE</th>
         </tr>
       </thead>
       <tbody>${rows}</tbody>
@@ -177,7 +181,7 @@ function buildEmailHtml(leads: Lead[], totalLeads: number): string {
   </div>`}
   <div style="padding:20px 32px;border-top:1px solid #e5e7eb;text-align:center">
     <a href="https://edgeprop-crm.vercel.app" style="display:inline-block;background:#111827;color:#fff;padding:10px 24px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500">Open CRM →</a>
-    <p style="margin:12px 0 0;font-size:11px;color:#9ca3af">Source: EdgeProp Singapore · Unsubscribe by removing this scheduled task</p>
+    <p style="margin:12px 0 0;font-size:11px;color:#9ca3af">Sources: EdgeProp Singapore · MingTianDi · Business Times · Unsubscribe by removing this scheduled task</p>
   </div>
 </div>
 </body>

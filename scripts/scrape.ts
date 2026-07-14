@@ -1,13 +1,19 @@
 /**
- * EdgeProp commercial RE lead scraper
+ * Singapore commercial RE lead scraper
  *
  * Sources (in order of commercial signal density):
- *   1. /property-news/in-depth   — capital markets analysis, ~85 pages, scrape ALL
- *   2. /property-news/showcase   — featured commercial listings, ~27 pages, scrape ALL
- *   3. /property-news/news       — general news, keyword-filter for commercial deals
+ *   EdgeProp:
+ *     1. /property-news/in-depth   — capital markets analysis, ~85 pages, scrape ALL
+ *     2. /property-news/showcase   — featured commercial listings, ~27 pages, scrape ALL
+ *     3. /property-news/news       — general news, keyword-filter for commercial deals
+ *   MingTianDi:      /tag/singapore/feed/ RSS — APAC capital markets, SG-tagged
+ *   Business Times:  /rss/property RSS — keyword-filtered for commercial deals
+ *
+ * Similar news across sources is lumped together: a lead with the same
+ * normalized company+property+intent as a recent existing lead is skipped.
  *
  * Usage:
- *   npx tsx scripts/scrape.ts [--source in-depth|showcase|news|all] [--max-pages N]
+ *   npx tsx scripts/scrape.ts [--source in-depth|showcase|news|mingtiandi|bt|all] [--max-pages N]
  *
  * Env: ANTHROPIC_API_KEY
  */
@@ -88,6 +94,7 @@ export type Lead = {
   website: string
   address: string
   sourceUrl: string
+  source: string // "EdgeProp" | "MingTianDi" | "Business Times"
   notes: string
 }
 
@@ -103,8 +110,22 @@ function isCommercialNews(title: string): boolean {
   })
 }
 
+// True unless the headline is clearly residential/editorial noise.
+// Looser than isCommercialNews — used for curated feeds (MingTianDi SG tag)
+// where most items are commercial but may lack our keyword vocabulary.
+function notResidentialNoise(title: string): boolean {
+  const t = title.toLowerCase()
+  return !SKIP_PATTERNS.some(k => t.includes(k))
+}
+
 function sleep(ms: number) {
   return new Promise(r => setTimeout(r, ms))
+}
+
+// Normalized deal identity — used to lump the same deal reported by multiple
+// sources (e.g. EdgeProp + Business Times both covering one shophouse sale).
+function dealKey(l: { company: string; property: string; intent: string }): string {
+  return (l.company + "|" + l.property + "|" + l.intent).toLowerCase().replace(/[^a-z0-9|]/g, "")
 }
 
 function saveProgress(leads: Lead[], dataDir: string) {
@@ -117,7 +138,7 @@ export type Lead = {
   id: number; date: string; articleTitle: string; company: string
   person: string; role: string; intent: string; property: string
   sector: string; valueNum: number; value: string; phone: string
-  email: string; website: string; address: string; sourceUrl: string; notes: string
+  email: string; website: string; address: string; sourceUrl: string; source?: string; notes: string
 }
 
 export const leads: Lead[] = ${JSON.stringify(leads, null, 2)}
@@ -227,6 +248,91 @@ async function collectLinks(
   }
 
   return collected
+}
+
+// ── RSS sources (MingTianDi, Business Times) ─────────────────────────────────
+
+type QueueItem = { title: string; url: string; source: string; date?: string }
+
+function decodeEntities(s: string): string {
+  return s
+    .replace(/&#0?39;|&#8217;|&apos;/g, "'").replace(/&#8216;/g, "'")
+    .replace(/&#8220;|&#8221;|&quot;/g, '"').replace(/&#8211;|&#8212;/g, "–")
+    .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+}
+
+function parseRss(xml: string): { title: string; url: string; date: string }[] {
+  const items: { title: string; url: string; date: string }[] = []
+  for (const m of xml.matchAll(/<item>([\s\S]*?)<\/item>/g)) {
+    const block = m[1]
+    const title = decodeEntities(
+      (block.match(/<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/)?.[1] || "").trim())
+    const url = (block.match(/<link>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/link>/)?.[1] || "").trim()
+    const pub = block.match(/<pubDate>([\s\S]*?)<\/pubDate>/)?.[1]
+    let date = new Date().toISOString().slice(0, 10)
+    if (pub) { const d = new Date(pub); if (!isNaN(d.getTime())) date = d.toISOString().slice(0, 10) }
+    if (title && url.startsWith("http")) items.push({ title, url, date })
+  }
+  return items
+}
+
+const RSS_SOURCES: { name: string; feeds: (maxPages: number) => string[]; filter: (t: string) => boolean }[] = [
+  {
+    name: "MingTianDi",
+    // WordPress feed pagination: /feed/?paged=N (~10 items per page)
+    feeds: (maxPages) => Array.from({ length: Math.min(maxPages, 3) },
+      (_, i) => i === 0 ? "https://www.mingtiandi.com/tag/singapore/feed/"
+                        : `https://www.mingtiandi.com/tag/singapore/feed/?paged=${i + 1}`),
+    filter: notResidentialNoise, // SG tag is already curated capital markets
+  },
+  {
+    name: "Business Times",
+    feeds: () => ["https://www.businesstimes.com.sg/rss/property"],
+    filter: isCommercialNews, // property feed mixes in residential — keyword filter
+  },
+]
+
+async function collectRssLinks(maxPages: number): Promise<QueueItem[]> {
+  const out: QueueItem[] = []
+  for (const src of RSS_SOURCES) {
+    console.log(`\n── ${src.name} (RSS) ─────────────────────────────────────`)
+    for (const feedUrl of src.feeds(maxPages)) {
+      try {
+        const res = await fetch(feedUrl, { headers: FETCH_HEADERS })
+        if (!res.ok) { console.log(`  [${src.name}] ${feedUrl}: HTTP ${res.status}`); continue }
+        const items = parseRss(await res.text())
+        const matched = items.filter(i => src.filter(i.title))
+        matched.forEach(i => out.push({ ...i, source: src.name }))
+        console.log(`  [${src.name}] ${items.length} items, ${matched.length} matched`)
+        if (items.length === 0) break
+      } catch {
+        console.log(`  [${src.name}] ${feedUrl}: fetch error`)
+      }
+      await sleep(300)
+    }
+  }
+  return out
+}
+
+// Plain-fetch article text for RSS sources (no Playwright needed — both
+// MingTianDi and BT serve full article HTML to a browser-UA fetch).
+async function fetchArticleText(url: string): Promise<string> {
+  try {
+    const res = await fetch(url, { headers: FETCH_HEADERS })
+    if (!res.ok) return ""
+    const html = await res.text()
+    // Prefer <article> content; fall back to whole body
+    const scoped = html.match(/<article[\s\S]*?<\/article>/)?.[0] || html
+    const text = scoped
+      .replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<noscript[\s\S]*?<\/noscript>/g, " ")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/&nbsp;/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+    return decodeEntities(text).slice(0, 5000)
+  } catch {
+    return ""
+  }
 }
 
 // ── Article content extraction ────────────────────────────────────────────────
@@ -365,10 +471,28 @@ async function main() {
 
   if (fs.existsSync(existingFile)) {
     const existing: Lead[] = JSON.parse(fs.readFileSync(existingFile, "utf-8"))
-    // Keep only non-residential commercial leads
+    // Keep only non-residential commercial leads; backfill source for pre-multi-source leads
     const commercial = existing.filter(l => l.sector !== "Residential")
-    commercial.forEach(l => { allLeads.push(l); existingUrls.add(l.sourceUrl) })
+    commercial.forEach(l => {
+      if (!l.source) l.source = "EdgeProp"
+      allLeads.push(l); existingUrls.add(l.sourceUrl)
+    })
     console.log(`Loaded ${commercial.length} existing commercial leads (dropped ${existing.length - commercial.length} residential)`)
+  }
+
+  // Deal identity map for lumping the same deal across sources:
+  // dealKey → most recent article date seen for that deal
+  const seenDeals = new Map<string, string>()
+  for (const l of allLeads) {
+    const k = dealKey(l)
+    const prev = seenDeals.get(k)
+    if (!prev || l.date > prev) seenDeals.set(k, l.date)
+  }
+  const DEDUPE_WINDOW_MS = 30 * 24 * 60 * 60 * 1000
+  function isDuplicateDeal(lead: { company: string; property: string; intent: string }, date: string): boolean {
+    const prev = seenDeals.get(dealKey(lead))
+    if (!prev) return false
+    return Math.abs(Date.parse(date) - Date.parse(prev)) <= DEDUPE_WINDOW_MS
   }
 
   let nextId = allLeads.length > 0 ? Math.max(...allLeads.map(l => l.id)) + 1 : 1
@@ -381,27 +505,38 @@ async function main() {
   const listPage: Page = await browser.newPage()
 
   try {
-    const queue: { title: string; url: string }[] = []
+    const queue: QueueItem[] = []
+    const asEdgeProp = (links: { title: string; url: string }[]): QueueItem[] =>
+      links.map(l => ({ ...l, source: "EdgeProp" }))
 
     if (sourceArg === "in-depth" || sourceArg === "all") {
       console.log("\n── In-Depth (capital markets) ───────────────────────────")
       const links = await collectLinks(listPage, `${BASE_URL}/property-news/in-depth`, maxInDepthPages, () => true, "in-depth")
-      queue.push(...links)
+      queue.push(...asEdgeProp(links))
       console.log(`In-Depth: ${links.length} articles`)
     }
 
     if (sourceArg === "showcase" || sourceArg === "all") {
       console.log("\n── Showcase (commercial listings) ───────────────────────")
       const links = await collectLinks(listPage, `${BASE_URL}/property-news/showcase`, maxShowcasePages, () => true, "showcase")
-      queue.push(...links)
+      queue.push(...asEdgeProp(links))
       console.log(`Showcase: ${links.length} articles`)
     }
 
     if (sourceArg === "news" || sourceArg === "all") {
       console.log(`\n── News (commercial filter, ${maxNewsPages} pages) ───────────────────────`)
       const links = await collectLinks(listPage, `${BASE_URL}/property-news/news`, maxNewsPages, isCommercialNews, "news")
-      queue.push(...links)
+      queue.push(...asEdgeProp(links))
       console.log(`News: ${links.length} commercial articles`)
+    }
+
+    if (sourceArg === "mingtiandi" || sourceArg === "bt" || sourceArg === "rss" || sourceArg === "all") {
+      const rssLinks = await collectRssLinks(maxAllPages ?? 3)
+      const wanted = sourceArg === "mingtiandi" ? rssLinks.filter(l => l.source === "MingTianDi")
+        : sourceArg === "bt" ? rssLinks.filter(l => l.source === "Business Times")
+        : rssLinks
+      queue.push(...wanted)
+      console.log(`RSS sources: ${wanted.length} articles`)
     }
 
     await listPage.close()
@@ -420,30 +555,45 @@ async function main() {
       while (true) {
         const idx = cursor++
         if (idx >= deduped.length) break
-        const { title, url } = deduped[idx]
+        const item = deduped[idx]
+        const { title, url, source } = item
 
-        process.stdout.write(`[W${id}][${idx + 1}/${deduped.length}] ${title.slice(0, 60)}\n`)
+        process.stdout.write(`[W${id}][${idx + 1}/${deduped.length}][${source}] ${title.slice(0, 60)}\n`)
 
-        const { text, date } = await getArticleContent(page, url)
+        // RSS sources: plain fetch + RSS pubDate. EdgeProp: Playwright.
+        let text: string, date: string
+        if (source !== "EdgeProp") {
+          text = await fetchArticleText(url)
+          date = item.date || new Date().toISOString().slice(0, 10)
+        } else {
+          ({ text, date } = await getArticleContent(page, url))
+        }
         if (!text || text.length < 200) { process.stdout.write(`  W${id} ✗ empty\n`); continue }
 
         const extracted = await extractLeads(client, text, title, url, date)
 
         if (extracted.length > 0) {
-          // Filter out residential from Claude output
+          // Filter out residential from Claude output, then lump duplicates:
+          // skip leads whose company+property+intent matches a deal already
+          // captured (from any source) within the last 30 days
           const commercial = extracted.filter(l => l.sector !== "Residential")
+          let added = 0, lumped = 0
           for (const lead of commercial) {
+            const norm = { company: lead.company || "", property: lead.property || "", intent: lead.intent || "" }
+            if (isDuplicateDeal(norm, date)) { lumped++; continue }
+            seenDeals.set(dealKey(norm), date)
             allLeads.push({
-              id: nextId++, date, articleTitle: title, sourceUrl: url,
-              company: lead.company || "", person: lead.person || "", role: lead.role || "",
-              intent: lead.intent || "", property: lead.property || "", sector: lead.sector || "",
+              id: nextId++, date, articleTitle: title, sourceUrl: url, source,
+              company: norm.company, person: lead.person || "", role: lead.role || "",
+              intent: norm.intent, property: norm.property, sector: lead.sector || "",
               valueNum: lead.valueNum || 0, value: lead.value || "", phone: lead.phone || "",
               email: lead.email || "", website: lead.website || "", address: lead.address || "",
               notes: lead.notes || "",
             })
+            added++
           }
           existingUrls.add(url)
-          process.stdout.write(`  W${id} → ${commercial.length} commercial leads (total: ${allLeads.length})\n`)
+          process.stdout.write(`  W${id} → ${added} leads${lumped ? ` (${lumped} lumped as duplicates)` : ""} (total: ${allLeads.length})\n`)
         }
 
         if (allLeads.length % 20 === 0) saveProgress(allLeads, dataDir)

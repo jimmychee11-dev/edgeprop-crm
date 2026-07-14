@@ -299,7 +299,7 @@ export default function Home() {
                               rel="noreferrer"
                               onClick={e => e.stopPropagation()}
                               className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-blue-50 text-blue-600 hover:bg-blue-100 font-bold text-sm transition-colors"
-                              title="Open article"
+                              title={`Open article — ${l.source || "EdgeProp"}`}
                             >↗</a>
                           : "—"}
                       </td>
@@ -333,7 +333,7 @@ export default function Home() {
                             {/* Article */}
                             {l.sourceUrl && (
                               <div className="min-w-[200px]">
-                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Source Article</p>
+                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Source Article · {l.source || "EdgeProp"}</p>
                                 <a
                                   href={l.sourceUrl}
                                   target="_blank"
