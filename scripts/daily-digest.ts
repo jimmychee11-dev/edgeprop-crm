@@ -28,7 +28,8 @@ type Lead = {
   id: number; date: string; articleTitle: string; company: string
   person: string; role: string; intent: string; property: string
   sector: string; valueNum: number; value: string; phone: string
-  email: string; sourceUrl: string; source?: string; notes: string
+  email: string; sourceUrl: string; source?: string
+  altSources?: { source: string; url: string; title: string }[]; notes: string
 }
 
 // ── Load env from .env.local ──────────────────────────────────────────────────
@@ -125,7 +126,7 @@ function buildEmailHtml(leads: Lead[], totalLeads: number): string {
       <td style="padding:10px 12px">${badge(l.sector, SECTOR_COLOR[l.sector] || "#6b7280")}</td>
       <td style="padding:10px 12px;font-weight:600;color:#111827;white-space:nowrap;font-size:13px">${l.value || "—"}</td>
       <td style="padding:10px 12px;font-size:12px;color:#374151">${l.phone || "—"}</td>
-      <td style="padding:10px 12px;font-size:12px">${l.sourceUrl ? `<a href="${l.sourceUrl}" style="color:#2563eb">↗ ${l.source || "EdgeProp"}</a>` : "—"}</td>
+      <td style="padding:10px 12px;font-size:12px">${l.sourceUrl ? `<a href="${l.sourceUrl}" style="color:#2563eb">↗ ${l.source || "EdgeProp"}</a>` : "—"}${(l.altSources || []).map(s => ` <a href="${s.url}" style="color:#6b7280;font-size:11px" title="${s.title}">+${s.source}</a>`).join("")}</td>
     </tr>`).join("")
 
   const sectorPills = Object.entries(sectorBreakdown)

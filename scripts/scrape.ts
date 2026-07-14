@@ -95,6 +95,8 @@ export type Lead = {
   address: string
   sourceUrl: string
   source: string // "EdgeProp" | "MingTianDi" | "Business Times"
+  // Same deal reported by other outlets — kept for reference instead of a duplicate row
+  altSources?: { source: string; url: string; title: string }[]
   notes: string
 }
 
@@ -138,7 +140,8 @@ export type Lead = {
   id: number; date: string; articleTitle: string; company: string
   person: string; role: string; intent: string; property: string
   sector: string; valueNum: number; value: string; phone: string
-  email: string; website: string; address: string; sourceUrl: string; source?: string; notes: string
+  email: string; website: string; address: string; sourceUrl: string; source?: string
+  altSources?: { source: string; url: string; title: string }[]; notes: string
 }
 
 export const leads: Lead[] = ${JSON.stringify(leads, null, 2)}
@@ -481,18 +484,27 @@ async function main() {
   }
 
   // Deal identity map for lumping the same deal across sources:
-  // dealKey → most recent article date seen for that deal
-  const seenDeals = new Map<string, string>()
+  // dealKey → the lead that owns that deal (most recent article date wins)
+  const seenDeals = new Map<string, Lead>()
   for (const l of allLeads) {
     const k = dealKey(l)
     const prev = seenDeals.get(k)
-    if (!prev || l.date > prev) seenDeals.set(k, l.date)
+    if (!prev || l.date > prev.date) seenDeals.set(k, l)
   }
   const DEDUPE_WINDOW_MS = 30 * 24 * 60 * 60 * 1000
-  function isDuplicateDeal(lead: { company: string; property: string; intent: string }, date: string): boolean {
-    const prev = seenDeals.get(dealKey(lead))
-    if (!prev) return false
-    return Math.abs(Date.parse(date) - Date.parse(prev)) <= DEDUPE_WINDOW_MS
+  // If this deal was already captured recently, attach the new article as an
+  // altSource reference on the existing lead instead of adding a duplicate row.
+  function lumpIfDuplicate(
+    lead: { company: string; property: string; intent: string },
+    date: string, source: string, url: string, title: string
+  ): boolean {
+    const existing = seenDeals.get(dealKey(lead))
+    if (!existing) return false
+    if (Math.abs(Date.parse(date) - Date.parse(existing.date)) > DEDUPE_WINDOW_MS) return false
+    if (existing.sourceUrl !== url && !(existing.altSources || []).some(s => s.url === url)) {
+      existing.altSources = [...(existing.altSources || []), { source, url, title }]
+    }
+    return true
   }
 
   let nextId = allLeads.length > 0 ? Math.max(...allLeads.map(l => l.id)) + 1 : 1
@@ -580,16 +592,17 @@ async function main() {
           let added = 0, lumped = 0
           for (const lead of commercial) {
             const norm = { company: lead.company || "", property: lead.property || "", intent: lead.intent || "" }
-            if (isDuplicateDeal(norm, date)) { lumped++; continue }
-            seenDeals.set(dealKey(norm), date)
-            allLeads.push({
+            if (lumpIfDuplicate(norm, date, source, url, title)) { lumped++; continue }
+            const newLead: Lead = {
               id: nextId++, date, articleTitle: title, sourceUrl: url, source,
               company: norm.company, person: lead.person || "", role: lead.role || "",
               intent: norm.intent, property: norm.property, sector: lead.sector || "",
               valueNum: lead.valueNum || 0, value: lead.value || "", phone: lead.phone || "",
               email: lead.email || "", website: lead.website || "", address: lead.address || "",
               notes: lead.notes || "",
-            })
+            }
+            seenDeals.set(dealKey(norm), newLead)
+            allLeads.push(newLead)
             added++
           }
           existingUrls.add(url)
