@@ -182,7 +182,7 @@ function buildEmailHtml(leads: Lead[], totalLeads: number): string {
   </div>`}
   <div style="padding:20px 32px;border-top:1px solid #e5e7eb;text-align:center">
     <a href="https://edgeprop-crm.vercel.app" style="display:inline-block;background:#111827;color:#fff;padding:10px 24px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500">Open CRM →</a>
-    <p style="margin:12px 0 0;font-size:11px;color:#9ca3af">Sources: EdgeProp Singapore · MingTianDi · Business Times · Unsubscribe by removing this scheduled task</p>
+    <p style="margin:12px 0 0;font-size:11px;color:#9ca3af">Sources: EdgeProp · Business Times · MingTianDi · SBR · Unsubscribe by removing this scheduled task</p>
   </div>
 </div>
 </body>

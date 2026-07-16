@@ -279,7 +279,7 @@ function parseRss(xml: string): { title: string; url: string; date: string }[] {
   return items
 }
 
-const RSS_SOURCES: { name: string; feeds: (maxPages: number) => string[]; filter: (t: string) => boolean }[] = [
+const RSS_SOURCES: { name: string; feeds: (maxPages: number) => string[]; filter: (t: string, url: string) => boolean }[] = [
   {
     name: "MingTianDi",
     // WordPress feed pagination: /feed/?paged=N (~10 items per page)
@@ -293,6 +293,13 @@ const RSS_SOURCES: { name: string; feeds: (maxPages: number) => string[]; filter
     feeds: () => ["https://www.businesstimes.com.sg/rss/property"],
     filter: isCommercialNews, // property feed mixes in residential — keyword filter
   },
+  {
+    name: "SBR",
+    // Singapore Business Review — single sitewide feed; the RSS <title> is a
+    // summary sentence, so filter by URL section instead of headline keywords
+    feeds: () => ["https://sbr.com.sg/rss.xml"],
+    filter: (_t, url) => /\/(commercial-property|hotels-tourism)\//.test(url),
+  },
 ]
 
 async function collectRssLinks(maxPages: number): Promise<QueueItem[]> {
@@ -304,7 +311,7 @@ async function collectRssLinks(maxPages: number): Promise<QueueItem[]> {
         const res = await fetch(feedUrl, { headers: FETCH_HEADERS })
         if (!res.ok) { console.log(`  [${src.name}] ${feedUrl}: HTTP ${res.status}`); continue }
         const items = parseRss(await res.text())
-        const matched = items.filter(i => src.filter(i.title))
+        const matched = items.filter(i => src.filter(i.title, i.url))
         matched.forEach(i => out.push({ ...i, source: src.name }))
         console.log(`  [${src.name}] ${items.length} items, ${matched.length} matched`)
         if (items.length === 0) break
@@ -542,10 +549,11 @@ async function main() {
       console.log(`News: ${links.length} commercial articles`)
     }
 
-    if (sourceArg === "mingtiandi" || sourceArg === "bt" || sourceArg === "rss" || sourceArg === "all") {
+    if (["mingtiandi", "bt", "sbr", "rss", "all"].includes(sourceArg)) {
       const rssLinks = await collectRssLinks(maxAllPages ?? 3)
       const wanted = sourceArg === "mingtiandi" ? rssLinks.filter(l => l.source === "MingTianDi")
         : sourceArg === "bt" ? rssLinks.filter(l => l.source === "Business Times")
+        : sourceArg === "sbr" ? rssLinks.filter(l => l.source === "SBR")
         : rssLinks
       queue.push(...wanted)
       console.log(`RSS sources: ${wanted.length} articles`)

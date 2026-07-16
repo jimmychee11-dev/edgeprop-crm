@@ -5,7 +5,7 @@ import { leads, Lead } from "@/data/leads"
 
 const ALL_SECTORS = ["Industrial","Hotel","Office","Shophouse","Commercial","Retail","Mixed","International"] as const
 const ALL_INTENTS = ["BUY","SELL","BID","JV","BROKER","ADVISORY","REDEVELOP","LEASE","LAUNCH"] as const
-const ALL_SOURCES = ["EdgeProp","Business Times","MingTianDi"] as const
+const ALL_SOURCES = ["EdgeProp","Business Times","MingTianDi","SBR"] as const
 const ALL_STATUSES = ["New","To Contact","Contacted","In Talks","Won","Dead"] as const
 type Status = typeof ALL_STATUSES[number]
 
@@ -37,6 +37,7 @@ const SOURCE_BADGE: Record<string, { abbr: string; cls: string }> = {
   "EdgeProp":       { abbr: "EP",  cls: "bg-sky-100 text-sky-800" },
   "Business Times": { abbr: "BT",  cls: "bg-rose-100 text-rose-800" },
   "MingTianDi":     { abbr: "MTD", cls: "bg-fuchsia-100 text-fuchsia-800" },
+  "SBR":            { abbr: "SBR", cls: "bg-emerald-100 text-emerald-800" },
 }
 
 const STATUS_STYLE: Record<Status, string> = {
@@ -142,7 +143,7 @@ export default function Home() {
         <div className="max-w-screen-2xl mx-auto flex items-center justify-between gap-4 flex-wrap">
           <div>
             <h1 className="text-lg font-semibold text-gray-900 leading-tight">SG Capital Markets CRM</h1>
-            <p className="text-xs text-gray-400">{leads.length.toLocaleString()} leads · EdgeProp · Business Times · MingTianDi</p>
+            <p className="text-xs text-gray-400">{leads.length.toLocaleString()} leads · EdgeProp · Business Times · MingTianDi · SBR</p>
           </div>
           <input
             className="border border-gray-300 rounded-lg px-3 py-2 text-sm w-72 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
