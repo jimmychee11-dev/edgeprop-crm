@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-07-15T03:53:08.274Z | Leads: 4459
+// Updated: 2026-07-16T01:05:29.192Z | Leads: 4463
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -89210,5 +89210,85 @@ export const leads: Lead[] = [
     "website": "",
     "address": "33 Jalan Sultan, Singapore",
     "notes": "Listed builder; joint venture partner with Weave Living; acquired property March 2022 for S$75 million"
+  },
+  {
+    "id": 6187,
+    "date": "2026-07-15",
+    "articleTitle": "Portfolio of three boutique commercial buildings in CBD up for sale at $90 mil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/portfolio-three-boutique-commercial-buildings-cbd-sale-90-mil",
+    "source": "EdgeProp",
+    "company": "Cushman & Wakefield",
+    "person": "Sophia Lim",
+    "role": "Director of Capital Markets",
+    "intent": "BROKER",
+    "property": "40 Carpenter Street, 38 North Canal Road, 32 Hongkong Street",
+    "sector": "Commercial",
+    "valueNum": 90,
+    "value": "$90 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "40 Carpenter Street, 38 North Canal Road, 32 Hongkong Street, Singapore",
+    "notes": "Joint marketing agent for EOI exercise. Portfolio of three boutique commercial buildings in CBD. Guide prices: $22.4M, $44.4M, $22.35M respectively. Fully tenanted with 99-year leases. EOI closing Aug 18, 2026."
+  },
+  {
+    "id": 6188,
+    "date": "2026-07-15",
+    "articleTitle": "Portfolio of three boutique commercial buildings in CBD up for sale at $90 mil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/portfolio-three-boutique-commercial-buildings-cbd-sale-90-mil",
+    "source": "EdgeProp",
+    "company": "CBRE",
+    "person": "Clemence Lee",
+    "role": "Executive Director of Capital Markets",
+    "intent": "BROKER",
+    "property": "40 Carpenter Street, 38 North Canal Road, 32 Hongkong Street",
+    "sector": "Commercial",
+    "valueNum": 90,
+    "value": "$90 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "40 Carpenter Street, 38 North Canal Road, 32 Hongkong Street, Singapore",
+    "notes": "Joint marketing agent for EOI exercise. Portfolio includes potential conversion to backpacker/student hostel (450 beds), boutique hotel, or serviced apartment use."
+  },
+  {
+    "id": 6189,
+    "date": "2026-07-15",
+    "articleTitle": "People’s Park Centre guns for third collective sale at lower S$1.48 billion guide price",
+    "sourceUrl": "https://www.businesstimes.com.sg/property/peoples-park-centre-guns-third-collective-sale-lower-s1-48-billion-guide-price",
+    "source": "Business Times",
+    "company": "People's Park Centre (Owners/Management Corporation)",
+    "person": "",
+    "role": "Seller",
+    "intent": "SELL",
+    "property": "People's Park Centre, 101 Upper Cross Street, Chinatown",
+    "sector": "Mixed",
+    "valueNum": 1480,
+    "value": "S$1.48 billion",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "101 Upper Cross Street, Singapore",
+    "notes": "Third collective sale attempt; 80.5% share value and 84.6% area consent obtained June 18, 2026; Public tender launch July 16, 2026; Tender closes Sept 16, 2026 at 3pm; 764 subsidiary proprietors representing 545 of 701 units; Mixed-use redevelopment with 60% commercial and 40% residential; Comprises 324 retail units, 256 office units, 120 residential units; 95,467 sq ft; Previous attempts at S$1.8B (2022, no bids) and S$1.35B (2019, failed mandate)"
+  },
+  {
+    "id": 6190,
+    "date": "2026-07-15",
+    "articleTitle": "People’s Park Centre guns for third collective sale at lower S$1.48 billion guide price",
+    "sourceUrl": "https://www.businesstimes.com.sg/property/peoples-park-centre-guns-third-collective-sale-lower-s1-48-billion-guide-price",
+    "source": "Business Times",
+    "company": "ERA Realty Network",
+    "person": "Sunny Wong; Pearl Lok",
+    "role": "Broker",
+    "intent": "BROKER",
+    "property": "People's Park Centre, 101 Upper Cross Street, Chinatown",
+    "sector": "Mixed",
+    "valueNum": 1480,
+    "value": "S$1.48 billion",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "101 Upper Cross Street, Singapore",
+    "notes": "Marketing agent for collective sale tender; Sunny Wong - ERA Realty division director; Pearl Lok - Director of Capital Markets and Investment Sales at ERA Realty"
   }
 ]
