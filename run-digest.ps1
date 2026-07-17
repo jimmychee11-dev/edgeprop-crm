@@ -1,4 +1,11 @@
-# EdgeProp Daily Digest — runs at logon, skips if already done today
+# EdgeProp Daily Digest — one run per day, max once
+# Two Task Scheduler entries call this script:
+#   1. "EdgeProp Daily Digest" — daily at 10:00
+#   2. "EdgeProp Digest Catch-up" — at logon with -CatchUp: covers days
+#      (weekends) when the machine was off at 10:00. Before 10am it exits
+#      so weekday logins don't send early; after 10am it catches up.
+param([switch]$CatchUp)
+
 $dir = "C:\Users\czp82\Downloads\vin-obsidian-workflows\edgeprop-crm"
 $log = "$dir\scripts\scrape.log"
 $flagFile = "$dir\scripts\.last-run-date"
@@ -6,6 +13,11 @@ $today = (Get-Date).ToString("yyyy-MM-dd")
 
 # Skip if already ran today
 if ((Test-Path $flagFile) -and (Get-Content $flagFile) -eq $today) {
+    exit 0
+}
+
+# Catch-up runs only fire after the 10:00 slot has been missed
+if ($CatchUp -and (Get-Date).Hour -lt 10) {
     exit 0
 }
 
