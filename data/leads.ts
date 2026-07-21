@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-07-20T02:01:37.433Z | Leads: 4497
+// Updated: 2026-07-21T02:11:02.414Z | Leads: 4499
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -89991,5 +89991,52 @@ export const leads: Lead[] = [
     "website": "",
     "address": "Tannery Lane, Singapore",
     "notes": "Marketing agent for Generations @ Tannery launch. Reported all production units and four canteen units sold."
+  },
+  {
+    "id": 6225,
+    "date": "2026-07-21",
+    "articleTitle": "Kingsford Group buys Tan Boon Liat Building en bloc for $950 mil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/kingsford-group-buys-tan-boon-liat-building-en-bloc-950-mil",
+    "source": "EdgeProp",
+    "company": "Kingsford Group",
+    "person": "",
+    "role": "buyer",
+    "intent": "BUY",
+    "property": "Tan Boon Liat Building",
+    "sector": "Shophouse",
+    "valueNum": 950,
+    "value": "$950 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "",
+    "notes": "En bloc acquisition",
+    "altSources": [
+      {
+        "source": "Business Times",
+        "url": "https://www.businesstimes.com.sg/property/tan-boon-liat-building-sold-en-bloc-kingsford-group-lower-reserve-price-s950-million",
+        "title": "Tan Boon Liat Building sold en bloc to Kingsford Group at lower reserve price of S$950 million"
+      }
+    ]
+  },
+  {
+    "id": 6226,
+    "date": "2026-07-21",
+    "articleTitle": "Tan Boon Liat Building sold en bloc to Kingsford Group at lower reserve price of S$950 million",
+    "sourceUrl": "https://www.businesstimes.com.sg/property/tan-boon-liat-building-sold-en-bloc-kingsford-group-lower-reserve-price-s950-million",
+    "source": "Business Times",
+    "company": "Cushman & Wakefield",
+    "person": "Christina Sim",
+    "role": "BROKER",
+    "intent": "BROKER",
+    "property": "Tan Boon Liat Building",
+    "sector": "Industrial",
+    "valueNum": 950,
+    "value": "S$950 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Outram Road and Zion Road, Singapore",
+    "notes": "Exclusive adviser and marketing agent for the collective sale. Christina Sim is senior director of capital markets."
   }
 ]
