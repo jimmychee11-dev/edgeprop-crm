@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-07-21T02:11:02.414Z | Leads: 4499
+// Updated: 2026-07-22T02:57:13.715Z | Leads: 4505
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -90016,6 +90016,11 @@ export const leads: Lead[] = [
         "source": "Business Times",
         "url": "https://www.businesstimes.com.sg/property/tan-boon-liat-building-sold-en-bloc-kingsford-group-lower-reserve-price-s950-million",
         "title": "Tan Boon Liat Building sold en bloc to Kingsford Group at lower reserve price of S$950 million"
+      },
+      {
+        "source": "MingTianDi",
+        "url": "https://www.mingtiandi.com/real-estate/projects/kingsford-buying-singapore-redevelopment-project-for-736m-in-years-biggest-collective-sale/",
+        "title": "Kingsford Buying Singapore Redevelopment Project for $736M in Year's Biggest Collective Sale"
       }
     ]
   },
@@ -90037,6 +90042,138 @@ export const leads: Lead[] = [
     "email": "",
     "website": "",
     "address": "Outram Road and Zion Road, Singapore",
-    "notes": "Exclusive adviser and marketing agent for the collective sale. Christina Sim is senior director of capital markets."
+    "notes": "Exclusive adviser and marketing agent for the collective sale. Christina Sim is senior director of capital markets.",
+    "altSources": [
+      {
+        "source": "MingTianDi",
+        "url": "https://www.mingtiandi.com/real-estate/projects/kingsford-buying-singapore-redevelopment-project-for-736m-in-years-biggest-collective-sale/",
+        "title": "Kingsford Buying Singapore Redevelopment Project for $736M in Year's Biggest Collective Sale"
+      },
+      {
+        "source": "SBR",
+        "url": "https://sbr.com.sg/commercial-property/news/tan-boon-liat-building-sold-kingsford-group-950m",
+        "title": "The deal is likely the largest collective sale this year, said Cushman  Wakefield."
+      }
+    ]
+  },
+  {
+    "id": 6227,
+    "date": "2026-07-21",
+    "articleTitle": "New supply is expected to average 1.0 msf against 1.4 msf in long-term net absorption.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/news/grade-rents-climb-5-supply-stays-tight",
+    "source": "SBR",
+    "company": "IOI Group",
+    "person": "",
+    "role": "Buyer",
+    "intent": "BUY",
+    "property": "Asia Square Tower 2",
+    "sector": "Office",
+    "valueNum": 2480,
+    "value": "$2.48b",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Singapore",
+    "notes": "Acquisition completed in H1 2026"
+  },
+  {
+    "id": 6228,
+    "date": "2026-07-21",
+    "articleTitle": "New supply is expected to average 1.0 msf against 1.4 msf in long-term net absorption.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/news/grade-rents-climb-5-supply-stays-tight",
+    "source": "SBR",
+    "company": "Allgreen Properties",
+    "person": "",
+    "role": "Buyer",
+    "intent": "BUY",
+    "property": "78 Shenton Way",
+    "sector": "Office",
+    "valueNum": 600,
+    "value": "$600m",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "78 Shenton Way, Singapore",
+    "notes": "Acquired for future redevelopment in H1 2026"
+  },
+  {
+    "id": 6229,
+    "date": "2026-07-21",
+    "articleTitle": "New supply is expected to average 1.0 msf against 1.4 msf in long-term net absorption.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/news/grade-rents-climb-5-supply-stays-tight",
+    "source": "SBR",
+    "company": "Singapore Central Private Real Estate Fund",
+    "person": "",
+    "role": "Buyer",
+    "intent": "LAUNCH",
+    "property": "Asia Square Tower 1, MBFC Towers 1 and 2",
+    "sector": "Office",
+    "valueNum": 8200,
+    "value": "$8.2b",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Singapore",
+    "notes": "Fund launch in H1 2026 including multiple Grade A office assets"
+  },
+  {
+    "id": 6230,
+    "date": "2026-07-21",
+    "articleTitle": "It sits outside the designated Jalan Besar and Little India FB Restriction Zone.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/news/freehold-jalan-besar-shophouse-market-85m-amidst-fb-scarcity",
+    "source": "SBR",
+    "company": "Savills",
+    "person": "Nick Chan",
+    "role": "Associate Director, Investment Sales and Capital Markets",
+    "intent": "BROKER",
+    "property": "405 Jalan Besar",
+    "sector": "Shophouse",
+    "valueNum": 8.5,
+    "value": "$8.5m",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "405 Jalan Besar, Singapore",
+    "notes": "Two-storey freehold conservation shophouse on 1,723 sqft site. Fully tenanted with existing ground-floor restaurant approval. EOI closing 27 August 2026 at 3pm. Outside F&B Restriction Zone. Plot ratio 3.0. Potential for rear extension and upper-floor F&B use."
+  },
+  {
+    "id": 6231,
+    "date": "2026-07-21",
+    "articleTitle": "The deal is likely the largest collective sale this year, said Cushman  Wakefield.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/news/tan-boon-liat-building-sold-kingsford-group-950m",
+    "source": "SBR",
+    "company": "Kingsford Havelock Pte Ltd",
+    "person": "",
+    "role": "Buyer",
+    "intent": "BUY",
+    "property": "Tan Boon Liat Building",
+    "sector": "Industrial",
+    "valueNum": 950,
+    "value": "$950m",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "315 Outram Road, Singapore",
+    "notes": "En bloc purchase of freehold 15-storey industrial warehouse. Kingsford Havelock Pte Ltd is a unit of Kingsford Group."
+  },
+  {
+    "id": 6232,
+    "date": "2026-07-21",
+    "articleTitle": "The deal is likely the largest collective sale this year, said Cushman  Wakefield.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/news/tan-boon-liat-building-sold-kingsford-group-950m",
+    "source": "SBR",
+    "company": "Terra Law LLC",
+    "person": "",
+    "role": "Legal Advisor",
+    "intent": "ADVISORY",
+    "property": "Tan Boon Liat Building",
+    "sector": "Industrial",
+    "valueNum": 950,
+    "value": "$950m",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "315 Outram Road, Singapore",
+    "notes": "Legal adviser for the collective sale transaction."
   }
 ]
