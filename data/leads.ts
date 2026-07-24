@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-07-23T02:27:14.256Z | Leads: 4520
+// Updated: 2026-07-24T02:02:40.540Z | Leads: 4527
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -24389,7 +24389,14 @@ export const leads: Lead[] = [
     "website": "",
     "address": "Terminal 3, Singapore Changi Airport",
     "notes": "Divestment to unlock value before hotel management agreement and master lease agreement expiry in 2028, net proceeds $498.5M estimated for debt repayment, operated by IHG Hotels & Resorts",
-    "source": "EdgeProp"
+    "source": "EdgeProp",
+    "altSources": [
+      {
+        "source": "MingTianDi",
+        "url": "https://www.mingtiandi.com/real-estate/crelist/roundup-japans-one-reit-to-sell-nagoya-office-building/",
+        "title": "Japan's One REIT to Sell Nagoya Office Building for $49M and More APAC Real Estate Headlines"
+      }
+    ]
   },
   {
     "id": 2941,
@@ -90475,5 +90482,145 @@ export const leads: Lead[] = [
     "website": "",
     "address": "IOI Central Boulevard Towers, Singapore",
     "notes": "Recently moved into IOI Central Boulevard Towers"
+  },
+  {
+    "id": 6248,
+    "date": "2026-07-21",
+    "articleTitle": "Three adjoining HDB shophouses in Telok Blangah on the market for $7.9 mil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/three-adjoining-hdb-shophouses-telok-blangah-market-79-mil",
+    "source": "EdgeProp",
+    "company": "SRI Capital Market",
+    "person": "Low Choon Sin",
+    "role": "Managing Partner",
+    "intent": "BROKER",
+    "property": "65 Telok Blangah Drive",
+    "sector": "Shophouse",
+    "valueNum": 7.9,
+    "value": "$7.9 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "65 Telok Blangah Drive, Singapore",
+    "notes": "Three adjoining HDB shophouses with ground-storey retail and residential quarters. Total strata area 4,672 sqft. EOI closes Sept 16, 3pm. Fully tenanted."
+  },
+  {
+    "id": 6249,
+    "date": "2026-07-23",
+    "articleTitle": "Japan's One REIT to Sell Nagoya Office Building for $49M and More APAC Real Estate Headlines",
+    "sourceUrl": "https://www.mingtiandi.com/real-estate/crelist/roundup-japans-one-reit-to-sell-nagoya-office-building/",
+    "source": "MingTianDi",
+    "company": "One REIT",
+    "person": "Katsuya Kume",
+    "role": "Executive Director",
+    "intent": "SELL",
+    "property": "Nagoya Fushimi Square Building",
+    "sector": "Office",
+    "valueNum": 49.1,
+    "value": "$49.1 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Nagoya, Japan",
+    "notes": "38-year-old office and retail building, phased transfer through March 2027, buyer undisclosed"
+  },
+  {
+    "id": 6250,
+    "date": "2026-07-23",
+    "articleTitle": "Japan's One REIT to Sell Nagoya Office Building for $49M and More APAC Real Estate Headlines",
+    "sourceUrl": "https://www.mingtiandi.com/real-estate/crelist/roundup-japans-one-reit-to-sell-nagoya-office-building/",
+    "source": "MingTianDi",
+    "company": "Mizuho Trust & Banking",
+    "person": "",
+    "role": "BROKER",
+    "intent": "BROKER",
+    "property": "Nagoya Fushimi Square Building",
+    "sector": "Office",
+    "valueNum": 49.1,
+    "value": "$49.1 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Nagoya, Japan",
+    "notes": "Sponsor and broker for One REIT's sale"
+  },
+  {
+    "id": 6251,
+    "date": "2026-07-23",
+    "articleTitle": "Japan's One REIT to Sell Nagoya Office Building for $49M and More APAC Real Estate Headlines",
+    "sourceUrl": "https://www.mingtiandi.com/real-estate/crelist/roundup-japans-one-reit-to-sell-nagoya-office-building/",
+    "source": "MingTianDi",
+    "company": "Aware Super",
+    "person": "",
+    "role": "BUY",
+    "intent": "LAUNCH",
+    "property": "Crosspoint Industrial and Logistics Estate",
+    "sector": "Industrial",
+    "valueNum": 97.6,
+    "value": "A$139 million ($97.6 million)",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Western Sydney Aerotropolis, Australia",
+    "notes": "70,000 sqm across seven buildings, ground-breaking commenced, partnership with Barings"
+  },
+  {
+    "id": 6252,
+    "date": "2026-07-23",
+    "articleTitle": "Japan's One REIT to Sell Nagoya Office Building for $49M and More APAC Real Estate Headlines",
+    "sourceUrl": "https://www.mingtiandi.com/real-estate/crelist/roundup-japans-one-reit-to-sell-nagoya-office-building/",
+    "source": "MingTianDi",
+    "company": "Barings",
+    "person": "",
+    "role": "JV",
+    "intent": "JV",
+    "property": "Crosspoint Industrial and Logistics Estate",
+    "sector": "Industrial",
+    "valueNum": 97.6,
+    "value": "A$139 million ($97.6 million)",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Western Sydney Aerotropolis, Australia",
+    "notes": "Joint venture partner with Aware Super for logistics estate development"
+  },
+  {
+    "id": 6253,
+    "date": "2026-07-23",
+    "articleTitle": "Singapore industrial rents inch up 0.5% in Q2 amid macro uncertainty: JTC",
+    "sourceUrl": "https://www.businesstimes.com.sg/property/singapore-industrial-rents-inch-0-5-q2-amid-macro-uncertainty-jtc",
+    "source": "Business Times",
+    "company": "Tiong Nam Logistics",
+    "person": "",
+    "role": "Developer/Owner",
+    "intent": "REDEVELOP",
+    "property": "25 Senoko Loop",
+    "sector": "Industrial",
+    "valueNum": 0,
+    "value": "",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "25 Senoko Loop, Singapore",
+    "notes": "Owner-occupied facility completion in Q2 2026"
+  },
+  {
+    "id": 6254,
+    "date": "2026-07-23",
+    "articleTitle": "Revenue increased 3.8% to $136.1m during the period.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/news/oue-reit-npi-rises-48-1103m-in-h1",
+    "source": "SBR",
+    "company": "OUE REIT",
+    "person": "",
+    "role": "Asset Manager",
+    "intent": "REDEVELOP",
+    "property": "OUE Bayfront; Salesforce Tower Sydney",
+    "sector": "Mixed",
+    "valueNum": 0,
+    "value": "",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "OUE Bayfront, Singapore; Salesforce Tower, Sydney",
+    "notes": "Holds 50% stake in OUE Bayfront with $8.2m H1 2026 share of results. Acquired 19.9% stake in Sydney's Salesforce Tower completed 16 March 2026, contributing $2.2m in H1 2026."
   }
 ]
