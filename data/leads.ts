@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-07-26T02:01:20.631Z | Leads: 4534
+// Updated: 2026-07-27T02:01:38.840Z | Leads: 4537
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -90762,5 +90762,65 @@ export const leads: Lead[] = [
     "website": "",
     "address": "One Raffles Quay, Singapore",
     "notes": "Holds one-third stake in One Raffles Quay alongside Suntec Reit and Hongkong Land."
+  },
+  {
+    "id": 6262,
+    "date": "2026-07-26",
+    "articleTitle": "Industrial leasing in Singapore jumped 7.9% in Q2 as AI and semiconductor demand drove occupier appetite, even as investment sales fell 66% from a REIT-inflated Q1.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/in-focus/industrial-leasing-rises-79-in-q2-big-ticket-deals-fade",
+    "source": "SBR",
+    "company": "Katoen Natie",
+    "person": "",
+    "role": "Occupier",
+    "intent": "LEASE",
+    "property": "Jurong Island facility",
+    "sector": "Industrial",
+    "valueNum": 60,
+    "value": "$60m",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Jurong Island, Singapore",
+    "notes": "Investment in new facility with $3.1m commitment to fully automated storage and retrieval system"
+  },
+  {
+    "id": 6263,
+    "date": "2026-07-26",
+    "articleTitle": "Industrial leasing in Singapore jumped 7.9% in Q2 as AI and semiconductor demand drove occupier appetite, even as investment sales fell 66% from a REIT-inflated Q1.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/in-focus/industrial-leasing-rises-79-in-q2-big-ticket-deals-fade",
+    "source": "SBR",
+    "company": "Siemens",
+    "person": "",
+    "role": "Occupier",
+    "intent": "LEASE",
+    "property": "Digital factory",
+    "sector": "Industrial",
+    "valueNum": 299,
+    "value": "$299m",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Singapore",
+    "notes": "Plans to establish digital factory in Singapore"
+  },
+  {
+    "id": 6264,
+    "date": "2026-07-26",
+    "articleTitle": "Industrial leasing in Singapore jumped 7.9% in Q2 as AI and semiconductor demand drove occupier appetite, even as investment sales fell 66% from a REIT-inflated Q1.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/in-focus/industrial-leasing-rises-79-in-q2-big-ticket-deals-fade",
+    "source": "SBR",
+    "company": "Knight Frank",
+    "person": "Tridiana Ong",
+    "role": "Broker",
+    "intent": "BROKER",
+    "property": "Industrial market",
+    "sector": "Industrial",
+    "valueNum": 1300,
+    "value": "$1.3b",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Singapore",
+    "notes": "Head, Occupier Strategy and Solutions; market research and analysis on Q2 2026 industrial leasing activity"
   }
 ]
