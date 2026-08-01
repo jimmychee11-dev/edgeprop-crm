@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-07-31T02:31:40.592Z | Leads: 4580
+// Updated: 2026-08-01T02:04:06.568Z | Leads: 4582
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -91575,7 +91575,14 @@ export const leads: Lead[] = [
     "email": "",
     "website": "",
     "address": "Orchard Road, Singapore",
-    "notes": "Purchase on behalf of SCPREF private fund. Mixed-use retail and office complex with 43,900 sq ft retail space and office tenants including Chanel, Hermes, T Rowe Price. Expected completion by end of August 2026. Deal conducted through competitive bidding process."
+    "notes": "Purchase on behalf of SCPREF private fund. Mixed-use retail and office complex with 43,900 sq ft retail space and office tenants including Chanel, Hermes, T Rowe Price. Expected completion by end of August 2026. Deal conducted through competitive bidding process.",
+    "altSources": [
+      {
+        "source": "EdgeProp",
+        "url": "https://www.edgeprop.sg/property-news/hongkong-land-acquire-wheelock-place-11-bil-newly-launched-spref",
+        "title": "Hongkong Land to acquire Wheelock Place for $1.1 bil via newly launched SPREF"
+      }
+    ]
   },
   {
     "id": 6302,
@@ -91635,7 +91642,14 @@ export const leads: Lead[] = [
     "email": "",
     "website": "",
     "address": "Orchard Road, Singapore",
-    "notes": "Mixed-use development comprising 21-storey commercial building, two basement levels of offices, shopping podium and car park. 43,280 sqm GFA. 99-year leasehold with 63 years remaining. Expected completion end of August 2026. Deal lifts fund AUM to S$9.4 billion."
+    "notes": "Mixed-use development comprising 21-storey commercial building, two basement levels of offices, shopping podium and car park. 43,280 sqm GFA. 99-year leasehold with 63 years remaining. Expected completion end of August 2026. Deal lifts fund AUM to S$9.4 billion.",
+    "altSources": [
+      {
+        "source": "SBR",
+        "url": "https://sbr.com.sg/commercial-property/news/hongkong-lands-singapore-fund-acquire-11b-wheelock-place",
+        "title": "SCPREF’s AUM to rise to $9.4b from $8.2b upon completion."
+      }
+    ]
   },
   {
     "id": 6305,
@@ -91696,5 +91710,45 @@ export const leads: Lead[] = [
     "website": "",
     "address": "8217 Linton Hall, Northern Virginia",
     "notes": "10-year lease with investment-grade global cloud service provider for entire Linton Hall data centre facility commencing 1 December 2026. Expected to generate $19.0m USD annual NPI ($17.1m based on Digital Core REIT's 90% interest). Represents 35% increase from previous net rent."
+  },
+  {
+    "id": 6308,
+    "date": "2026-07-31",
+    "articleTitle": "Singapore NPI rose 1% on higher contributions from VivoCity.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/news/mpact-q1-dpu-dips-25-overseas-weakness-offsets-growth",
+    "source": "SBR",
+    "company": "Mapletree Pan Asia Commercial Trust",
+    "person": "",
+    "role": "Asset Owner/REIT",
+    "intent": "HOLD",
+    "property": "VivoCity",
+    "sector": "Commercial",
+    "valueNum": 0,
+    "value": "",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "",
+    "notes": "Singapore NPI rose 1% with VivoCity contribution up following Basement 2 asset enhancement completion. VivoCity NPI increased 8.9% with 13.5% rental reversion. Near-full committed occupancy maintained."
+  },
+  {
+    "id": 6309,
+    "date": "2026-07-31",
+    "articleTitle": "SCPREF’s AUM to rise to $9.4b from $8.2b upon completion.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/news/hongkong-lands-singapore-fund-acquire-11b-wheelock-place",
+    "source": "SBR",
+    "company": "Wharf Real Estate Investment Company Limited",
+    "person": "",
+    "role": "SELLER",
+    "intent": "SELL",
+    "property": "Wheelock Place",
+    "sector": "Mixed",
+    "valueNum": 1100,
+    "value": "$1.1b",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Orchard Road, Singapore",
+    "notes": "Hong Kong-listed entity selling Wheelock Place to SCPREF via definitive agreement."
   }
 ]
