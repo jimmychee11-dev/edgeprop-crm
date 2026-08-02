@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-08-01T02:04:06.568Z | Leads: 4582
+// Updated: 2026-08-02T02:36:49.979Z | Leads: 4583
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -91750,5 +91750,25 @@ export const leads: Lead[] = [
     "website": "",
     "address": "Orchard Road, Singapore",
     "notes": "Hong Kong-listed entity selling Wheelock Place to SCPREF via definitive agreement."
+  },
+  {
+    "id": 6310,
+    "date": "2026-07-28",
+    "articleTitle": "Ever Glory United bags $168 mil in new contracts, pushing order book to over $1 bil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/ever-glory-united-bags-168-mil-new-contracts-pushing-order-book-over-1-bil",
+    "source": "EdgeProp",
+    "company": "Ever Glory United Holdings",
+    "person": "Xu Ruibing",
+    "role": "CEO and executive director",
+    "intent": "BID",
+    "property": "Defence Science and Technology Agency project; commercial mixed developments",
+    "sector": "Mixed",
+    "valueNum": 168,
+    "value": "$168 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "",
+    "notes": "Secured subcontract for electrical works on DSTA project and mechanical and electrical works for commercial mixed developments. Order book reached over $1 billion in 2026."
   }
 ]
