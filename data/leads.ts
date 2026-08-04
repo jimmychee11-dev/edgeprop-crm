@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-08-03T03:22:48.218Z | Leads: 4590
+// Updated: 2026-08-04T02:28:35.710Z | Leads: 4591
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -91910,5 +91910,25 @@ export const leads: Lead[] = [
     "website": "",
     "address": "South Brisbane, Australia",
     "notes": "Perth-based asset manager, acquired Grade A office tower"
+  },
+  {
+    "id": 6318,
+    "date": "2026-08-04",
+    "articleTitle": "Savills completes US$1.1 bil acquisition of Eastdil Secured",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/savills-completes-us11-bil-acquisition-eastdil-secured",
+    "source": "EdgeProp",
+    "company": "Savills",
+    "person": "",
+    "role": "BUY",
+    "intent": "BUY",
+    "property": "Eastdil Secured",
+    "sector": "International",
+    "valueNum": 1100,
+    "value": "US$1.1 billion",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "",
+    "notes": "Savills completes acquisition of Eastdil Secured"
   }
 ]
