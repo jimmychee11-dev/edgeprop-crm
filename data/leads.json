@@ -92791,5 +92791,25 @@
     "website": "",
     "address": "7 Changi Business Park Crescent & 9 Changi Business Park Crescent, Singapore",
     "notes": "Seller in sale-and-leaseback deal; bank to remain as long-term tenant after completion."
+  },
+  {
+    "id": 6362,
+    "date": "2026-08-09",
+    "articleTitle": "London’s Barbican was once called ugly. Some residents think a new office tower is worse",
+    "sourceUrl": "https://www.businesstimes.com.sg/property/their-home-was-once-called-ugly-they-think-new-office-tower-worse",
+    "source": "Business Times",
+    "company": "Lipton Rogers Developments",
+    "person": "Stuart Lipton",
+    "role": "Developer",
+    "intent": "REDEVELOP",
+    "property": "One Silk Street, Barbican, London",
+    "sector": "Office",
+    "valueNum": 0,
+    "value": "Unknown",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "One Silk Street, Barbican, London",
+    "notes": "20-storey (scaled back to 16 storeys on west side) office building with shops and cafes. Amended plans approved May 2026 despite ~1,800 objections. Stuart Lipton is partner and former chair of Commission for Architecture and the Built Environment."
   }
 ]
