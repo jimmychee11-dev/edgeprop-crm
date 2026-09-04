@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-09-03T02:02:44.035Z | Leads: 4703
+// Updated: 2026-09-04T02:32:13.383Z | Leads: 4710
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -92541,7 +92541,14 @@ export const leads: Lead[] = [
     "email": "",
     "website": "",
     "address": "Singapore",
-    "notes": "Sold to IOI Properties"
+    "notes": "Sold to IOI Properties",
+    "altSources": [
+      {
+        "source": "SBR",
+        "url": "https://sbr.com.sg/commercial-property/news/cict-advances-asia-square-tower-2-sale-after-call-option-exercise",
+        "title": "Completion of the divestment is expected to take place in mid-September 2026."
+      }
+    ]
   },
   {
     "id": 6349,
@@ -94208,5 +94215,145 @@ export const leads: Lead[] = [
     "website": "",
     "address": "North Canal Road, Singapore (Boat Quay Conservation Area)",
     "notes": "999-year tenure, opposite OCBC Centre, within walking distance of Raffles Place and Clarke Quay MRT stations. Conservation area. Foreign buyers eligible, no ABSD/SSD applicable."
+  },
+  {
+    "id": 6431,
+    "date": "2026-09-04",
+    "articleTitle": "North Canal Road shophouse, Handy Road strata commercial unit for sale at $16.8 mil and $6 mil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/north-canal-road-shophouse-handy-road-strata-commercial-unit-sale-168-mil-and-6-mil",
+    "source": "EdgeProp",
+    "company": "EdgeProp",
+    "person": "",
+    "role": "BROKER",
+    "intent": "BROKER",
+    "property": "North Canal Road shophouse",
+    "sector": "Shophouse",
+    "valueNum": 16.8,
+    "value": "$16.8M",
+    "phone": "",
+    "email": "",
+    "website": "www.edgeprop.sg",
+    "address": "North Canal Road",
+    "notes": "Shophouse for sale"
+  },
+  {
+    "id": 6432,
+    "date": "2026-09-04",
+    "articleTitle": "North Canal Road shophouse, Handy Road strata commercial unit for sale at $16.8 mil and $6 mil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/north-canal-road-shophouse-handy-road-strata-commercial-unit-sale-168-mil-and-6-mil",
+    "source": "EdgeProp",
+    "company": "EdgeProp",
+    "person": "",
+    "role": "BROKER",
+    "intent": "BROKER",
+    "property": "Handy Road strata commercial unit",
+    "sector": "Commercial",
+    "valueNum": 6,
+    "value": "$6M",
+    "phone": "",
+    "email": "",
+    "website": "www.edgeprop.sg",
+    "address": "Handy Road",
+    "notes": "Strata commercial unit for sale"
+  },
+  {
+    "id": 6433,
+    "date": "2026-09-01",
+    "articleTitle": "Frasers Expands Orchard Road Footprint with $138M Buy of Entertainment Enclave",
+    "sourceUrl": "https://www.mingtiandi.com/real-estate/retail/frasers-buys-singapores-cuppage-terrace-for-137-6m/",
+    "source": "MingTianDi",
+    "company": "Frasers Property",
+    "person": "Soon Su Lin",
+    "role": "Chief Executive Officer",
+    "intent": "BUY",
+    "property": "Cuppage Terrace, 17-45A Cuppage Road, Singapore",
+    "sector": "Shophouse",
+    "valueNum": 175,
+    "value": "S$175 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "17-45A Cuppage Road, Singapore",
+    "notes": "Acquisition of 17 conservation shophouses on Orchard Road; 99-year leasehold with 62 years remaining; 28,986 sq ft site; 34,678 sq ft GFA"
+  },
+  {
+    "id": 6434,
+    "date": "2026-09-01",
+    "articleTitle": "Frasers Expands Orchard Road Footprint with $138M Buy of Entertainment Enclave",
+    "sourceUrl": "https://www.mingtiandi.com/real-estate/retail/frasers-buys-singapores-cuppage-terrace-for-137-6m/",
+    "source": "MingTianDi",
+    "company": "Royal Holdings",
+    "person": "Raj Kumar",
+    "role": "Investment Group Head/Seller",
+    "intent": "SELL",
+    "property": "Cuppage Terrace, 17-45A Cuppage Road, Singapore",
+    "sector": "Shophouse",
+    "valueNum": 175,
+    "value": "S$175 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "17-45A Cuppage Road, Singapore",
+    "notes": "Sold to Frasers Property; marketed by CBRE starting January at S$250 million asking price"
+  },
+  {
+    "id": 6435,
+    "date": "2026-09-01",
+    "articleTitle": "Frasers Expands Orchard Road Footprint with $138M Buy of Entertainment Enclave",
+    "sourceUrl": "https://www.mingtiandi.com/real-estate/retail/frasers-buys-singapores-cuppage-terrace-for-137-6m/",
+    "source": "MingTianDi",
+    "company": "CBRE",
+    "person": "",
+    "role": "Marketing Agent",
+    "intent": "BROKER",
+    "property": "Cuppage Terrace, 17-45A Cuppage Road, Singapore",
+    "sector": "Shophouse",
+    "valueNum": 175,
+    "value": "S$175 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "17-45A Cuppage Road, Singapore",
+    "notes": "Marketed Cuppage Terrace on behalf of Royal Holdings; property listed in January"
+  },
+  {
+    "id": 6436,
+    "date": "2026-09-03",
+    "articleTitle": "CapitaLand Investment retrenches 90 Singapore staff in 2026 as part of restructuring",
+    "sourceUrl": "https://www.businesstimes.com.sg/companies-markets/capitaland-investment-retrenches-90-singapore-staff-2026-part-restructuring",
+    "source": "Business Times",
+    "company": "CapitaLand Investment",
+    "person": "Lee Chee Koon",
+    "role": "Chief Executive",
+    "intent": "SELL",
+    "property": "The Ascott Limited",
+    "sector": "Hotel",
+    "valueNum": 0,
+    "value": "Unknown",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "",
+    "notes": "CEO stated firm is considering divesting a stake in hospitality business to accelerate growth"
+  },
+  {
+    "id": 6437,
+    "date": "2026-09-03",
+    "articleTitle": "Completion of the divestment is expected to take place in mid-September 2026.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/news/cict-advances-asia-square-tower-2-sale-after-call-option-exercise",
+    "source": "SBR",
+    "company": "IOI Marina View Pte. Ltd.",
+    "person": "",
+    "role": "Purchaser",
+    "intent": "BUY",
+    "property": "Asia Square Tower 2",
+    "sector": "Office",
+    "valueNum": 2470,
+    "value": "$2.47b",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Asia Square Tower 2, Singapore",
+    "notes": "Exercised call option. All conditions precedent satisfied."
   }
 ]
