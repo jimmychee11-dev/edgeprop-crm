@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-09-04T02:32:13.383Z | Leads: 4710
+// Updated: 2026-09-05T02:03:13.417Z | Leads: 4711
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -94334,7 +94334,14 @@ export const leads: Lead[] = [
     "email": "",
     "website": "",
     "address": "",
-    "notes": "CEO stated firm is considering divesting a stake in hospitality business to accelerate growth"
+    "notes": "CEO stated firm is considering divesting a stake in hospitality business to accelerate growth",
+    "altSources": [
+      {
+        "source": "EdgeProp",
+        "url": "https://www.edgeprop.sg/property-news/capitaland-investment-cuts-90-singapore-jobs-amid-restructuring",
+        "title": "CapitaLand Investment cuts 90 Singapore jobs amid restructuring"
+      }
+    ]
   },
   {
     "id": 6437,
@@ -94355,5 +94362,25 @@ export const leads: Lead[] = [
     "website": "",
     "address": "Asia Square Tower 2, Singapore",
     "notes": "Exercised call option. All conditions precedent satisfied."
+  },
+  {
+    "id": 6438,
+    "date": "2026-09-04",
+    "articleTitle": "Portfolio of four HDB commercial properties in Toa Payoh and Jurong East for sale at $38 mil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/portfolio-four-hdb-commercial-properties-toa-payoh-and-jurong-east-sale-38-mil",
+    "source": "EdgeProp",
+    "company": "CBRE",
+    "person": "Clemence Lee",
+    "role": "BROKER",
+    "intent": "BROKER",
+    "property": "Portfolio of four HDB commercial properties at 183 Toa Payoh Central and 135 Jurong Gateway",
+    "sector": "Commercial",
+    "valueNum": 38,
+    "value": "$38 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "183 Toa Payoh Central and 135 Jurong Gateway, Singapore",
+    "notes": "EOI exercise closes Oct 8, 2026 at 3pm. Portfolio comprises 1 HDB coffeeshop (1,851 sq ft, guide price $16m) and 3 HDB retail units (1,195 sq ft + 1,195 sq ft + 592 sq ft, guide prices $16.5m and $5.5m respectively). Total strata area 4,833 sq ft. Can be acquired individually or collectively. Clemence Lee is Executive Director of Capital Markets in Singapore at CBRE."
   }
 ]
