@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-09-10T02:02:27.838Z | Leads: 4740
+// Updated: 2026-09-11T02:02:45.761Z | Leads: 4741
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -94962,5 +94962,25 @@ export const leads: Lead[] = [
     "website": "",
     "address": "365 Fitzgerald Road, Derrimut, Victoria, Australia",
     "notes": "Trust manager representing MLT in the divestment transaction."
+  },
+  {
+    "id": 6468,
+    "date": "2026-09-11",
+    "articleTitle": "Rare trio of conservation shophouses in Serangoon up for sale at $33 mil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/rare-trio-conservation-shophouses-serangoon-sale-33-mil",
+    "source": "EdgeProp",
+    "company": "Unknown",
+    "person": "Unknown",
+    "role": "SELLER",
+    "intent": "SELL",
+    "property": "Conservation shophouses, Serangoon",
+    "sector": "Shophouse",
+    "valueNum": 33,
+    "value": "$33 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Serangoon",
+    "notes": "Rare trio of conservation shophouses"
   }
 ]
