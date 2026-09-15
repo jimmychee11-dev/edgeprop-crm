@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-09-14T03:38:58.213Z | Leads: 4745
+// Updated: 2026-09-15T06:32:20.630Z | Leads: 4750
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -94841,7 +94841,14 @@ export const leads: Lead[] = [
     "email": "",
     "website": "",
     "address": "Scotts Road, Singapore",
-    "notes": "Joint purchase with RB Capital. S$2,369 psf on 130,875 sq ft GFA. Four-level freehold retail mall with 76,660 sq ft NLA. Expected completion by year-end 2026."
+    "notes": "Joint purchase with RB Capital. S$2,369 psf on 130,875 sq ft GFA. Four-level freehold retail mall with 76,660 sq ft NLA. Expected completion by year-end 2026.",
+    "altSources": [
+      {
+        "source": "MingTianDi",
+        "url": "https://www.mingtiandi.com/real-estate/finance/wharf-sells-singapores-scotts-square-mall-to-royal-holdings/",
+        "title": "Wharf Sells Orchard Area Mall to Royal Holdings for $245M to Exit Singapore"
+      }
+    ]
   },
   {
     "id": 6462,
@@ -94901,7 +94908,14 @@ export const leads: Lead[] = [
     "email": "",
     "website": "",
     "address": "Scotts Road, Singapore",
-    "notes": "Marketing agent. Marketed property via EOI in first half 2026 at S$380 million guide price."
+    "notes": "Marketing agent. Marketed property via EOI in first half 2026 at S$380 million guide price.",
+    "altSources": [
+      {
+        "source": "MingTianDi",
+        "url": "https://www.mingtiandi.com/real-estate/finance/wharf-sells-singapores-scotts-square-mall-to-royal-holdings/",
+        "title": "Wharf Sells Orchard Area Mall to Royal Holdings for $245M to Exit Singapore"
+      }
+    ]
   },
   {
     "id": 6465,
@@ -95062,5 +95076,105 @@ export const leads: Lead[] = [
     "website": "",
     "address": "",
     "notes": "Co-lender of sustainability-linked Shariah-compliant facility to Elite UK REIT"
+  },
+  {
+    "id": 6473,
+    "date": "2026-09-10",
+    "articleTitle": "Wharf Sells Orchard Area Mall to Royal Holdings for $245M to Exit Singapore",
+    "sourceUrl": "https://www.mingtiandi.com/real-estate/finance/wharf-sells-singapores-scotts-square-mall-to-royal-holdings/",
+    "source": "MingTianDi",
+    "company": "Wharf Real Estate Investment Company (Wharf REIC)",
+    "person": "Stephen Ng",
+    "role": "Seller",
+    "intent": "SELL",
+    "property": "Scotts Square",
+    "sector": "Commercial",
+    "valueNum": 245.2,
+    "value": "S$310 million / $245.2 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Scotts Road, Orchard Road, Singapore",
+    "notes": "Freehold four-level mall, 130,875 sq ft GFA, exiting Singapore market"
+  },
+  {
+    "id": 6474,
+    "date": "2026-09-15",
+    "articleTitle": "The 16,298 sq ft property is fully occupied by commercial tenants.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/news/three-freehold-townshend-road-shophouses-sale-eoi",
+    "source": "SBR",
+    "company": "Colliers",
+    "person": "",
+    "role": "BROKER",
+    "intent": "SELL",
+    "property": "5, 7, and 9 Townshend Road",
+    "sector": "Shophouse",
+    "valueNum": 0,
+    "value": "",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "5, 7, and 9 Townshend Road, Singapore",
+    "notes": "Three adjoining freehold conservation shophouses, 16,298 sq ft, fully occupied by commercial tenants, EOI exercise with submission deadline 29 October"
+  },
+  {
+    "id": 6475,
+    "date": "2026-09-15",
+    "articleTitle": "Clifton Partners puts Townshend Road shophouses up for sale at S$60 million",
+    "sourceUrl": "https://www.businesstimes.com.sg/property/clifton-partners-puts-townshend-road-shophouses-sale-s60-million",
+    "source": "Business Times",
+    "company": "Clifton Partners",
+    "person": "",
+    "role": "SELL",
+    "intent": "SELL",
+    "property": "5, 7 and 9 Townshend Road",
+    "sector": "Shophouse",
+    "valueNum": 60,
+    "value": "S$60 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "5, 7 and 9 Townshend Road, Jalan Besar, Singapore",
+    "notes": "Freehold conservation shophouses, fully occupied by commercial tenants, EOI closes Oct 29, 2026"
+  },
+  {
+    "id": 6476,
+    "date": "2026-09-15",
+    "articleTitle": "Clifton Partners puts Townshend Road shophouses up for sale at S$60 million",
+    "sourceUrl": "https://www.businesstimes.com.sg/property/clifton-partners-puts-townshend-road-shophouses-sale-s60-million",
+    "source": "Business Times",
+    "company": "Colliers Singapore",
+    "person": "Terry Wong, Alaric Yeo",
+    "role": "BROKER",
+    "intent": "BROKER",
+    "property": "5, 7 and 9 Townshend Road",
+    "sector": "Shophouse",
+    "valueNum": 60,
+    "value": "S$60 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "5, 7 and 9 Townshend Road, Jalan Besar, Singapore",
+    "notes": "Marketing agent for sale of Townshend Road shophouses"
+  },
+  {
+    "id": 6477,
+    "date": "2026-09-14",
+    "articleTitle": "Units may be bought together or separately from $5.7m each.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/news/two-lucky-plaza-strata-shops-put-sale-114m",
+    "source": "SBR",
+    "company": "CBRE",
+    "person": "",
+    "role": "BROKER",
+    "intent": "BROKER",
+    "property": "Lucky Plaza strata shops",
+    "sector": "Commercial",
+    "valueNum": 11.4,
+    "value": "$11.4m",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Orchard Road, Singapore",
+    "notes": "Two adjoining freehold strata shops on ground floor of Lucky Plaza. Guide price $11.4m combined or $5.7m each. Strata area 441 sqf each with F&B approval. EOI closes 15 October 2026."
   }
 ]
