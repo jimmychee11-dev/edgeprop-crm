@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-09-15T06:32:20.630Z | Leads: 4750
+// Updated: 2026-09-16T02:02:07.088Z | Leads: 4751
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -95176,5 +95176,25 @@ export const leads: Lead[] = [
     "website": "",
     "address": "Orchard Road, Singapore",
     "notes": "Two adjoining freehold strata shops on ground floor of Lucky Plaza. Guide price $11.4m combined or $5.7m each. Strata area 441 sqf each with F&B approval. EOI closes 15 October 2026."
+  },
+  {
+    "id": 6478,
+    "date": "2026-09-16",
+    "articleTitle": "Malaysian developer Eco World tops seven bids for Lorong Puntong GLS site at $1,612 psf ppr in tender debut",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/malaysian-developer-eco-world-tops-seven-bids-lorong-puntong-gls-site-1612-psf-ppr-tender-debut",
+    "source": "EdgeProp",
+    "company": "Eco World",
+    "person": "",
+    "role": "Developer",
+    "intent": "BID",
+    "property": "Lorong Puntong GLS site",
+    "sector": "Mixed",
+    "valueNum": 0,
+    "value": "$1,612 psf ppr",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Lorong Puntong, Singapore",
+    "notes": "Winning bidder in GLS tender, Malaysian developer, tender debut"
   }
 ]
