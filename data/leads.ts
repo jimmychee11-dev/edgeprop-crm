@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-09-16T02:02:07.088Z | Leads: 4751
+// Updated: 2026-09-17T02:03:04.869Z | Leads: 4757
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -95135,7 +95135,14 @@ export const leads: Lead[] = [
     "email": "",
     "website": "",
     "address": "5, 7 and 9 Townshend Road, Jalan Besar, Singapore",
-    "notes": "Freehold conservation shophouses, fully occupied by commercial tenants, EOI closes Oct 29, 2026"
+    "notes": "Freehold conservation shophouses, fully occupied by commercial tenants, EOI closes Oct 29, 2026",
+    "altSources": [
+      {
+        "source": "EdgeProp",
+        "url": "https://www.edgeprop.sg/property-news/townshend-road-shophouse-cluster-sale-60-mil",
+        "title": "Townshend Road shophouse cluster up for sale at $60 mil"
+      }
+    ]
   },
   {
     "id": 6476,
@@ -95196,5 +95203,125 @@ export const leads: Lead[] = [
     "website": "",
     "address": "Lorong Puntong, Singapore",
     "notes": "Winning bidder in GLS tender, Malaysian developer, tender debut"
+  },
+  {
+    "id": 6479,
+    "date": "2026-09-17",
+    "articleTitle": "Trendale Tower in Newton launched for collective sale at $168 mil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/trendale-tower-newton-launched-collective-sale-168-mil",
+    "source": "EdgeProp",
+    "company": "Not specified",
+    "person": "Not specified",
+    "role": "Seller",
+    "intent": "SELL",
+    "property": "Trendale Tower",
+    "sector": "Office",
+    "valueNum": 168,
+    "value": "$168 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Newton",
+    "notes": "Collective sale launch"
+  },
+  {
+    "id": 6480,
+    "date": "2026-09-16",
+    "articleTitle": "Serenity Park condo, Pek Chuan Building back on en bloc market at lower $440 mil and $77 mil ",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/serenity-park-condo-pek-chuan-building-back-en-bloc-market-lower-440-mil-and-77-mil",
+    "source": "EdgeProp",
+    "company": "Mount Everest Properties",
+    "person": "Dillon Loi",
+    "role": "BROKER",
+    "intent": "REDEVELOP",
+    "property": "Pek Chuan Building",
+    "sector": "Commercial",
+    "valueNum": 77,
+    "value": "$77 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "116 Lavender Street, Singapore",
+    "notes": "Four-storey leasehold commercial development, en bloc relaunched at $77M (3% decrease from previous asking). 28,700 sq ft corner plot. Balance lease term approximately 56 years."
+  },
+  {
+    "id": 6481,
+    "date": "2026-09-11",
+    "articleTitle": "Marina Square at 40: From retail anchors to sporting communities",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/marina-square-40-retail-anchors-sporting-communities",
+    "source": "EdgeProp",
+    "company": "Singapore Land Group",
+    "person": "Jonathan Eu",
+    "role": "CEO",
+    "intent": "REDEVELOP",
+    "property": "Marina Square",
+    "sector": "Commercial",
+    "valueNum": 0,
+    "value": "Unknown",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Marina Square, Singapore",
+    "notes": "Partial redevelopment and adaptive reuse of 9.2ha site. Converting rooftop to racquet club with pickleball/padel courts. Adding 4,000 sq m sheltered event space facing Esplanade. Repositioning from retail anchors to sporting communities and experiences."
+  },
+  {
+    "id": 6482,
+    "date": "2026-09-15",
+    "articleTitle": "Townshend Road shophouse cluster up for sale at $60 mil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/townshend-road-shophouse-cluster-sale-60-mil",
+    "source": "EdgeProp",
+    "company": "Colliers",
+    "person": "",
+    "role": "BROKER",
+    "intent": "BROKER",
+    "property": "5, 7 and 9 Townshend Road",
+    "sector": "Shophouse",
+    "valueNum": 60,
+    "value": "$60 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "5, 7 and 9 Townshend Road, Jalan Besar, Singapore",
+    "notes": "Marketing agent handling EOI for shophouse cluster sale."
+  },
+  {
+    "id": 6483,
+    "date": "2026-09-16",
+    "articleTitle": "Moody’s City of London head office on sale for US$445 million",
+    "sourceUrl": "https://www.businesstimes.com.sg/property/moodys-city-london-head-office-sale-us445-million",
+    "source": "Business Times",
+    "company": "CBRE Group",
+    "person": "",
+    "role": "BROKER",
+    "intent": "BROKER",
+    "property": "10 Gresham Street",
+    "sector": "Office",
+    "valueNum": 445,
+    "value": "US$445 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "10 Gresham Street, City of London",
+    "notes": "Marketing agent for sale of Moody's City of London head office"
+  },
+  {
+    "id": 6484,
+    "date": "2026-09-16",
+    "articleTitle": "Moody’s City of London head office on sale for US$445 million",
+    "sourceUrl": "https://www.businesstimes.com.sg/property/moodys-city-london-head-office-sale-us445-million",
+    "source": "Business Times",
+    "company": "Malaysian state pension fund",
+    "person": "",
+    "role": "SELL",
+    "intent": "SELL",
+    "property": "10 Gresham Street",
+    "sector": "Office",
+    "valueNum": 445,
+    "value": "US$445 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "10 Gresham Street, City of London",
+    "notes": "Owner selling 10 Gresham Street; purchased property for £200 million in 2012"
   }
 ]
