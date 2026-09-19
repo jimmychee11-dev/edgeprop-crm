@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-09-18T15:30:23.103Z | Leads: 4777
+// Updated: 2026-09-19T03:45:15.762Z | Leads: 4781
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -95723,5 +95723,85 @@ export const leads: Lead[] = [
     "website": "",
     "address": "Asia Square Tower 2, Singapore",
     "notes": "CICT divested 100% interest in Asia Square Tower 2. Divestment fee of $12.4m received (0.5% of Agreed Property Value). Completion announced following Call Option exercise on 2 September 2026."
+  },
+  {
+    "id": 6505,
+    "date": "2026-09-18",
+    "articleTitle": "Gerbang Nusajaya, Puteri Harbour open up new opportunities in Iskandar Puteri",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/gerbang-nusajaya-puteri-harbour-open-new-opportunities-iskandar-puteri",
+    "source": "EdgeProp",
+    "company": "UEM Sunrise Bhd",
+    "person": "",
+    "role": "Master Developer",
+    "intent": "LAUNCH",
+    "property": "Gerbang Nusajaya",
+    "sector": "Mixed",
+    "valueNum": 0,
+    "value": "",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Iskandar Puteri, Johor, Malaysia",
+    "notes": "Integrated township spanning ~4,471 acres with residential, commercial, business, industrial and lifestyle components. Connected to Malaysia-Singapore Second Link Expressway via Gerbang Nusajaya Interchange (opened Dec 2025). Positioned to benefit from Johor-Singapore Special Economic Zone (JS-SEZ)."
+  },
+  {
+    "id": 6506,
+    "date": "2026-09-18",
+    "articleTitle": "Gerbang Nusajaya, Puteri Harbour open up new opportunities in Iskandar Puteri",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/gerbang-nusajaya-puteri-harbour-open-new-opportunities-iskandar-puteri",
+    "source": "EdgeProp",
+    "company": "UEM Sunrise Bhd",
+    "person": "",
+    "role": "Master Developer",
+    "intent": "LAUNCH",
+    "property": "Puteri Harbour",
+    "sector": "Mixed",
+    "valueNum": 0,
+    "value": "",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Iskandar Puteri, Johor, Malaysia",
+    "notes": "Key development within UEM Sunrise's Iskandar Puteri master plan, serving complementary role to Gerbang Nusajaya in the region's next phase of growth."
+  },
+  {
+    "id": 6507,
+    "date": "2026-09-18",
+    "articleTitle": "Gerbang Nusajaya, Puteri Harbour open up new opportunities in Iskandar Puteri",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/gerbang-nusajaya-puteri-harbour-open-new-opportunities-iskandar-puteri",
+    "source": "EdgeProp",
+    "company": "UEM Sunrise Bhd",
+    "person": "",
+    "role": "Developer",
+    "intent": "LAUNCH",
+    "property": "Aspira Square",
+    "sector": "Commercial",
+    "valueNum": 0,
+    "value": "",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Iskandar Puteri, Johor, Malaysia",
+    "notes": "Commercial development providing retail spaces to support everyday needs of growing community in Gerbang Nusajaya."
+  },
+  {
+    "id": 6508,
+    "date": "2026-09-18",
+    "articleTitle": "Gerbang Nusajaya, Puteri Harbour open up new opportunities in Iskandar Puteri",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/gerbang-nusajaya-puteri-harbour-open-new-opportunities-iskandar-puteri",
+    "source": "EdgeProp",
+    "company": "UEM Sunrise Bhd",
+    "person": "",
+    "role": "Developer",
+    "intent": "LAUNCH",
+    "property": "Nusajaya Tech Park",
+    "sector": "Industrial",
+    "valueNum": 0,
+    "value": "",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Gerbang Nusajaya, Iskandar Puteri, Johor, Malaysia",
+    "notes": "Industrial development supporting manufacturing, logistics and technology ecosystem within Gerbang Nusajaya township."
   }
 ]
