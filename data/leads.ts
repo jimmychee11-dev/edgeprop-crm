@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-09-23T02:12:35.720Z | Leads: 4796
+// Updated: 2026-09-24T02:18:28.881Z | Leads: 4800
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -96103,5 +96103,85 @@ export const leads: Lead[] = [
     "website": "",
     "address": "Kowloon, Hong Kong",
     "notes": "Singapore-based property firm in talks to acquire 100% stake from New World and ADIA"
+  },
+  {
+    "id": 6524,
+    "date": "2026-09-24",
+    "articleTitle": "Keppel Reit to sell Seoul CBD office building at KRW348.8 bil property value, 37.2% above purchase price",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/keppel-reit-sell-seoul-cbd-office-building-krw3488-bil-property-value-372-above-purchase-price",
+    "source": "EdgeProp",
+    "company": "Keppel Reit",
+    "person": "",
+    "role": "SELL",
+    "intent": "SELL",
+    "property": "Seoul CBD office building",
+    "sector": "Office",
+    "valueNum": 0,
+    "value": "KRW348.8 bil",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Seoul, South Korea",
+    "notes": "Property value KRW348.8 billion, 37.2% above purchase price"
+  },
+  {
+    "id": 6525,
+    "date": "2026-09-24",
+    "articleTitle": "Seven industrial units in Tagore and one Kovan HDB shop on the market for $21 mil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/seven-industrial-units-tagore-and-one-kovan-hdb-shop-market-21-mil",
+    "source": "EdgeProp",
+    "company": "Knight Frank Singapore",
+    "person": "Tania Ong",
+    "role": "Senior Manager",
+    "intent": "BROKER",
+    "property": "Seven freehold strata B1 light industrial units at Tag A, Tagore Industrial Estate",
+    "sector": "Industrial",
+    "valueNum": 17.8,
+    "value": "$17.8 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Tagore Lane, Tagore Industrial Estate, Singapore",
+    "notes": "Seven units span 22,238 sq ft across levels 1, 2, and 4. Fully leased with diversified tenant mix. Can be sold individually or as portfolio. Freehold strata with 5.95m floor-to-floor height and 10 kN/sq m floor loading. Developed by Master Contract Services."
+  },
+  {
+    "id": 6526,
+    "date": "2026-09-24",
+    "articleTitle": "Seven industrial units in Tagore and one Kovan HDB shop on the market for $21 mil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/seven-industrial-units-tagore-and-one-kovan-hdb-shop-market-21-mil",
+    "source": "EdgeProp",
+    "company": "Knight Frank Singapore",
+    "person": "",
+    "role": "Marketing Agent",
+    "intent": "BROKER",
+    "property": "Ground-floor HDB shop at Block 210 Hougang Street 21, Kovan",
+    "sector": "Commercial",
+    "valueNum": 3.2,
+    "value": "$3.2 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Block 210 Hougang Street 21, Kovan, Singapore",
+    "notes": "850 sq ft strata area at $3,764 psf. Currently owner-occupied with potential leaseback arrangement. Wide frontage and column-free layout. May be subdivided into two units. Sheltered access to Kovan MRT Station and Kovan Express Bus Terminal. No ABSD applicable."
+  },
+  {
+    "id": 6527,
+    "date": "2026-09-23",
+    "articleTitle": "The assets at 22 and 23 Mohamed Sultan Road span a land area of 4,221 sq ft.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/news/river-valley-mixed-use-property-sale-38m",
+    "source": "SBR",
+    "company": "CBRE",
+    "person": "",
+    "role": "BROKER",
+    "intent": "BROKER",
+    "property": "22 and 23 Mohamed Sultan Road, River Valley",
+    "sector": "Mixed",
+    "valueNum": 38,
+    "value": "$38m",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "22 and 23 Mohamed Sultan Road, River Valley, Singapore",
+    "notes": "Expression of interest exercise, closing 28 October 2026 at 3pm. Two freehold blocks, combined land area 4,221 sq ft, total floor area 14,497 sq ft. 22 Mohamed Sultan Road: 8-storey serviced apartment building. 23 Mohamed Sultan Road: 4-storey building with shop (basement), restaurant (ground floor), serviced apartments (levels 2-4). Both blocks fully tenanted."
   }
 ]
