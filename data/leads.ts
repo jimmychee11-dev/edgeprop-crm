@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-09-28T02:02:52.393Z | Leads: 4824
+// Updated: 2026-09-29T02:03:23.078Z | Leads: 4828
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -96663,5 +96663,85 @@ export const leads: Lead[] = [
     "website": "",
     "address": "Singapore, China, Japan and other markets",
     "notes": "CDL to invest $5b in growth capital FY2027-2029: 60% Singapore, 30% China and Japan, 10% other markets across Residential, Commercial, Hospitality and Living sectors"
+  },
+  {
+    "id": 6552,
+    "date": "2026-09-29",
+    "articleTitle": "Centurion buys Hong Kong mixed-use development Yan Woo Building for HK$364 mil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/centurion-buys-hong-kong-mixed-use-development-yan-woo-building-hk364-mil",
+    "source": "EdgeProp",
+    "company": "Centurion",
+    "person": "",
+    "role": "Buyer",
+    "intent": "BUY",
+    "property": "Yan Woo Building",
+    "sector": "Mixed",
+    "valueNum": 49.2,
+    "value": "HK$364 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Hong Kong",
+    "notes": "Mixed-use development acquisition"
+  },
+  {
+    "id": 6553,
+    "date": "2026-09-29",
+    "articleTitle": "Freehold industrial building at Kampong Ampat launched for collective sale at $105 mil",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/freehold-industrial-building-kampong-ampat-launched-collective-sale-105-mil",
+    "source": "EdgeProp",
+    "company": "Not specified",
+    "person": "Not specified",
+    "role": "Seller",
+    "intent": "SELL",
+    "property": "Freehold industrial building at Kampong Ampat",
+    "sector": "Industrial",
+    "valueNum": 105,
+    "value": "$105 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Kampong Ampat",
+    "notes": "Collective sale launched at $105 million"
+  },
+  {
+    "id": 6554,
+    "date": "2026-09-29",
+    "articleTitle": "Sydney data centre plan scrapped by developer after community backlash",
+    "sourceUrl": "https://www.businesstimes.com.sg/property/sydney-data-centre-plan-scrapped-developer-after-community-backlash",
+    "source": "Business Times",
+    "company": "Goodman Group",
+    "person": "",
+    "role": "Developer",
+    "intent": "REDEVELOP",
+    "property": "Project Mars",
+    "sector": "Industrial",
+    "valueNum": 1200,
+    "value": "A$1.2 billion",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Lane Cove, Sydney, Australia",
+    "notes": "Data centre development application withdrawn after community backlash; project scrapped"
+  },
+  {
+    "id": 6555,
+    "date": "2026-09-28",
+    "articleTitle": "CDL to hire dedicated CEO for fund management as it steps up push into private funds",
+    "sourceUrl": "https://www.businesstimes.com.sg/property/cdl-hire-dedicated-ceo-fund-management-it-steps-push-private-funds",
+    "source": "Business Times",
+    "company": "City Developments Ltd (CDL)",
+    "person": "Sherman Kwek",
+    "role": "Group CEO",
+    "intent": "LAUNCH",
+    "property": "Private funds platform and dedicated fund management entity",
+    "sector": "Mixed",
+    "valueNum": 10000,
+    "value": "S$10 billion AUM target by FY2029",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "",
+    "notes": "CDL establishing dedicated fund-management entity to double AUM from S$5 billion to S$10 billion by FY2029. Plans to seed assets from S$6 billion divestment programme and S$3.7 billion living-sector portfolio. Will strengthen existing listed platforms CDL Hospitality Trusts and IReit Global."
   }
 ]
