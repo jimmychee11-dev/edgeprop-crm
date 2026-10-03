@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-10-02T06:32:39.942Z | Leads: 4858
+// Updated: 2026-10-03T02:01:55.692Z | Leads: 4863
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -95362,7 +95362,14 @@ export const leads: Lead[] = [
     "email": "",
     "website": "",
     "address": "Rivervale Crescent and Rivervale Drive, Sengkang, Singapore",
-    "notes": "Suburban retail mall in north-eastern Singapore, 81,150 sqft NLA, net yield 4.7%, acquired 7 years ago"
+    "notes": "Suburban retail mall in north-eastern Singapore, 81,150 sqft NLA, net yield 4.7%, acquired 7 years ago",
+    "altSources": [
+      {
+        "source": "MingTianDi",
+        "url": "https://www.mingtiandi.com/real-estate/retail/sc-capital-selling-singapore-mall-for-20-above-2019-price/",
+        "title": "SC Capital Selling Suburban Singapore Mall to Local Buyer for 20% Above 2019 Price"
+      }
+    ]
   },
   {
     "id": 6487,
@@ -95382,7 +95389,14 @@ export const leads: Lead[] = [
     "email": "",
     "website": "",
     "address": "Rivervale Crescent and Rivervale Drive, Sengkang, Singapore",
-    "notes": "Facilities maintenance company that moved into property development; previously acquired Orchid Hotel for ~S$273 million 3 months earlier"
+    "notes": "Facilities maintenance company that moved into property development; previously acquired Orchid Hotel for ~S$273 million 3 months earlier",
+    "altSources": [
+      {
+        "source": "MingTianDi",
+        "url": "https://www.mingtiandi.com/real-estate/retail/sc-capital-selling-singapore-mall-for-20-above-2019-price/",
+        "title": "SC Capital Selling Suburban Singapore Mall to Local Buyer for 20% Above 2019 Price"
+      }
+    ]
   },
   {
     "id": 6488,
@@ -97343,5 +97357,105 @@ export const leads: Lead[] = [
     "website": "",
     "address": "141 Middle Road, Singapore",
     "notes": "80% subsidiary of Coliwoo Holdings Limited. Sale completed 30 September 2026."
+  },
+  {
+    "id": 6586,
+    "date": "2026-10-03",
+    "articleTitle": "IOI Properties to acquire Lee Yeow Seng’s Shenton House vehicle for $1",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/ioi-properties-acquire-lee-yeow-sengs-shenton-house-vehicle-1",
+    "source": "EdgeProp",
+    "company": "IOI Properties",
+    "person": "",
+    "role": "buyer",
+    "intent": "BUY",
+    "property": "Shenton House",
+    "sector": "Office",
+    "valueNum": 1,
+    "value": "$1",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "",
+    "notes": "Acquisition of Lee Yeow Seng's Shenton House vehicle"
+  },
+  {
+    "id": 6587,
+    "date": "2026-10-03",
+    "articleTitle": "IOI Properties to acquire Lee Yeow Seng’s Shenton House vehicle for $1",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/ioi-properties-acquire-lee-yeow-sengs-shenton-house-vehicle-1",
+    "source": "EdgeProp",
+    "company": "Lee Yeow Seng",
+    "person": "",
+    "role": "seller",
+    "intent": "SELL",
+    "property": "Shenton House",
+    "sector": "Office",
+    "valueNum": 1,
+    "value": "$1",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "",
+    "notes": "Shenton House vehicle sale to IOI Properties"
+  },
+  {
+    "id": 6588,
+    "date": "2026-10-03",
+    "articleTitle": "Coliwoo sells two River Valley properties for $45.5 mil in three-year leaseback deal",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/coliwoo-sells-two-river-valley-properties-qing-feng-455-mil-three-year-leaseback-deal",
+    "source": "EdgeProp",
+    "company": "Coliwoo",
+    "person": "",
+    "role": "SELL",
+    "intent": "SELL",
+    "property": "Two River Valley properties",
+    "sector": "Commercial",
+    "valueNum": 45.5,
+    "value": "$45.5 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "River Valley",
+    "notes": "Three-year leaseback deal"
+  },
+  {
+    "id": 6589,
+    "date": "2026-09-21",
+    "articleTitle": "SC Capital Selling Suburban Singapore Mall to Local Buyer for 20% Above 2019 Price",
+    "sourceUrl": "https://www.mingtiandi.com/real-estate/retail/sc-capital-selling-singapore-mall-for-20-above-2019-price/",
+    "source": "MingTianDi",
+    "company": "Savills",
+    "person": "",
+    "role": "Broker",
+    "intent": "BROKER",
+    "property": "Rivervale Mall",
+    "sector": "Commercial",
+    "valueNum": 276,
+    "value": "S$276 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Sengkang, Singapore",
+    "notes": "Deal broker for Rivervale Mall transaction"
+  },
+  {
+    "id": 6590,
+    "date": "2026-10-02",
+    "articleTitle": "Jackspeed buys 2 Jalan Kilang Barat for S$39 million to house new car dealership",
+    "sourceUrl": "https://www.businesstimes.com.sg/property/jackspeed-buys-2-jalan-kilang-barat-s39-million-house-new-car-dealership",
+    "source": "Business Times",
+    "company": "Jackspeed Holdings",
+    "person": "Yap Kian Peng",
+    "role": "CEO",
+    "intent": "BUY",
+    "property": "2 Jalan Kilang Barat",
+    "sector": "Industrial",
+    "valueNum": 39,
+    "value": "S$39 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "2 Jalan Kilang Barat, Bukit Merah, Singapore",
+    "notes": "9-storey industrial building with 32,000 sq ft. Completed Sep 16, 2026. Will house car showroom and office. Subsidiary Carazee to occupy floors 1-4 as used car dealership."
   }
 ]
