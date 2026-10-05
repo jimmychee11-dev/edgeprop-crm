@@ -97445,7 +97445,14 @@
     "email": "",
     "website": "",
     "address": "2 Jalan Kilang Barat, Bukit Merah, Singapore",
-    "notes": "9-storey industrial building with 32,000 sq ft. Completed Sep 16, 2026. Will house car showroom and office. Subsidiary Carazee to occupy floors 1-4 as used car dealership."
+    "notes": "9-storey industrial building with 32,000 sq ft. Completed Sep 16, 2026. Will house car showroom and office. Subsidiary Carazee to occupy floors 1-4 as used car dealership.",
+    "altSources": [
+      {
+        "source": "Business Times",
+        "url": "https://www.businesstimes.com.sg/property/authorities-seize-39-million-sale-building-linked-scam-probe",
+        "title": "Authorities seize $39 million from sale of building linked to scam probe"
+      }
+    ]
   },
   {
     "id": 6591,
@@ -97486,5 +97493,65 @@
     "website": "",
     "address": "401 Havelock Road, Singapore",
     "notes": "21% stake holder and development partner in Aravest-managed fund acquisition"
+  },
+  {
+    "id": 6593,
+    "date": "2026-10-04",
+    "articleTitle": "Authorities seize $39 million from sale of building linked to scam probe",
+    "sourceUrl": "https://www.businesstimes.com.sg/property/authorities-seize-39-million-sale-building-linked-scam-probe",
+    "source": "Business Times",
+    "company": "2JKB",
+    "person": "Chen Xiaoxuan",
+    "role": "Seller",
+    "intent": "SELL",
+    "property": "2 Jalan Kilang Barat",
+    "sector": "Commercial",
+    "valueNum": 39,
+    "value": "S$39 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "2 Jalan Kilang Barat, Bukit Merah, Singapore",
+    "notes": "Incorporated December 2022; property purchased in 2023 for S$35.3 million; sale proceeds seized by Singapore Police"
+  },
+  {
+    "id": 6594,
+    "date": "2026-10-05",
+    "articleTitle": "Stake in the FEHT managers will increase to 75%.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/news/far-east-orchard-boosts-core-aum-39b-feht-deal",
+    "source": "SBR",
+    "company": "Far East Orchard",
+    "person": "Alan Tang",
+    "role": "Group Chief Executive Officer",
+    "intent": "BUY",
+    "property": "FEO Hospitality Asset Management (FEOHAM) and FEO Hospitality Trust Management (FEOHTM)",
+    "sector": "Hotel",
+    "valueNum": 28.3,
+    "value": "$28.3m",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Singapore",
+    "notes": "Acquiring 42% stake in FEOHAM and FEOHTM (managers of Far East Hospitality Trust). This will increase Far East Orchard's stake from 33% to 75%. Deal increases core AUM to $3.9b. Paid in cash from internal resources."
+  },
+  {
+    "id": 6595,
+    "date": "2026-10-05",
+    "articleTitle": "Stake in the FEHT managers will increase to 75%.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/news/far-east-orchard-boosts-core-aum-39b-feht-deal",
+    "source": "SBR",
+    "company": "FEO Asset Management",
+    "person": "",
+    "role": "Current Stakeholder",
+    "intent": "SELL",
+    "property": "Stake in FEO Hospitality Asset Management (FEOHAM) and FEO Hospitality Trust Management (FEOHTM)",
+    "sector": "Hotel",
+    "valueNum": 28.3,
+    "value": "$28.3m",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Singapore",
+    "notes": "Currently holds 67% stake in FEOHAM and FEOHTM; stake will reduce to 25% after Far East Orchard's acquisition of 42%"
   }
 ]
