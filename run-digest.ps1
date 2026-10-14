@@ -37,12 +37,23 @@ try {
     # Commit and push new leads to GitHub → Vercel auto-deploys
     git config user.name "EdgeProp Bot"
     git config user.email "bot@edgeprop-crm"
-    git pull --rebase 2>&1 | Out-Null
-    git add data/leads.json data/leads.ts data/checkpoint.json
-    $diff = git diff --staged --quiet; if (-not $?) {
-        git commit -m "Daily digest $today`: auto-update leads" 2>&1 | Out-Null
-        git push 2>&1 | Out-Null
-        Add-Content $log "Pushed to GitHub"
+    $pullOut = git pull --ff-only 2>&1
+    Add-Content $log "git pull: $pullOut"
+    if ($LASTEXITCODE -ne 0) {
+        Add-Content $log "WARNING: git pull failed (exit $LASTEXITCODE) — skipping push this run"
+    } else {
+        git add data/leads.json data/leads.ts data/checkpoint.json
+        git diff --staged --quiet
+        if ($LASTEXITCODE -ne 0) {
+            git commit -m "Daily digest $today`: auto-update leads" 2>&1 | Add-Content $log
+            $pushOut = git push 2>&1
+            Add-Content $log "git push: $pushOut (exit $LASTEXITCODE)"
+            if ($LASTEXITCODE -ne 0) {
+                Add-Content $log "ERROR: git push failed — CRM will not update until push succeeds"
+            }
+        } else {
+            Add-Content $log "No new leads staged — skipping commit"
+        }
     }
 
     # Mark today as done
