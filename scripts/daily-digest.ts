@@ -259,17 +259,23 @@ async function sendWhatsApp(newLeads: Lead[]) {
   }
 
   const url = `https://api.green-api.com/waInstance${instance}/sendMessage/${apiToken}`
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ chatId, message: msg }),
-  })
-
-  const json = await res.json() as { idMessage?: string; message?: string }
-  if (json.idMessage) {
-    console.log(`✅ WhatsApp sent to ${to} via Green API (id: ${json.idMessage})`)
-  } else {
-    console.error(`WhatsApp error: ${JSON.stringify(json)}`)
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 15000)
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chatId, message: msg }),
+      signal: controller.signal,
+    })
+    const json = await res.json() as { idMessage?: string; message?: string }
+    if (json.idMessage) {
+      console.log(`✅ WhatsApp sent to ${to} via Green API (id: ${json.idMessage})`)
+    } else {
+      console.error(`WhatsApp error: ${JSON.stringify(json)}`)
+    }
+  } finally {
+    clearTimeout(timeout)
   }
 }
 
@@ -295,10 +301,12 @@ async function main() {
     console.log("Breakdown:", JSON.stringify(sectors))
   }
 
-  await Promise.all([
-    sendEmail(newLeads, allLeads.length),
-    sendWhatsApp(newLeads),
-  ])
+  await sendEmail(newLeads, allLeads.length)
+  try {
+    await sendWhatsApp(newLeads)
+  } catch (e) {
+    console.error("WhatsApp failed (non-fatal):", e instanceof Error ? e.message : e)
+  }
 
   console.log("\n✓ Digest complete")
 }
