@@ -52,7 +52,7 @@ try {
                 Add-Content $log "ERROR: git push failed - CRM will not update until push succeeds"
             }
         } else {
-            Add-Content $log "No new leads staged — skipping commit"
+            Add-Content $log "No new leads staged - skipping commit"
         }
     }
 
