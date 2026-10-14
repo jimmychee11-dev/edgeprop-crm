@@ -1,7 +1,7 @@
-# EdgeProp Daily Digest — one run per day, max once
+# EdgeProp Daily Digest - one run per day, max once
 # Two Task Scheduler entries call this script:
-#   1. "EdgeProp Daily Digest" — daily at 10:00
-#   2. "EdgeProp Digest Catch-up" — at logon with -CatchUp: covers days
+#   1. "EdgeProp Daily Digest" - daily at 10:00
+#   2. "EdgeProp Digest Catch-up" - at logon with -CatchUp: covers days
 #      (weekends) when the machine was off at 10:00. Before 10am it exits
 #      so weekday logins don't send early; after 10am it catches up.
 param([switch]$CatchUp)
@@ -34,13 +34,13 @@ Add-Content $log "`n=== $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ==="
 try {
     npx tsx scripts/daily-digest.ts --max-pages 5 2>&1 | Tee-Object -Append $log
 
-    # Commit and push new leads to GitHub → Vercel auto-deploys
+    # Commit and push new leads to GitHub -> Vercel auto-deploys
     git config user.name "EdgeProp Bot"
     git config user.email "bot@edgeprop-crm"
     $pullOut = git pull --ff-only 2>&1
     Add-Content $log "git pull: $pullOut"
     if ($LASTEXITCODE -ne 0) {
-        Add-Content $log "WARNING: git pull failed (exit $LASTEXITCODE) — skipping push this run"
+        Add-Content $log "WARNING: git pull failed (exit $LASTEXITCODE) - skipping push this run"
     } else {
         git add data/leads.json data/leads.ts data/checkpoint.json
         git diff --staged --quiet
@@ -49,7 +49,7 @@ try {
             $pushOut = git push 2>&1
             Add-Content $log "git push: $pushOut (exit $LASTEXITCODE)"
             if ($LASTEXITCODE -ne 0) {
-                Add-Content $log "ERROR: git push failed — CRM will not update until push succeeds"
+                Add-Content $log "ERROR: git push failed - CRM will not update until push succeeds"
             }
         } else {
             Add-Content $log "No new leads staged — skipping commit"
