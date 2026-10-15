@@ -1,7 +1,8 @@
 "use client"
 
-import { useState, useMemo, useEffect, Fragment } from "react"
+import { useState, useMemo, useEffect, Fragment, useCallback } from "react"
 import { leads, Lead } from "@/data/leads"
+import { EDM_TEMPLATES } from "@/app/edm-templates"
 
 const ALL_SECTORS = ["Industrial","Hotel","Office","Shophouse","Commercial","Retail","Mixed","International"] as const
 const ALL_INTENTS = ["BUY","SELL","BID","JV","BROKER","ADVISORY","REDEVELOP","LEASE","LAUNCH"] as const
@@ -68,6 +69,8 @@ export default function Home() {
   const [sortDir, setSortDir] = useState<"asc"|"desc">("desc")
   const [expandedId, setExpandedId] = useState<number|null>(null)
   const [showNewOnly, setShowNewOnly] = useState(false)
+  const [activeTab, setActiveTab] = useState<"leads"|"edms">("leads")
+  const [copiedEdm, setCopiedEdm] = useState<number|null>(null)
   const [statuses, setStatuses] = useState<Record<number, Status>>({})
   const [page, setPage] = useState(1)
   const PAGE_SIZE = 100
@@ -136,25 +139,130 @@ export default function Home() {
 
   const SORTABLE: SortKey[] = ["id","date","source","sector","intent","company","property","valueNum","status"]
 
+  const copyEdmHtml = useCallback((id: number, html: string) => {
+    const succeed = () => { setCopiedEdm(id); setTimeout(() => setCopiedEdm(null), 2500) }
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(html).then(succeed).catch(() => {
+        const ta = document.createElement("textarea")
+        ta.value = html; document.body.appendChild(ta); ta.select()
+        try { document.execCommand("copy") } catch {}
+        document.body.removeChild(ta); succeed()
+      })
+    } else {
+      const ta = document.createElement("textarea")
+      ta.value = html; document.body.appendChild(ta); ta.select()
+      try { document.execCommand("copy") } catch {}
+      document.body.removeChild(ta); succeed()
+    }
+  }, [])
+
   return (
     <main className="min-h-screen bg-[#f5f6fa]" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
       {/* Top bar */}
-      <div className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30">
-        <div className="max-w-screen-2xl mx-auto flex items-center justify-between gap-4 flex-wrap">
+      <div className="bg-white border-b border-gray-200 px-6 pt-4 pb-0 sticky top-0 z-30">
+        <div className="max-w-screen-2xl mx-auto flex items-center justify-between gap-4 flex-wrap pb-3">
           <div>
             <h1 className="text-lg font-semibold text-gray-900 leading-tight">SG Capital Markets CRM</h1>
             <p className="text-xs text-gray-400">{leads.length.toLocaleString()} leads · EdgeProp · Business Times · MingTianDi · SBR</p>
           </div>
-          <input
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm w-72 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
-            placeholder="🔍  Search company, property, notes…"
-            value={q} onChange={e => setQ(e.target.value)}
-          />
+          {activeTab === "leads" && (
+            <input
+              className="border border-gray-300 rounded-lg px-3 py-2 text-sm w-72 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
+              placeholder="🔍  Search company, property, notes…"
+              value={q} onChange={e => setQ(e.target.value)}
+            />
+          )}
+        </div>
+        {/* Tab navigation */}
+        <div className="max-w-screen-2xl mx-auto flex gap-0 -mb-px">
+          {(["leads","edms"] as const).map(tab => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-5 py-2.5 text-sm font-semibold border-b-2 transition-colors whitespace-nowrap ${
+                activeTab === tab
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-gray-400 hover:text-gray-700 hover:border-gray-300"
+              }`}
+            >
+              {tab === "leads" ? `Leads` : `✉ EDMs`}
+            </button>
+          ))}
         </div>
       </div>
 
       <div className="max-w-screen-2xl mx-auto px-4 py-4 md:px-6">
 
+      {/* ── EDMs tab ─────────────────────────────────────────────────── */}
+      {activeTab === "edms" && (
+        <div>
+          <div className="mb-5">
+            <h2 className="text-base font-semibold text-gray-900">Email Templates</h2>
+            <p className="text-xs text-gray-400 mt-0.5">4 pre-built EDMs · Click "Copy HTML" to paste into Mailchimp, Outlook or Gmail.</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {EDM_TEMPLATES.map(t => (
+              <div key={t.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                {/* Color band preview */}
+                <div className="h-2" style={{ background: t.accentColor }} />
+                {/* Mini header visual */}
+                <div className="px-5 pt-4 pb-3" style={{ background: t.bgColor }}>
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: t.accentColor }}>
+                        Template 0{t.id}
+                      </span>
+                      <h3 className="text-[15px] font-bold text-gray-900 mt-0.5 leading-snug">{t.name}</h3>
+                    </div>
+                    <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 text-white text-base font-black"
+                      style={{ background: t.accentColor }}>
+                      {t.id}
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2 leading-relaxed">{t.desc}</p>
+                </div>
+                {/* Actions */}
+                <div className="px-5 py-3 flex items-center justify-between border-t border-gray-100 bg-white">
+                  <div className="flex gap-2">
+                    {t.id === 1 && <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-semibold">4-panel</span>}
+                    {t.id === 2 && <span className="text-[10px] px-2 py-0.5 rounded-full bg-teal-100 text-teal-700 font-semibold">Listings</span>}
+                    {t.id === 3 && <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-semibold">Market data</span>}
+                    {t.id === 4 && <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-semibold">Personal</span>}
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 font-medium">600px</span>
+                  </div>
+                  <button
+                    onClick={() => copyEdmHtml(t.id, t.html())}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                      copiedEdm === t.id
+                        ? "bg-emerald-600 text-white"
+                        : "text-white hover:opacity-90"
+                    }`}
+                    style={{ background: copiedEdm === t.id ? undefined : t.accentColor }}
+                  >
+                    {copiedEdm === t.id ? (
+                      <>✓ Copied!</>
+                    ) : (
+                      <>
+                        <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                        </svg>
+                        Copy HTML
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-gray-400 mt-4 text-center">
+            Replace <code className="bg-gray-100 px-1 rounded text-gray-600">[Your Brokerage Name]</code>, <code className="bg-gray-100 px-1 rounded text-gray-600">[Your Name]</code> and phone numbers before sending.
+          </p>
+        </div>
+      )}
+
+        {/* Stats row — only shown on leads tab */}
+        {activeTab === "leads" && (
+        <>
         {/* Stats row */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
           {[
@@ -557,6 +665,8 @@ export default function Home() {
             </div>
           )}
         </div>
+        </> /* end activeTab === "leads" */
+        )}
       </div>
     </main>
   )
