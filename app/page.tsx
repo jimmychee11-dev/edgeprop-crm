@@ -290,16 +290,17 @@ export default function Home() {
         <div className="bg-white rounded-xl border border-gray-200">
           <table className="w-full text-sm table-fixed">
             <colgroup>
-              <col style={{ width: "4%" }}  />  {/* # */}
-              <col style={{ width: "7%" }}  />  {/* Date */}
+              <col style={{ width: "3%" }}  />  {/* # */}
+              <col style={{ width: "6%" }}  />  {/* Date */}
               <col style={{ width: "4%" }}  />  {/* Source */}
               <col style={{ width: "7%" }}  />  {/* Sector */}
               <col style={{ width: "6%" }}  />  {/* Intent */}
-              <col style={{ width: "12%" }} />  {/* Company */}
-              <col style={{ width: "13%" }} />  {/* Property */}
+              <col style={{ width: "11%" }} />  {/* Company */}
+              <col style={{ width: "9%" }}  />  {/* Contact */}
+              <col style={{ width: "11%" }} />  {/* Property */}
               <col style={{ width: "6%" }}  />  {/* Value */}
-              <col style={{ width: "9%" }}  />  {/* Status */}
-              <col style={{ width: "27%" }} />  {/* Notes */}
+              <col style={{ width: "8%" }}  />  {/* Status */}
+              <col style={{ width: "24%" }} />  {/* Notes */}
               <col style={{ width: "5%" }}  />  {/* Link */}
             </colgroup>
             <thead>
@@ -311,12 +312,13 @@ export default function Home() {
                   ["sector","Sector"],
                   ["intent","Intent"],
                   ["company","Company"],
+                  ["person","Contact"],
                   ["property","Property"],
                   ["valueNum","Value"],
                   ["status","Status"],
                   ["notes","Intelligence / Notes"],
                   ["sourceUrl","↗ Link"],
-                ] as [SortKey|"sourceUrl"|"notes", string][]).map(([key, label]) => (
+                ] as [SortKey|"sourceUrl"|"notes"|"person", string][]).map(([key, label]) => (
                   <th
                     key={key}
                     className={`text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wide px-2 py-3 ${SORTABLE.includes(key as SortKey) ? "cursor-pointer select-none hover:text-gray-700" : ""}`}
@@ -329,7 +331,7 @@ export default function Home() {
             </thead>
             <tbody>
               {filtered.length === 0 && (
-                <tr><td colSpan={11} className="text-center py-16 text-gray-400">No leads match your filters.</td></tr>
+                <tr><td colSpan={12} className="text-center py-16 text-gray-400">No leads match your filters.</td></tr>
               )}
               {pageRows.map((l, i) => {
                 const rowIdx = (safePage - 1) * PAGE_SIZE + i
@@ -386,6 +388,21 @@ export default function Home() {
                         <span className="truncate block" title={l.company}>{l.company || "—"}</span>
                       </td>
 
+                      {/* Contact */}
+                      <td className="px-2 py-2.5">
+                        {l.person ? (
+                          <div>
+                            <span className="truncate block text-xs font-medium text-gray-800" title={l.person}>{l.person}</span>
+                            {l.role && <span className="truncate block text-[10px] text-gray-400" title={l.role}>{l.role}</span>}
+                            {l.phone && <a href={`tel:${l.phone}`} onClick={e => e.stopPropagation()} className="block text-[10px] text-blue-500 hover:underline mt-0.5" title={l.phone}>📞 {l.phone}</a>}
+                          </div>
+                        ) : l.phone ? (
+                          <a href={`tel:${l.phone}`} onClick={e => e.stopPropagation()} className="text-[10px] text-blue-500 hover:underline">📞 {l.phone}</a>
+                        ) : (
+                          <span className="text-gray-300 text-xs">—</span>
+                        )}
+                      </td>
+
                       {/* Property */}
                       <td className="px-2 py-2.5 text-gray-700">
                         <span className="truncate block" title={l.property}>{l.property || "—"}</span>
@@ -432,7 +449,7 @@ export default function Home() {
                     {/* Expanded contact panel */}
                     {isExpanded && (
                       <tr className="border-b border-gray-100 bg-blue-50/40">
-                        <td colSpan={11} className="px-6 py-4">
+                        <td colSpan={12} className="px-6 py-4">
                           <div className="flex flex-wrap gap-6 text-sm">
                             {/* Contact */}
                             <div className="min-w-[180px]">
