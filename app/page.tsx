@@ -457,37 +457,43 @@ export default function Home() {
                               <p className="font-semibold text-gray-900">{l.person || "—"}</p>
                               {l.role && <p className="text-xs text-gray-500 mt-0.5">{l.role}</p>}
                             </div>
-                            {/* Phone */}
+                            {/* Phone + WhatsApp */}
                             {l.phone && (
-                              <div className="min-w-[140px]">
+                              <div className="min-w-[160px]">
                                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Phone</p>
-                                <a href={`tel:${l.phone}`} className="text-blue-600 hover:underline font-medium">{l.phone}</a>
-                              </div>
-                            )}
-                            {/* Email */}
-                            {l.email && (
-                              <div className="min-w-[200px]">
-                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Email</p>
-                                <a href={`mailto:${l.email}`} className="text-blue-600 hover:underline font-medium">{l.email}</a>
+                                <a href={`tel:${l.phone}`} onClick={e => e.stopPropagation()} className="text-blue-600 hover:underline font-medium text-sm block">{l.phone}</a>
+                                <a href={`https://wa.me/${l.phone.replace(/[^0-9]/g,'')}`} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()}
+                                  className="mt-1 inline-block text-[11px] px-2 py-1 rounded-md bg-[#25d366]/10 text-[#128c3c] font-semibold hover:bg-[#25d366]/20">
+                                  WhatsApp
+                                </a>
                               </div>
                             )}
                             {/* Website */}
                             {l.website && (
                               <div className="min-w-[180px]">
                                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Website</p>
-                                <a href={l.website.startsWith("http") ? l.website : `https://${l.website}`} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-xs">{l.website}</a>
+                                <a href={l.website.startsWith("http") ? l.website : `https://${l.website}`} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} className="text-blue-600 hover:underline text-xs">{l.website}</a>
+                              </div>
+                            )}
+                            {/* Address */}
+                            {l.address && (
+                              <div className="min-w-[200px]">
+                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Address</p>
+                                <a href={`https://maps.google.com/?q=${encodeURIComponent(l.address)}`} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} className="text-blue-600 hover:underline text-xs">{l.address}</a>
                               </div>
                             )}
                             {/* Lookup links — company + person */}
                             <div className="min-w-[220px]">
-                              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Find Contact</p>
+                              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Find on LinkedIn / Google</p>
                               <div className="flex flex-wrap gap-2">
                                 {l.company && (
                                   <>
+                                    <a href={`https://www.linkedin.com/company/${l.company.toLowerCase().replace(/[^a-z0-9\s]/g,'').trim().replace(/\s+/g,'-')}`} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()}
+                                      className="text-[11px] px-2 py-1 rounded-md bg-[#0a66c2]/10 text-[#0a66c2] font-semibold hover:bg-[#0a66c2]/20">in · Company page</a>
                                     <a href={linkedinUrl(l.company)} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()}
-                                      className="text-[11px] px-2 py-1 rounded-md bg-[#0a66c2]/10 text-[#0a66c2] font-semibold hover:bg-[#0a66c2]/20">in · {l.company.slice(0,20)}</a>
+                                      className="text-[11px] px-2 py-1 rounded-md bg-[#0a66c2]/10 text-[#0a66c2] font-semibold hover:bg-[#0a66c2]/20">in · Search</a>
                                     <a href={googleUrl(l.company)} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()}
-                                      className="text-[11px] px-2 py-1 rounded-md bg-gray-100 text-gray-600 font-semibold hover:bg-gray-200">G · {l.company.slice(0,20)}</a>
+                                      className="text-[11px] px-2 py-1 rounded-md bg-gray-100 text-gray-600 font-semibold hover:bg-gray-200">G · Contacts</a>
                                   </>
                                 )}
                                 {l.person && (

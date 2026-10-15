@@ -34,7 +34,11 @@ Add-Content $log "`n=== $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ==="
 try {
     npx tsx scripts/daily-digest.ts --max-pages 5 2>&1 | Tee-Object -Append $log
 
-    # Commit and push new leads to GitHub -> Vercel auto-deploys
+    # Enrich contact details for up to 30 new companies per day
+    Add-Content $log "--- Contact enrichment ---"
+    npx tsx scripts/enrich-contacts.ts --limit 30 2>&1 | Tee-Object -Append $log
+
+    # Commit and push new leads + enriched contacts to GitHub -> Vercel auto-deploys
     git config user.name "EdgeProp Bot"
     git config user.email "bot@edgeprop-crm"
     $pullOut = git pull --ff-only 2>&1
@@ -42,7 +46,7 @@ try {
     if ($LASTEXITCODE -ne 0) {
         Add-Content $log "WARNING: git pull failed (exit $LASTEXITCODE) - skipping push this run"
     } else {
-        git add data/leads.json data/leads.ts data/checkpoint.json
+        git add data/leads.json data/leads.ts data/checkpoint.json data/contact-cache.json
         git diff --staged --quiet
         if ($LASTEXITCODE -ne 0) {
             git commit -m "Daily digest $today`: auto-update leads" 2>&1 | Add-Content $log
