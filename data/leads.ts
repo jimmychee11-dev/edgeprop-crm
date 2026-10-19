@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-10-19T02:03:12.520Z | Leads: 4962
+// Updated: 2026-10-19T08:51:53.075Z | Leads: 4965
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -99504,5 +99504,65 @@ export const leads: Lead[] = [
     "website": "",
     "address": "Multiple US locations",
     "notes": "Over 35,000 sq ft of additional spec suites under development across multiple properties. Jointly owned by Keppel and KORE Pacific Advisors."
+  },
+  {
+    "id": 6690,
+    "date": "2026-10-19",
+    "articleTitle": "The fully equipped facility is clean and ready to be recommissioned.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/news/specialty-chemicals-manufacturing-facility-jurong-island-sale",
+    "source": "SBR",
+    "company": "CBRE",
+    "person": "",
+    "role": "Sole marketing agent",
+    "intent": "BROKER",
+    "property": "Specialty chemicals manufacturing facility, 33 Ayer Merbau Road, Jurong Island",
+    "sector": "Industrial",
+    "valueNum": 0,
+    "value": "Undisclosed",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "33 Ayer Merbau Road, Jurong Island",
+    "notes": "Private treaty sale of a fully equipped, decontaminated specialty chemicals facility. Land approx. 278,000 sq ft; existing GFA approx. 25,730 sq ft. Zoned Business 2, plot ratio 1.0 (potential GFA approx. 278,000 sq ft). Remaining land tenure approx. 13 years, to September 2039. Seller not named in article."
+  },
+  {
+    "id": 6691,
+    "date": "2026-10-13",
+    "articleTitle": "Beauty World Plaza up for collective sale for S$165 million",
+    "sourceUrl": "https://www.businesstimes.com.sg/property/beauty-world-plaza-collective-sale-s165-million",
+    "source": "Business Times",
+    "company": "Beauty World Plaza owners (unnamed)",
+    "person": "",
+    "role": "Seller (collective sale)",
+    "intent": "SELL",
+    "property": "Beauty World Plaza",
+    "sector": "Mixed",
+    "valueNum": 165,
+    "value": "S$165 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Beauty World Plaza, Bukit Timah",
+    "notes": "Collective sale by owners; seller entity not named in article. Sale offered via public tender run by ETC."
+  },
+  {
+    "id": 6692,
+    "date": "2026-10-16",
+    "articleTitle": "CBD sales risks and future housing supply issues were cited.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/news/developers-cautious-marina-gardens-lane-draws-one-bid",
+    "source": "SBR",
+    "company": "EL Development",
+    "person": "",
+    "role": "Sole bidder for Marina Gardens Lane GLS site",
+    "intent": "BID",
+    "property": "Marina Gardens Lane GLS site (0.6ha residential and commercial site, approx. 390 private homes and 150 sqm ground-floor commercial)",
+    "sector": "Mixed",
+    "valueNum": 450.1,
+    "value": "$450.1m ($1,243 psf ppr)",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Marina Gardens Lane, Marina South, Singapore",
+    "notes": "Only bid received for the GLS site; award pending. Bid is 11.3% below the $1,402 psf ppr paid for the neighbouring One Marina Gardens site in 2023 and 26% above the rejected $984 psf ppr bid for Marina Gardens Crescent in 2024. Commercial component is minor, so Mixed is a judgment call; Residential would also be defensible."
   }
 ]

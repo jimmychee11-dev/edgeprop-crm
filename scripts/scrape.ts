@@ -431,6 +431,28 @@ function worthCallingClaude(title: string): boolean {
   return !SKIP_TITLE_PATTERNS.some(k => t.includes(k))
 }
 
+function extractJsonArray(raw: string): string | null {
+  // Strip markdown fences first
+  const stripped = raw.replace(/^```(?:json)?\s*/m, "").replace(/\s*```\s*$/m, "")
+  const start = stripped.indexOf("[")
+  if (start === -1) return null
+  // Track bracket depth to find the first complete array (not lastIndexOf which
+  // breaks when Claude appends notes like "Source: [1]" after the JSON)
+  let depth = 0
+  let inString = false
+  let escape = false
+  for (let i = start; i < stripped.length; i++) {
+    const c = stripped[i]
+    if (escape) { escape = false; continue }
+    if (c === "\\" && inString) { escape = true; continue }
+    if (c === '"') { inString = !inString; continue }
+    if (inString) continue
+    if (c === "[") depth++
+    else if (c === "]") { depth--; if (depth === 0) return stripped.slice(start, i + 1) }
+  }
+  return null
+}
+
 async function extractLeads(
   client: Anthropic,
   text: string,
@@ -442,17 +464,18 @@ async function extractLeads(
   if (!worthCallingClaude(title)) return []
   try {
     const msg = await client.messages.create({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 1024,
+      model: "claude-haiku-5-5",
+      max_tokens: 2048,
       system: [{ type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral" } }] as Parameters<typeof client.messages.create>[0]["system"],
       messages: [{ role: "user", content: `Title: ${title}\nDate: ${date}\n\n${text}` }],
     })
-    const raw = ((msg.content[0] as { type: string; text: string }).text || "").trim()
-    const start = raw.indexOf("["), end = raw.lastIndexOf("]")
-    if (start === -1 || end === -1) return []
-    return JSON.parse(raw.slice(start, end + 1))
+    const textBlock = msg.content.find((b): b is { type: "text"; text: string } => b.type === "text")
+    const raw = (textBlock?.text || "").trim()
+    const jsonStr = extractJsonArray(raw)
+    if (!jsonStr) return []
+    return JSON.parse(jsonStr)
   } catch (e) {
-    process.stdout.write(`  ✗ ${e}\n`)
+    process.stdout.write(`  ✗ Claude parse error for ${url}: ${e}\n`)
     return []
   }
 }
