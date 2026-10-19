@@ -469,8 +469,7 @@ async function extractLeads(
       system: [{ type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral" } }] as Parameters<typeof client.messages.create>[0]["system"],
       messages: [{ role: "user", content: `Title: ${title}\nDate: ${date}\n\n${text}` }],
     })
-    const textBlock = msg.content.find((b): b is { type: "text"; text: string } => b.type === "text")
-    const raw = (textBlock?.text || "").trim()
+    const raw = ((msg.content.find(b => b.type === "text") as any)?.text || "").trim()
     const jsonStr = extractJsonArray(raw)
     if (!jsonStr) return []
     return JSON.parse(jsonStr)
