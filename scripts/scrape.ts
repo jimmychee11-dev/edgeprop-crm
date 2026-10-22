@@ -40,6 +40,8 @@ const COMMERCIAL_KEYWORDS = [
   "mall","retail","shopping centre","shopping center",
   "car park","petrol station","petrol kiosk",
   "healthcare","student accommodation","purpose-built",
+  "senior living","eldercare","aged care","retirement village","assisted living",
+  "co-living","coliving","co living",
   // transaction types
   "en bloc","enbloc","collective sale",
   "gls","government land sale","land parcel","white site",
@@ -58,6 +60,7 @@ const COMMERCIAL_KEYWORDS = [
   "capitaland","mapletree","keppel","frasers","ascendas",
   "cbre","jll","colliers","savills","knight frank","cushman",
   "esrgroup","esr","prologis","link reit","capitaland integrated",
+  "lhn","coliwoo","far east org","far east organization","wee hur",
 ]
 
 // Headlines that are definitely NOT commercial deals — skip them

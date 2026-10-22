@@ -21,6 +21,10 @@ if ($CatchUp -and (Get-Date).Hour -lt 10) {
     exit 0
 }
 
+# Claim the day's run slot immediately — a second simultaneous instance will
+# hit the flag check at the top and exit before doing any work.
+Set-Content $flagFile $today
+
 Set-Location $dir
 
 # Load env vars from .env.local
@@ -59,9 +63,6 @@ try {
             Add-Content $log "No new leads staged - skipping commit"
         }
     }
-
-    # Mark today as done
-    Set-Content $flagFile $today
 
 } catch {
     Add-Content $log "ERROR: $_"
