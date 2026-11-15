@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-11-14T02:05:05.146Z | Leads: 5207
+// Updated: 2026-11-15T03:01:34.761Z | Leads: 5209
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -104425,5 +104425,45 @@ export const leads: Lead[] = [
     "website": "",
     "address": "Berlin, Germany",
     "notes": "Signed 25-year lease for 39,419 sqm with fixed 2.25% annual rent escalation; move-in phased from October 2028 to September 2030. Lease value not disclosed."
+  },
+  {
+    "id": 6935,
+    "date": "2026-11-15",
+    "articleTitle": "KSH’s 1H2027 profit rises 23% on gains from Singapore condo JVs",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/kshs-1h2027-profit-rises-23-gains-singapore-condo-jvs",
+    "source": "EdgeProp",
+    "company": "KSH Holdings",
+    "person": "",
+    "role": "Joint-venture partner (stakes in industrial JVs)",
+    "intent": "JV",
+    "property": "Gate+ at Tukang Innovation Drive (10% stake); Tukang Innovation Drive Plot B (30% stake)",
+    "sector": "Industrial",
+    "valueNum": 0,
+    "value": "",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Tukang Innovation Drive, Singapore",
+    "notes": "Earnings article (1HFY2027 results, announced Nov 13, 2026). Only the industrial JV stakes are commercial. The article is truncated before naming the third industrial JV ('Tho...'). No transaction, sale, or tender is described, so this is a weak signal. The condo JVs (The Arcady, Sora, Bagnall Haus, The Collective at One Sophia) are residential and excluded. The contact email in the byline belongs to EdgeProp, not KSH, so it is not used."
+  },
+  {
+    "id": 6936,
+    "date": "2026-11-10",
+    "articleTitle": "Flight to quality to support demand for high-spec industrial spaces; rents to stay stable in 2027: Realion",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/flight-quality-support-demand-high-spec-industrial-spaces-rents-stay-stable-2027-realion",
+    "source": "EdgeProp",
+    "company": "JTC",
+    "person": "",
+    "role": "Seller (government agency)",
+    "intent": "SELL",
+    "property": "JTC Tuas B2 factory with unused plot ratio",
+    "sector": "Industrial",
+    "valueNum": 13.8,
+    "value": "$13.8 mil",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Tuas, Singapore",
+    "notes": "Only the 'Read also' headline in the article references this offer. The article gives no broker or buyer details, so the listing agent is unknown. Verify the details from the related article."
   }
 ]
