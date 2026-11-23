@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-11-22T04:40:26.777Z | Leads: 5288
+// Updated: 2026-11-23T02:04:26.938Z | Leads: 5292
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -106045,5 +106045,85 @@ export const leads: Lead[] = [
     "website": "",
     "address": "",
     "notes": "Alleges Brookfield agreed to pursue acquisition of the three MIT properties through a JV with Soilbuild and that the parties worked together for several months. Filed action in Supreme Court on Aug 3. Lim Chap Huat is the Singapore billionaire associated with Soilbuild."
+  },
+  {
+    "id": 7016,
+    "date": "2026-10-14",
+    "articleTitle": "What Japan's rising land prices really tell us about the property market",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/what-japans-rising-land-prices-really-tell-us-about-property-market",
+    "source": "EdgeProp",
+    "company": "Westlite Dormitory",
+    "person": "",
+    "role": "Buyer",
+    "intent": "BUY",
+    "property": "3 Kim Chuan Lane",
+    "sector": "Industrial",
+    "valueNum": 61,
+    "value": "S$61 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "3 Kim Chuan Lane, Singapore",
+    "notes": "Transaction appears only in a 'Read also' headline within the article, not in the article body. Seller, agent and property type are not stated. Sector is inferred from the Kim Chuan Lane location and should be verified."
+  },
+  {
+    "id": 7017,
+    "date": "2026-01-22",
+    "articleTitle": "GLS 1H2026: Identifying the most sought-after sites",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/gls-1h2026-identifying-most-sought-after-sites",
+    "source": "EdgeProp",
+    "company": "CapitaLand",
+    "person": "",
+    "role": "Consortium member, Town Hall Link GLS tender winner",
+    "intent": "BID",
+    "property": "Town Hall Link",
+    "sector": "Mixed",
+    "valueNum": 1820,
+    "value": "$1.82 billion bid",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "",
+    "notes": "Winning consortium bid per the article's 'Read also' headline: CapitaLand-Far East Organization-Sing Holdings consortium tops Town Hall Link tender with $1.82 bil bid. Sector inferred as Mixed from the site type, not stated in the article. JV structure: three-party consortium with Far East Organization and Sing Holdings."
+  },
+  {
+    "id": 7018,
+    "date": "2026-01-22",
+    "articleTitle": "GLS 1H2026: Identifying the most sought-after sites",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/gls-1h2026-identifying-most-sought-after-sites",
+    "source": "EdgeProp",
+    "company": "Far East Organization",
+    "person": "",
+    "role": "Consortium member, Town Hall Link GLS tender winner",
+    "intent": "BID",
+    "property": "Town Hall Link",
+    "sector": "Mixed",
+    "valueNum": 1820,
+    "value": "$1.82 billion bid",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "",
+    "notes": "Consortium member with CapitaLand and Sing Holdings, per the 'Read also' headline. Sector inferred as Mixed, not stated in the article."
+  },
+  {
+    "id": 7019,
+    "date": "2026-01-22",
+    "articleTitle": "GLS 1H2026: Identifying the most sought-after sites",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/gls-1h2026-identifying-most-sought-after-sites",
+    "source": "EdgeProp",
+    "company": "Sing Holdings",
+    "person": "",
+    "role": "Consortium member, Town Hall Link GLS tender winner",
+    "intent": "BID",
+    "property": "Town Hall Link",
+    "sector": "Mixed",
+    "valueNum": 1820,
+    "value": "$1.82 billion bid",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "",
+    "notes": "Consortium member with CapitaLand and Far East Organization, per the 'Read also' headline. Sector inferred as Mixed, not stated in the article."
   }
 ]
