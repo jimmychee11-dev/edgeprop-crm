@@ -1,5 +1,5 @@
 // Auto-generated — do not edit manually
-// Updated: 2026-11-23T02:04:26.938Z | Leads: 5292
+// Updated: 2026-11-24T02:04:38.731Z | Leads: 5294
 
 export type Lead = {
   id: number; date: string; articleTitle: string; company: string
@@ -106125,5 +106125,45 @@ export const leads: Lead[] = [
     "website": "",
     "address": "",
     "notes": "Consortium member with CapitaLand and Far East Organization, per the 'Read also' headline. Sector inferred as Mixed, not stated in the article."
+  },
+  {
+    "id": 7020,
+    "date": "2026-05-28",
+    "articleTitle": "How the Greater Southern Waterfront transformation puts Pasir Panjang on the map",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/how-greater-southern-waterfront-transformation-puts-pasir-panjang-map",
+    "source": "EdgeProp",
+    "company": "Norwegian Seamen's Mission",
+    "person": "",
+    "role": "Seller (site owner)",
+    "intent": "SELL",
+    "property": "Norwegian Seamen's Mission site, Pasir Panjang",
+    "sector": "Commercial",
+    "valueNum": 70,
+    "value": "$70 million",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Pasir Panjang, Singapore",
+    "notes": "Source is a 'Read also' headline link in the article ('Norwegian Seamen's Mission site in Pasir Panjang up for sale at $70 mil'). The article body gives no detail on the sale, marketing agent, buyers or sector. Sector is an unverified assumption; check the original article before outreach."
+  },
+  {
+    "id": 7021,
+    "date": "2026-11-24",
+    "articleTitle": "KORE US Reit secures full-building tenant at Washington business campus The Westpark Portfolio",
+    "sourceUrl": "https://www.edgeprop.sg/property-news/kore-us-reit-secures-full-building-tenant-washington-business-campus-westpark-portfolio",
+    "source": "EdgeProp",
+    "company": "KORE US REIT",
+    "person": "",
+    "role": "Landlord / REIT (leasing party)",
+    "intent": "LEASE",
+    "property": "The Westpark Portfolio, Washington business campus",
+    "sector": "International",
+    "valueNum": 0,
+    "value": "",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "Washington, USA (The Westpark Portfolio)",
+    "notes": "Based on the headline only: KORE US REIT secured a full-building tenant at The Westpark Portfolio. The article body was blocked by a Cloudflare verification page, so the tenant's name, lease size, rent and term are unknown. Sector is inferred as International with a business-campus profile. Verify details from the full article."
   }
 ]
