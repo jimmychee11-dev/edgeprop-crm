@@ -106154,5 +106154,25 @@
     "website": "",
     "address": "Washington, USA (The Westpark Portfolio)",
     "notes": "Based on the headline only: KORE US REIT secured a full-building tenant at The Westpark Portfolio. The article body was blocked by a Cloudflare verification page, so the tenant's name, lease size, rent and term are unknown. Sector is inferred as International with a business-campus profile. Verify details from the full article."
+  },
+  {
+    "id": 7022,
+    "date": "2026-11-24",
+    "articleTitle": "The property will house the group’s IT and AI operations, led by RevoLab.",
+    "sourceUrl": "https://sbr.com.sg/commercial-property/news/eneco-energy-buys-chai-chee-lane-factory-551m",
+    "source": "SBR",
+    "company": "Eneco Energy Limited",
+    "person": "",
+    "role": "Buyer",
+    "intent": "BUY",
+    "property": "Single-storey detached factory, 500 Chai Chee Lane (approx. 59,200 sq ft land, approx. 38,500 sq ft GFA)",
+    "sector": "Industrial",
+    "valueNum": 55.1,
+    "value": "$55.1m",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "address": "500 Chai Chee Lane, Singapore",
+    "notes": "Acquisition to serve as new corporate HQ and base for IT/AI operations led by subsidiary RevoLab Pte. Ltd. Group plans to explore self-storage, logistics, back-end support, and EV charging uses. No seller or marketing agent named in the article."
   }
 ]
